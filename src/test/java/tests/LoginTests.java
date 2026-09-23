@@ -30,7 +30,7 @@ public class LoginTests extends TestBase{
                 .then()
                 .log().all()
                 .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/successful_login_response_schema.json"))
+                .body(matchesJsonSchemaInClasspath("schemas/login/successful_login_response_schema.json"))
                 .extract()
                 .as(SuccessfulLoginResponseModel.class);
 
@@ -56,7 +56,7 @@ public class LoginTests extends TestBase{
                 .then()
                 .log().all()
                 .statusCode(401)
-                .body(matchesJsonSchemaInClasspath("schemas/wrong_credentials_login_response_schema.json"))
+                .body(matchesJsonSchemaInClasspath("schemas/login/wrong_credentials_login_response_schema.json"))
                 .extract()
                 .as(WrongCredentialsLoginResponseModel.class);
 
