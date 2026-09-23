@@ -1,13 +1,13 @@
 package tests;
 
 import io.restassured.http.ContentType;
-import models.lombok.RegistrationBodyLombokModel;
-import models.lombok.RegistrationResponseLombokModel;
-import models.pojo.RegistrationBodyPojoModel;
-import models.pojo.RegistrationResponsePojoModel;
-import models.records.ExistingUser400ResponseRecordsModel;
-import models.records.RegistrationBodyRecordsModel;
-import models.records.RegistrationResponseRecordsModel;
+import models.registration.lombok.RegistrationBodyLombokModel;
+import models.registration.lombok.RegistrationResponseLombokModel;
+import models.registration.pojo.RegistrationBodyPojoModel;
+import models.registration.pojo.RegistrationResponsePojoModel;
+import models.registration.records.ExistingUser400ResponseRecordsModel;
+import models.registration.records.RegistrationBodyRecordsModel;
+import models.registration.records.RegistrationResponseRecordsModel;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 
