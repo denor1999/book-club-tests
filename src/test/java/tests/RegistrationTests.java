@@ -1,6 +1,5 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.RegistrationResponseSuccessfulModel;
@@ -9,8 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static specs.registration.RegistrationSpec.*;
 
 public class RegistrationTests extends TestBase{
 
@@ -29,16 +28,12 @@ public class RegistrationTests extends TestBase{
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
         RegistrationResponseSuccessfulModel registrationResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(registrationData)
-                .basePath("/api/v1")
                 .when()
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(201)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/successful_registration_response_schema.json"))
+                .spec(successfulRegistrationRequestSpec)
                 .extract()
                 .as(RegistrationResponseSuccessfulModel.class);
 
@@ -49,37 +44,30 @@ public class RegistrationTests extends TestBase{
         assertThat(registrationResponse.email()).isBlank();
     }
 
+
     @Test
     public void existingUserRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
         RegistrationResponseSuccessfulModel firstRegistrationResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(registrationData)
-                .basePath("/api/v1")
                 .when()
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(201)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/successful_registration_response_schema.json"))
+                .spec(successfulRegistrationRequestSpec)
                 .extract()
                 .as(RegistrationResponseSuccessfulModel.class);
 
         assertThat(username).isEqualTo(firstRegistrationResponse.username());
 
         ExistingUserResponseModel secondRegistrationResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(registrationData)
                 .when()
-                .basePath("/api/v1")
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/existing_user_registration_response_schema.json"))
+                .spec(existingUserRegistrationRequestSpec)
                 .extract()
                 .as(ExistingUserResponseModel.class);
 
@@ -87,5 +75,7 @@ public class RegistrationTests extends TestBase{
         String actualError = secondRegistrationResponse.username().getFirst();
         assertThat(actualError).isEqualTo(expectedError);
     }
+
+    //todo add more negative tests
 
 }
