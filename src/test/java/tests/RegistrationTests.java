@@ -70,16 +70,12 @@ public class RegistrationTests extends TestBase{
                 testData.wrongRegistrationUsername, testData.randomPassword);
 
         WrongUsernameRegistrationResponseModel wrongUsernameResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(wrongUsernameRegistrationData)
-                .basePath("api/v1")
                 .when()
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/wrong_username_registration_response_schema.json"))
+                .spec(wrongUsernameRegistrationResponseSpec)
                 .extract()
                 .as(WrongUsernameRegistrationResponseModel.class);
 
@@ -92,16 +88,12 @@ public class RegistrationTests extends TestBase{
         EmptyUsernameRegistrationBodyModel emptyUsernameData = new EmptyUsernameRegistrationBodyModel(testData.randomPassword);
 
         WrongUsernameRegistrationResponseModel emptyUsernameResponse =  given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(emptyUsernameData)
-                .basePath("api/v1")
                 .when()
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/wrong_username_registration_response_schema.json"))
+                .spec(wrongUsernameRegistrationResponseSpec)
                 .extract()
                 .as(WrongUsernameRegistrationResponseModel.class);
 
@@ -115,16 +107,12 @@ public class RegistrationTests extends TestBase{
         EmptyPasswordRegistrationBodyModel emptyPasswordData = new EmptyPasswordRegistrationBodyModel(testData.randomUsername);
 
         WrongPasswordRegistrationResponseModel emptyPasswordResponse =  given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(emptyPasswordData)
-                .basePath("api/v1")
                 .when()
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/wrong_password_registration_response_schema.json"))
+                .spec(wrongPasswordRegistrationResponseSpec)
                 .extract()
                 .as(WrongPasswordRegistrationResponseModel.class);
 
@@ -138,16 +126,12 @@ public class RegistrationTests extends TestBase{
         EmptyCredentialsRegistrationBodyModel emptyUsernameAndPasswordData = new EmptyCredentialsRegistrationBodyModel();
 
         WrongUsernameAndPasswordRegistrationResponseModel emptyUsernameAndPasswordResponse =  given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(registrationRequestSpec)
                 .body(emptyUsernameAndPasswordData)
-                .basePath("api/v1")
                 .when()
                 .post("/users/register/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/registration/wrong_username_and_password_registration_response_schema.json"))
+                .spec(wrongUsernameAndPasswordRegistrationResponseSpec)
                 .extract()
                 .as(WrongUsernameAndPasswordRegistrationResponseModel.class);
 

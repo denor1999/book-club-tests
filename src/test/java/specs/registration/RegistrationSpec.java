@@ -32,4 +32,21 @@ public class RegistrationSpec {
             .expectBody("username", notNullValue())
             .build();
 
+    public static ResponseSpecification wrongUsernameRegistrationResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/registration/wrong_username_registration_response_schema.json"))
+            .build();
+
+    public static ResponseSpecification wrongPasswordRegistrationResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/registration/wrong_password_registration_response_schema.json"))
+            .build();
+
+    public static ResponseSpecification wrongUsernameAndPasswordRegistrationResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/registration/wrong_username_and_password_registration_response_schema.json"))
+            .build();
 }
