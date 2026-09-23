@@ -1,4 +1,4 @@
-package models.records;
+package models.registration.records;
 
 import java.util.List;
 
