@@ -12,13 +12,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class LoginTests extends TestBase{
 
-    String username = "qaguru";
-    String password = "qaguru123";
-    String wrongPassword = "qaguru1234";
-
     @Test
     public void successfulLoginTests() {
-        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = given()
                 .log().all()
@@ -34,17 +30,16 @@ public class LoginTests extends TestBase{
                 .extract()
                 .as(SuccessfulLoginResponseModel.class);
 
-        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
         String actualAccess = loginResponse.access();
         String actualRefresh = loginResponse.refresh();
-        assertThat(actualAccess).startsWith(expectedTokenPath);
-        assertThat(actualRefresh).startsWith(expectedTokenPath);
+        assertThat(actualAccess).startsWith(testData.expectedTokenPath);
+        assertThat(actualRefresh).startsWith(testData.expectedTokenPath);
         assertThat(actualAccess).isNotEqualTo(actualRefresh);
     }
 
     @Test
     public void wrongCredentialsLoginTests() {
-        LoginBodyModel loginData = new LoginBodyModel(username, wrongPassword);
+        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.wrongPassword);
 
         WrongCredentialsLoginResponseModel loginResponse = given()
                 .log().all()
@@ -60,9 +55,8 @@ public class LoginTests extends TestBase{
                 .extract()
                 .as(WrongCredentialsLoginResponseModel.class);
 
-        String expectedDetailError = "Invalid username or password.";
         String actualDetailError = loginResponse.detail();
-        assertThat(actualDetailError).isEqualTo(expectedDetailError);
+        assertThat(actualDetailError).isEqualTo(testData.expectedDetailError);
     }
 
 }

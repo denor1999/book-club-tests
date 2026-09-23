@@ -8,9 +8,9 @@ import models.registration.model_examples.pojo.RegistrationResponsePojoModel;
 import models.registration.model_examples.records.ExistingUser400ResponseRecordsModel;
 import models.registration.model_examples.records.RegistrationBodyRecordsModel;
 import models.registration.model_examples.records.RegistrationResponseRecordsModel;
-import net.datafaker.Faker;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import testdata.TestData;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationTests_with_model_exapmples {
 
-    Faker faker = new Faker();
-    String username = faker.name().firstName() + "_" + System.currentTimeMillis();
-    String password = faker.name().lastName();
+    TestData testData = new TestData();
+    String username = testData.randomUsername;
+    String password = testData.randomPassword;
 
     @Test
     @Disabled
@@ -116,8 +116,7 @@ public class RegistrationTests_with_model_exapmples {
                 .extract()
                 .as(ExistingUser400ResponseRecordsModel.class);
 
-        String expectedError = "A user with that username already exists.";
-        assertEquals(expectedError, response.username().get(0));
+        assertEquals(testData.expectedExistingUserError, response.username().get(0));
     }
 
     @Test

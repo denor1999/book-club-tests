@@ -3,8 +3,6 @@ package tests;
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.RegistrationResponseSuccessfulModel;
-import net.datafaker.Faker;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -13,19 +11,9 @@ import static specs.registration.RegistrationSpec.*;
 
 public class RegistrationTests extends TestBase{
 
-    String username;
-    String password;
-
-    @BeforeEach
-    public void prepareTestData() {
-        Faker faker = new Faker();
-        username = faker.name().firstName() + "_" + System.currentTimeMillis();
-        password = faker.name().lastName();
-    }
-
     @Test
     public void successfulRegistrationTests() {
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomUsername, testData.randomPassword);
 
         RegistrationResponseSuccessfulModel registrationResponse = given()
                 .spec(registrationRequestSpec)
@@ -37,7 +25,7 @@ public class RegistrationTests extends TestBase{
                 .extract()
                 .as(RegistrationResponseSuccessfulModel.class);
 
-        assertThat(username).isEqualTo(registrationResponse.username());
+        assertThat(testData.randomUsername).isEqualTo(registrationResponse.username());
         assertThat(registrationResponse.id()).isNotNull();
         assertThat(registrationResponse.firstName()).isBlank();
         assertThat(registrationResponse.lastName()).isBlank();
@@ -47,7 +35,7 @@ public class RegistrationTests extends TestBase{
 
     @Test
     public void existingUserRegistrationTests() {
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomUsername, testData.randomPassword);
 
         RegistrationResponseSuccessfulModel firstRegistrationResponse = given()
                 .spec(registrationRequestSpec)
@@ -59,7 +47,7 @@ public class RegistrationTests extends TestBase{
                 .extract()
                 .as(RegistrationResponseSuccessfulModel.class);
 
-        assertThat(username).isEqualTo(firstRegistrationResponse.username());
+        assertThat(testData.randomUsername).isEqualTo(firstRegistrationResponse.username());
 
         ExistingUserResponseModel secondRegistrationResponse = given()
                 .spec(registrationRequestSpec)
@@ -71,9 +59,8 @@ public class RegistrationTests extends TestBase{
                 .extract()
                 .as(ExistingUserResponseModel.class);
 
-        String expectedError = "A user with that username already exists.";
         String actualError = secondRegistrationResponse.username().getFirst();
-        assertThat(actualError).isEqualTo(expectedError);
+        assertThat(actualError).isEqualTo(testData.expectedExistingUserError);
     }
 
     //todo add more negative tests
