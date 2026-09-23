@@ -1,14 +1,13 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.login.WrongCredentialsLoginResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static specs.login.LoginSpec.*;
 
 public class LoginTests extends TestBase{
 
@@ -17,16 +16,12 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(loginRequestSpec)
                 .body(loginData)
-                .basePath("/api/v1")
                 .when()
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/login/successful_login_response_schema.json"))
+                .spec(successfulLoginRequestSpec)
                 .extract()
                 .as(SuccessfulLoginResponseModel.class);
 
@@ -42,16 +37,12 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.wrongPassword);
 
         WrongCredentialsLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(loginRequestSpec)
                 .body(loginData)
-                .basePath("/api/v1")
                 .when()
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(401)
-                .body(matchesJsonSchemaInClasspath("schemas/login/wrong_credentials_login_response_schema.json"))
+                .spec(wrongCredentialsLoginRequestSpec)
                 .extract()
                 .as(WrongCredentialsLoginResponseModel.class);
 
