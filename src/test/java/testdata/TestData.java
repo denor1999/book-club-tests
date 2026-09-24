@@ -15,4 +15,6 @@ public class TestData {
     public final String randomUsername = faker.name().firstName() + "_" + System.currentTimeMillis();
     public final String randomPassword = faker.name().lastName();
     public final String wrongRegistrationUsername = faker.name().firstName() + "[]";
+    public final String emptyUsername = " ";
+    public final String emptyPassword = " ";
 }
