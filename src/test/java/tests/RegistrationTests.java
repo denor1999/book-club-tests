@@ -1,12 +1,10 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.registration.*;
 import models.registration.model_examples.EmptyPasswordRegistrationBodyModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.registration.RegistrationSpec.*;
 
@@ -125,15 +123,15 @@ public class RegistrationTests extends TestBase{
     public void emptyUsernameAndPasswordRegistrationTest() {
         EmptyCredentialsRegistrationBodyModel emptyUsernameAndPasswordData = new EmptyCredentialsRegistrationBodyModel();
 
-        WrongUsernameAndPasswordRegistrationResponseModel emptyUsernameAndPasswordResponse =  given()
+        WrongCredentialsResponseModel emptyUsernameAndPasswordResponse =  given()
                 .spec(registrationRequestSpec)
                 .body(emptyUsernameAndPasswordData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(wrongUsernameAndPasswordRegistrationResponseSpec)
+                .spec(wrongCredentialsRegistrationResponseSpec)
                 .extract()
-                .as(WrongUsernameAndPasswordRegistrationResponseModel.class);
+                .as(WrongCredentialsResponseModel.class);
 
         String expectedError = "This field is required.";
         assertThat(emptyUsernameAndPasswordResponse.username().getFirst()).isEqualTo(expectedError);
