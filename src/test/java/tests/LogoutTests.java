@@ -1,7 +1,8 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.login.LoginBodyModel;
+import models.login.WrongRefreshTokenLoginBodyModel;
+import models.logout.WrongRefreshTokenLogoutResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -9,6 +10,7 @@ import static java.lang.String.format;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.loginRequestSpec;
 import static specs.login.LoginSpec.successfulLoginRequestSpec;
+import static specs.logout.LogoutSpec.*;
 
 public class LogoutTests extends TestBase {
 
@@ -28,19 +30,34 @@ public class LogoutTests extends TestBase {
         String logoutData = format("{\"refresh\": \"%s\"}", refreshToken);
 
         String logoutResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(logoutRequestSpec)
                 .body(logoutData)
-                .basePath("/api/v1")
                 .when()
                 .post("/auth/logout/")
                 .then()
-                .log().all()
-                .statusCode(200)
+                .spec(successfulLogoutSpec)
                 .extract().asString();
 
         assertThat(logoutResponse).isEqualTo("{}");
     }
 
-    //todo add more negative tests
+    @Test
+    public void unauthorizedLogoutTest() {
+        WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(testData.wrongRefreshToken);
+
+        WrongRefreshTokenLogoutResponseModel logoutResponse = given()
+                .spec(logoutRequestSpec)
+                .body(refreshTokenData)
+                .when()
+                .post("/auth/logout/")
+                .then()
+                .spec(wrongRefreshTokenSpec)
+                .extract()
+                .as(WrongRefreshTokenLogoutResponseModel.class);
+
+        String expectedDetail = "Token is invalid";
+        String expectedCode = "token_not_valid";
+        assertThat(logoutResponse.detail()).isEqualTo(expectedDetail);
+        assertThat(logoutResponse.code()).isEqualTo(expectedCode);
+    }
 }

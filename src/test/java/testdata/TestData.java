@@ -17,4 +17,5 @@ public class TestData {
     public final String wrongRegistrationUsername = faker.name().firstName() + "[]";
     public final String emptyUsername = " ";
     public final String emptyPassword = " ";
+    public final String wrongRefreshToken = "piawenvioawre";
 }
