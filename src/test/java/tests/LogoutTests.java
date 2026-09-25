@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static specs.login.LoginSpec.loginRequestSpec;
 import static specs.login.LoginSpec.successfulLoginRequestSpec;
 import static specs.logout.LogoutSpec.*;
 
@@ -19,7 +18,7 @@ public class LogoutTests extends TestBase {
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         String refreshToken = given()
-                .spec(loginRequestSpec)
+                .spec(logoutRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")

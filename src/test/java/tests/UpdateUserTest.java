@@ -2,7 +2,10 @@ package tests;
 
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
-import models.update_user.*;
+import models.update_user.UnauthorizedUserUpdateWithPutResponseModel;
+import models.update_user.UpdateUserPatchBodyModel;
+import models.update_user.UpdateUserResponseModel;
+import models.update_user.UpdateUserWithPutBodyModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
