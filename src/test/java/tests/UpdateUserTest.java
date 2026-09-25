@@ -3,10 +3,15 @@ package tests;
 import io.restassured.http.ContentType;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
-import models.update_user.UnauthorizedUserUpdateWithPutResponseModel;
-import models.update_user.UpdateUserWithPutBodyModel;
-import models.update_user.UpdateUserWithPutResponseModel;
+import models.update_user.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -14,6 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.loginRequestSpec;
 import static specs.login.LoginSpec.successfulLoginRequestSpec;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UpdateUserTest extends TestBase{
 
     @Test
@@ -32,7 +38,7 @@ public class UpdateUserTest extends TestBase{
 
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
-        UpdateUserWithPutResponseModel putResponse = given()
+        UpdateUserResponseModel putResponse = given()
                 .log().all()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + loginResponse.access())
@@ -42,9 +48,9 @@ public class UpdateUserTest extends TestBase{
                 .put("/users/me/")
                 .then()
                 .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/update_user/update_data_with_put_response_schema.json"))
+                .body(matchesJsonSchemaInClasspath("schemas/update_user/update_data_response_schema.json"))
                 .extract()
-                .as(UpdateUserWithPutResponseModel.class);
+                .as(UpdateUserResponseModel.class);
 
         assertThat(testData.updateUsername).isEqualTo(putResponse.username());
         assertThat(testData.updateFirstName).isEqualTo(putResponse.firstName());
@@ -53,7 +59,7 @@ public class UpdateUserTest extends TestBase{
     }
 
     @Test
-    public void unauthorizedUpdateWithPutFields() {
+    public void unauthorizedUpdateFields() {
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         UnauthorizedUserUpdateWithPutResponseModel putResponse = given()
@@ -74,7 +80,7 @@ public class UpdateUserTest extends TestBase{
     }
 
     @Test
-    public void redirectUpdateWithPutFields() {
+    public void redirectUpdateFields() {
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = given()
@@ -100,5 +106,63 @@ public class UpdateUserTest extends TestBase{
                 .then()
                 .statusCode(301);
 
+    }
+
+    @ParameterizedTest(name = "PATCH {0}")
+    @MethodSource("patchCases")
+    void successfulUpdateFieldWithPatch(
+            String caseName,
+            UpdateUserPatchBodyModel body,
+            Function<UpdateUserResponseModel, Object> extractor,
+            Object expected
+    ) {
+        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+
+        SuccessfulLoginResponseModel loginResponse = given()
+                .spec(loginRequestSpec)
+                .body(loginData)
+                .when()
+                .post("/auth/token/")
+                .then()
+                .spec(successfulLoginRequestSpec)
+                .extract()
+                .as(SuccessfulLoginResponseModel.class);
+
+        UpdateUserResponseModel patchResponse = given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + loginResponse.access())
+                .body(body)
+                .basePath("/api/v1")
+                .when()
+                .patch("/users/me/")
+                .then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/update_user/update_data_response_schema.json"))
+                .extract()
+                .as(UpdateUserResponseModel.class);
+
+        assertThat(extractor.apply(patchResponse)).isEqualTo(expected);
+    }
+
+    Stream<Arguments> patchCases() {
+        return Stream.of(
+                Arguments.of("username",
+                        UpdateUserPatchBodyModel.withUsername(testData.updateUsername),
+                        (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::username,
+                        testData.updateUsername),
+                Arguments.of("firstName",
+                        UpdateUserPatchBodyModel.withFirstName(testData.updateFirstName),
+                        (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::firstName,
+                        testData.updateFirstName),
+                Arguments.of("lastName",
+                        UpdateUserPatchBodyModel.withLastName(testData.updateLastName),
+                        (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::lastName,
+                        testData.updateLastName),
+                Arguments.of("email",
+                        UpdateUserPatchBodyModel.withEmail(testData.updateEmail),
+                        (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::email,
+                        testData.updateEmail)
+        );
     }
 }
