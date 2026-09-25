@@ -1,11 +1,9 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.login.*;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
 
@@ -55,20 +53,16 @@ public class LoginTests extends TestBase{
         EmptyCredentialsLoginBodyModel loginData = new EmptyCredentialsLoginBodyModel(testData.emptyUsername, testData.randomPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
-                .basePath("/api/v1")
+                .spec(loginRequestSpec)
                 .body(loginData)
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/login/empty_username_login_response_schema.json"))
+                .spec(emptyUsernameLoginRequestSpec)
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
-        String exceptedError = "This field may not be blank.";
-        assertThat(loginResponse.username().getFirst()).isEqualTo(exceptedError);
+        String expectedError = "This field may not be blank.";
+        assertThat(loginResponse.username().getFirst()).isEqualTo(expectedError);
     }
 
     @Test
@@ -76,20 +70,16 @@ public class LoginTests extends TestBase{
         EmptyCredentialsLoginBodyModel loginData = new EmptyCredentialsLoginBodyModel(testData.randomUsername, testData.emptyPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
-                .basePath("/api/v1")
+                .spec(loginRequestSpec)
                 .body(loginData)
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/login/empty_password_login_response_schema.json"))
+                .spec(emptyPasswordLoginRequestSpec)
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
-        String exceptedError = "This field may not be blank.";
-        assertThat(loginResponse.password().getFirst()).isEqualTo(exceptedError);
+        String expectedError = "This field may not be blank.";
+        assertThat(loginResponse.password().getFirst()).isEqualTo(expectedError);
     }
 
     @Test
@@ -97,20 +87,17 @@ public class LoginTests extends TestBase{
         EmptyCredentialsLoginBodyModel loginData = new EmptyCredentialsLoginBodyModel(testData.emptyUsername, testData.emptyPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
-                .basePath("/api/v1")
+                .spec(loginRequestSpec)
                 .body(loginData)
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/login/empty_credentials_login_response_schema.json"))
+                .spec(emptyCredentialsLoginRequestSpec)
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
-        String exceptedError = "This field may not be blank.";
-        assertThat(loginResponse.username().getFirst()).isEqualTo(exceptedError);
-        assertThat(loginResponse.password().getFirst()).isEqualTo(exceptedError);
+        String expectedError = "This field may not be blank.";
+        assertThat(loginResponse.username().getFirst()).isEqualTo(expectedError);
+        assertThat(loginResponse.password().getFirst()).isEqualTo(expectedError);
     }
+
 }

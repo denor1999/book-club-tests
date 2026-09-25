@@ -1,6 +1,5 @@
 package tests;
 
-import io.restassured.http.ContentType;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.update_user.*;
@@ -14,10 +13,10 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.loginRequestSpec;
 import static specs.login.LoginSpec.successfulLoginRequestSpec;
+import static specs.update.UpdateSpec.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UpdateUserTest extends TestBase{
@@ -39,16 +38,13 @@ public class UpdateUserTest extends TestBase{
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         UpdateUserResponseModel putResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(updateRequestSpec)
                 .header("Authorization", "Bearer " + loginResponse.access())
                 .body(updateData)
-                .basePath("/api/v1")
                 .when()
                 .put("/users/me/")
                 .then()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/update_user/update_data_response_schema.json"))
+                .spec(successfulUpdateSpec)
                 .extract()
                 .as(UpdateUserResponseModel.class);
 
@@ -63,15 +59,12 @@ public class UpdateUserTest extends TestBase{
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         UnauthorizedUserUpdateWithPutResponseModel putResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(updateRequestSpec)
                 .body(updateData)
-                .basePath("/api/v1")
                 .when()
                 .put("/users/me/")
                 .then()
-                .statusCode(401)
-                .body(matchesJsonSchemaInClasspath("schemas/update_user/unauthorized_user_update_with_put_response_schema.json"))
+                .spec(unauthorizedUpdateSpec)
                 .extract()
                 .as(UnauthorizedUserUpdateWithPutResponseModel.class);
 
@@ -96,15 +89,14 @@ public class UpdateUserTest extends TestBase{
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(updateRequestSpec)
                 .header("Authorization", "Bearer " + loginResponse.access())
                 .body(updateData)
                 .basePath("/api/v1")
                 .when()
                 .put("/users/me")
                 .then()
-                .statusCode(301);
+                .spec(redirectUpdateSpec);
 
     }
 
@@ -129,16 +121,13 @@ public class UpdateUserTest extends TestBase{
                 .as(SuccessfulLoginResponseModel.class);
 
         UpdateUserResponseModel patchResponse = given()
-                .log().all()
-                .contentType(ContentType.JSON)
+                .spec(updateRequestSpec)
                 .header("Authorization", "Bearer " + loginResponse.access())
                 .body(body)
-                .basePath("/api/v1")
                 .when()
                 .patch("/users/me/")
                 .then()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/update_user/update_data_response_schema.json"))
+                .spec(successfulUpdateSpec)
                 .extract()
                 .as(UpdateUserResponseModel.class);
 
