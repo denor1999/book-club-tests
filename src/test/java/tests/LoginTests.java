@@ -63,7 +63,7 @@ public class LoginTests extends TestBase{
                 .then()
                 .log().all()
                 .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/login/empty_username_registration_response_schema.json"))
+                .body(matchesJsonSchemaInClasspath("schemas/login/empty_username_login_response_schema.json"))
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
@@ -84,7 +84,7 @@ public class LoginTests extends TestBase{
                 .then()
                 .log().all()
                 .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/login/empty_password_registration_response_schema.json"))
+                .body(matchesJsonSchemaInClasspath("schemas/login/empty_password_login_response_schema.json"))
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
@@ -105,7 +105,7 @@ public class LoginTests extends TestBase{
                 .then()
                 .log().all()
                 .statusCode(400)
-                .body(matchesJsonSchemaInClasspath("schemas/login/empty_credentials_registration_response_schema.json"))
+                .body(matchesJsonSchemaInClasspath("schemas/login/empty_credentials_login_response_schema.json"))
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
