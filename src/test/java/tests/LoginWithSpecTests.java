@@ -4,7 +4,6 @@ import models.login.*;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static specs.login.LoginSpec.*;
 
@@ -62,8 +61,8 @@ public class LoginWithSpecTests extends TestBase{
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
-        String exceptedError = "This field may not be blank.";
-        assertThat(loginResponse.username().getFirst()).isEqualTo(exceptedError);
+        String expectedError = "This field may not be blank.";
+        assertThat(loginResponse.username().getFirst()).isEqualTo(expectedError);
     }
 
     @Test
@@ -79,8 +78,8 @@ public class LoginWithSpecTests extends TestBase{
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
-        String exceptedError = "This field may not be blank.";
-        assertThat(loginResponse.password().getFirst()).isEqualTo(exceptedError);
+        String expectedError = "This field may not be blank.";
+        assertThat(loginResponse.password().getFirst()).isEqualTo(expectedError);
     }
 
     @Test
@@ -96,9 +95,9 @@ public class LoginWithSpecTests extends TestBase{
                 .extract()
                 .as(EmptyCredentialsLoginResponseModel.class);
 
-        String exceptedError = "This field may not be blank.";
-        assertThat(loginResponse.username().getFirst()).isEqualTo(exceptedError);
-        assertThat(loginResponse.password().getFirst()).isEqualTo(exceptedError);
+        String expectedError = "This field may not be blank.";
+        assertThat(loginResponse.username().getFirst()).isEqualTo(expectedError);
+        assertThat(loginResponse.password().getFirst()).isEqualTo(expectedError);
     }
 
 }
