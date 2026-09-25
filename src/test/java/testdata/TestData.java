@@ -6,8 +6,8 @@ public class TestData {
 
     private final Faker faker = new Faker();
 
-    public final String username = "qaguru";
-    public final String password = "qaguru123";
+    public final String username = "denor1999";
+    public final String password = "_lyzhnik0_";
     public final String wrongPassword = "qaguru1234";
     public final String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
     public final String expectedDetailError = "Invalid username or password.";
@@ -18,4 +18,9 @@ public class TestData {
     public final String emptyUsername = " ";
     public final String emptyPassword = " ";
     public final String wrongRefreshToken = "piawenvioawre";
+
+    public final String updateUsername = "denor1999";
+    public final String updateFirstName = "Ivan";
+    public final String updateLastName = "Ozhgikhin";
+    public final String updateEmail = "ozhgixinv@list.ru";
 }
