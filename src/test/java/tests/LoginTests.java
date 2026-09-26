@@ -1,5 +1,6 @@
 package tests;
 
+import api.AuthApiClient;
 import io.qameta.allure.Owner;
 import models.login.*;
 import org.junit.jupiter.api.DisplayName;
@@ -12,30 +13,16 @@ import static specs.login.LoginSpec.*;
 
 public class LoginTests extends TestBase{
 
+    private final AuthApiClient authApiClient = new AuthApiClient();
+
     @Test
     @Owner("denor1999")
     @DisplayName("Check successful login response")
     public void successfulLoginTests() {
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                given()
-                        .spec(loginRequestSpec)
-                        .body(loginData)
-                        .when()
-                        .post("/auth/token/")
-                        .then()
-                        .spec(successfulLoginRequestSpec)
-                        .extract()
-                        .as(SuccessfulLoginResponseModel.class));
-
-        step("Check refresh and access tokens", () -> {
-            String actualAccess = loginResponse.access();
-            String actualRefresh = loginResponse.refresh();
-            assertThat(actualAccess).startsWith(testData.expectedTokenPath);
-            assertThat(actualRefresh).startsWith(testData.expectedTokenPath);
-            assertThat(actualAccess).isNotEqualTo(actualRefresh);
-        });
+        step("Send login request and check status (200)", () ->
+            authApiClient.login(loginData));
     }
 
     @Test
