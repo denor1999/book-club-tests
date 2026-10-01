@@ -20,8 +20,7 @@ import java.util.stream.Stream;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static specs.login.LoginSpec.loginRequestSpec;
-import static specs.login.LoginSpec.successfulLoginRequestSpec;
+import static specs.login.LoginSpec.*;
 import static specs.update.UpdateSpec.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -34,29 +33,12 @@ public class UpdateUserTest extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
-                given()
-                        .spec(loginRequestSpec)
-                        .body(loginData)
-                        .when()
-                        .post("/auth/token/")
-                        .then()
-                        .spec(successfulLoginRequestSpec)
-                        .extract()
-                        .as(SuccessfulLoginResponseModel.class));
+                api.auth.login(loginData));
 
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         UpdateUserResponseModel putResponse = step("Trying to change value of the fields", () ->
-                given()
-                        .spec(updateRequestSpec)
-                        .header("Authorization", "Bearer " + loginResponse.access())
-                        .body(updateData)
-                        .when()
-                        .put("/users/me/")
-                        .then()
-                        .spec(successfulUpdateSpec)
-                        .extract()
-                        .as(UpdateUserResponseModel.class));
+                api.users.updateUserDataWithPut(updateData, loginResponse.access()));
 
         step("Check values of the fields", () -> {
             assertThat(testData.updateUsername).isEqualTo(putResponse.username());
@@ -73,49 +55,27 @@ public class UpdateUserTest extends TestBase{
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         UnauthorizedUserUpdateWithPutResponseModel putResponse = step("Trying to change values of the fields without authorization", () ->
-                given()
-                    .spec(updateRequestSpec)
-                    .body(updateData)
-                    .when()
-                    .put("/users/me/")
-                    .then()
-                    .spec(unauthorizedUpdateSpec)
-                    .extract()
-                    .as(UnauthorizedUserUpdateWithPutResponseModel.class));
+                api.users.unauthorizedUserUpdate(updateData));
 
-        String expectedError = "Authentication credentials were not provided.";
-        assertThat(putResponse.detail()).isEqualTo(expectedError);
+        step("Check error message", () -> {
+            String expectedError = "Authentication credentials were not provided.";
+            assertThat(putResponse.detail()).isEqualTo(expectedError);
+        });
     }
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check request with URI without '/' ")
+    @DisplayName("Send PUT request with URI without '/' ")
     public void redirectUpdateFields() {
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
-                given()
-                    .spec(loginRequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(successfulLoginRequestSpec)
-                    .extract()
-                    .as(SuccessfulLoginResponseModel.class));
+                api.auth.login(loginData));
 
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
         step("Trying to change values of the fields using URI without '/' ", () ->
-        given()
-                .spec(updateRequestSpec)
-                .header("Authorization", "Bearer " + loginResponse.access())
-                .body(updateData)
-                .basePath("/api/v1")
-                .when()
-                .put("/users/me")
-                .then()
-                .spec(redirectUpdateSpec));
+                api.users.redirectUpdate(updateData, loginResponse.access()));
 
     }
 
@@ -132,27 +92,10 @@ public class UpdateUserTest extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
-                given()
-                    .spec(loginRequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(successfulLoginRequestSpec)
-                    .extract()
-                    .as(SuccessfulLoginResponseModel.class));
+                api.auth.login(loginData));
 
         UpdateUserResponseModel patchResponse = step("Trying to change {0}", () ->
-                given()
-                    .spec(updateRequestSpec)
-                    .header("Authorization", "Bearer " + loginResponse.access())
-                    .body(body)
-                    .when()
-                    .patch("/users/me/")
-                    .then()
-                    .spec(successfulUpdateSpec)
-                    .extract()
-                    .as(UpdateUserResponseModel.class));
+                api.users.updateUserDataWithPatch(body, loginResponse.access()));
 
         step("Check {0} value of field", () ->
             assertThat(extractor.apply(patchResponse)).isEqualTo(expected));

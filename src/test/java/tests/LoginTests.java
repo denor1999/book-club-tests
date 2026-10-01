@@ -20,7 +20,7 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-            api.login.login(loginData));
+            api.auth.login(loginData));
 
 
         step("Check refresh and access tokens", () -> {
@@ -39,7 +39,7 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.wrongPassword);
 
         WrongCredentialsLoginResponseModel loginResponse = step("Send login request with wrong credentials and check status (401)", () ->
-                api.login.loginWithWrongCredentials(loginData));
+                api.auth.loginWithWrongCredentials(loginData));
 
         step("Check error message", () -> {
             String actualDetailError = loginResponse.detail();
@@ -54,7 +54,7 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.randomPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty username and check status (400)", () ->
-            api.login.emptyUsernameLogin(loginData));
+            api.auth.emptyUsernameLogin(loginData));
 
         step("Check error message", () -> {
             String expectedError = "This field may not be blank.";
@@ -69,7 +69,7 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.randomUsername, testData.emptyPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty password and check status (400)", () ->
-                api.login.emptyPasswordLogin(loginData));
+                api.auth.emptyPasswordLogin(loginData));
 
         step("Check error message", () -> {
             String expectedError = "This field may not be blank.";
@@ -84,7 +84,7 @@ public class LoginTests extends TestBase{
         LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.emptyPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty username and password and check status (400)", () ->
-                api.login.emptyCredentialsLogin(loginData));
+                api.auth.emptyCredentialsLogin(loginData));
 
         step("Check error messages", () -> {
             String expectedError = "This field may not be blank.";
