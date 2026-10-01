@@ -13,7 +13,7 @@ public class LoginSpec {
 
     public static RequestSpecification loginRequestSpec = baseRequestSpec;
 
-    public static ResponseSpecification successfulLoginRequestSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification successfulLoginResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(200)
             .expectBody(matchesJsonSchemaInClasspath("schemas/login/successful_login_response_schema.json"))
@@ -21,28 +21,28 @@ public class LoginSpec {
             .expectBody("refresh", notNullValue())
             .build();
 
-    public static ResponseSpecification wrongCredentialsLoginRequestSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification wrongCredentialsLoginResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(401)
             .expectBody(matchesJsonSchemaInClasspath("schemas/login/wrong_credentials_login_response_schema.json"))
             .expectBody("detail", notNullValue())
             .build();
 
-    public static ResponseSpecification emptyUsernameLoginRequestSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification emptyUsernameLoginResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(400)
             .expectBody(matchesJsonSchemaInClasspath("schemas/login/empty_username_login_response_schema.json"))
             .expectBody("username", notNullValue())
             .build();
 
-    public static ResponseSpecification emptyPasswordLoginRequestSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification emptyPasswordLoginResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(400)
             .expectBody(matchesJsonSchemaInClasspath("schemas/login/empty_password_login_response_schema.json"))
             .expectBody("password", notNullValue())
             .build();
 
-    public static ResponseSpecification emptyCredentialsLoginRequestSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification emptyCredentialsLoginResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(400)
             .expectBody(matchesJsonSchemaInClasspath("schemas/login/empty_credentials_login_response_schema.json"))

@@ -5,10 +5,12 @@ import io.qameta.allure.Owner;
 import models.login.LoginBodyModel;
 import models.login.WrongRefreshTokenLoginBodyModel;
 import models.logout.LogoutBodyModel;
+import models.logout.WrongRefreshTokenLogoutResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class LogoutTests extends TestBase {
 
@@ -23,10 +25,13 @@ public class LogoutTests extends TestBase {
         String refreshToken = step("Get refresh token with authorization", () ->
             authApiClient.loginAndGetRefreshToken(loginData));
 
-        step("Send logout request with refresh token and check response status(200)", () -> {
-            LogoutBodyModel logoutData = new LogoutBodyModel(refreshToken);
-            authApiClient.logout(logoutData);
-        });
+        LogoutBodyModel logoutData = new LogoutBodyModel(refreshToken);
+
+        String logoutResponse = step("Send logout request with refresh token and check response status(200)", () ->
+            authApiClient.logout(logoutData));
+
+        step("Check logout response", () ->
+            assertThat(logoutResponse).isEqualTo("{}"));
     }
 
     @Test
@@ -34,10 +39,16 @@ public class LogoutTests extends TestBase {
     @DisplayName("Check attempt logout without authorization")
     public void unauthorizedLogoutTest() {
         WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(testData.wrongRefreshToken);
+        LogoutBodyModel logoutData = new LogoutBodyModel(refreshTokenData.refresh());
 
-        step("Trying to get response without authorization", () -> {
-            LogoutBodyModel logoutData = new LogoutBodyModel(refreshTokenData.refresh());
-            authApiClient.logoutWithoutAuthorization(logoutData);
+        WrongRefreshTokenLogoutResponseModel logoutResponse = step("Trying to get response without authorization", () ->
+            authApiClient.logoutWithoutAuthorization(logoutData));
+
+        step("Check error messages", () -> {
+            String expectedDetail = "Token is invalid";
+            String expectedCode = "token_not_valid";
+            assertThat(logoutResponse.detail()).isEqualTo(expectedDetail);
+            assertThat(logoutResponse.code()).isEqualTo(expectedCode);
         });
     }
 }
