@@ -18,13 +18,10 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static specs.login.LoginSpec.*;
-import static specs.update.UpdateSpec.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UpdateUserTest extends TestBase{
+public class UpdateUserTests extends TestBase{
 
     @Test
     @Owner("denor1999")

@@ -23,4 +23,11 @@ public class TestData {
     public final String updateFirstName = "Ivan";
     public final String updateLastName = "Ozhgikhin";
     public final String updateEmail = "ozhgixinv@list.ru";
+
+    public final String bookTitle = faker.name().title();
+    public final String bookAuthor = faker.name().fullName();
+    public final int publicationYear = faker.number().numberBetween(1900, 2023);
+    public final String description = faker.name().nameWithMiddle();
+    public final String telegramChatLink = "https://book-club.qa.guru";
+    public final String wrongTelegramChatLink = "some uri";
 }
