@@ -1,6 +1,5 @@
 package tests;
 
-import api.AuthApiClient;
 import io.qameta.allure.Owner;
 import models.login.LoginBodyModel;
 import models.login.WrongRefreshTokenLoginBodyModel;
@@ -18,7 +17,7 @@ public class LogoutTests extends TestBase {
     @Owner("denor1999")
     @DisplayName("Check successful logout response")
     public void successfulLogoutTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         String refreshToken = step("Get refresh token with authorization", () ->
             api.auth.loginAndGetRefreshToken(loginData));

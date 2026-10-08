@@ -27,7 +27,7 @@ public class UpdateUserTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check successful put request status")
     public void successfulUpdateWithPutFields() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
                 api.auth.login(loginData));
@@ -64,7 +64,7 @@ public class UpdateUserTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Send PUT request with URI without '/' ")
     public void redirectUpdateFields() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
                 api.auth.login(loginData));
@@ -86,7 +86,7 @@ public class UpdateUserTests extends TestBase{
             Function<UpdateUserResponseModel, Object> extractor,
             Object expected
     ) {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
                 api.auth.login(loginData));

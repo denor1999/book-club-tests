@@ -14,13 +14,13 @@ public class RegistrationTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check successful registration response status")
     public void successfulRegistrationTests() {
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomUsername, testData.randomPassword);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
         RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (200)", () ->
                 api.users.register(registrationData));
 
         step("Check response body fields", () -> {
-            assertThat(testData.randomUsername).isEqualTo(registrationResponse.username());
+            assertThat(testData.randomRegistrationUsername).isEqualTo(registrationResponse.username());
             assertThat(registrationResponse.id()).isNotNull();
             assertThat(registrationResponse.firstName()).isBlank();
             assertThat(registrationResponse.lastName()).isBlank();
@@ -33,13 +33,13 @@ public class RegistrationTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check registration attempt when user exists")
     public void existingUserRegistrationTests() {
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomUsername, testData.randomPassword);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
         RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (200)", () ->
                 api.users.register(registrationData));
 
         step("Check username in response body", () ->
-                assertThat(testData.randomUsername).isEqualTo(registrationResponse.username()));
+                assertThat(testData.randomRegistrationUsername).isEqualTo(registrationResponse.username()));
 
         ExistingUserResponseModel reRegistrationResponse = step("Send re-registration response and check status (400)", () ->
                 api.users.existingUserRegister(registrationData));
@@ -55,7 +55,7 @@ public class RegistrationTests extends TestBase{
     @DisplayName("Check registration attempt with wrong username")
     public void wrongUsernameRegistrationTest() {
         RegistrationBodyModel wrongUsernameRegistrationData = new RegistrationBodyModel(
-                testData.wrongRegistrationUsername, testData.randomPassword);
+                testData.wrongRegistrationUsername, testData.randomRegistrationPassword);
 
         WrongUsernameRegistrationResponseModel registrationResponse = step("Send registration with wrong username response and check status (400)", () ->
                 api.users.wrongUsernameRegister(wrongUsernameRegistrationData));
@@ -70,7 +70,7 @@ public class RegistrationTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check registration attempt with empty username")
     public void emptyUsernameRegistrationTest() {
-        RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomPassword);
+        RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
 
         WrongUsernameRegistrationResponseModel registrationResponse = step("Send registration with empty username response and check status (400)", () ->
                 api.users.wrongUsernameRegister(emptyUsernameData));
@@ -85,7 +85,7 @@ public class RegistrationTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check registration attempt with empty password")
     public void emptyPasswordRegistrationTest() {
-        RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomUsername, testData.emptyPassword);
+        RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
 
         WrongPasswordRegistrationResponseModel registrationResponse = step("Send registration with empty password response and check status (400)", () ->
                 api.users.wrongPasswordRegister(emptyPasswordData));

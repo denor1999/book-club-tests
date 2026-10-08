@@ -17,7 +17,7 @@ public class LoginTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check successful login response")
     public void successfulLoginTests() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
             api.auth.login(loginData));
@@ -36,7 +36,7 @@ public class LoginTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check authorization attempt with wrong password")
     public void wrongCredentialsLoginTests() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.wrongPassword);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.wrongLoginPassword);
 
         WrongCredentialsLoginResponseModel loginResponse = step("Send login request with wrong credentials and check status (401)", () ->
                 api.auth.loginWithWrongCredentials(loginData));
@@ -51,7 +51,7 @@ public class LoginTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check authorization attempt with empty username")
     public void emptyUsernameLoginTest () {
-        LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.randomPassword);
+        LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty username and check status (400)", () ->
             api.auth.emptyUsernameLogin(loginData));
@@ -66,7 +66,7 @@ public class LoginTests extends TestBase{
     @Owner("denor1999")
     @DisplayName("Check authorization attempt with empty password")
     public void emptyPasswordLoginTest () {
-        LoginBodyModel loginData = new LoginBodyModel(testData.randomUsername, testData.emptyPassword);
+        LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty password and check status (400)", () ->
                 api.auth.emptyPasswordLogin(loginData));

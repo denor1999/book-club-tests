@@ -54,7 +54,7 @@ public class ClubsTests extends TestBase {
 
     @Test
     public void successfulPostGlubsTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -76,7 +76,7 @@ public class ClubsTests extends TestBase {
 
     @Test
     public void wrongTelegramChatLinkPostGlubsTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -105,7 +105,7 @@ public class ClubsTests extends TestBase {
 
     @Test
     public void successfulDeleteClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -131,7 +131,7 @@ public class ClubsTests extends TestBase {
 
     @Test
     public void deleteMissingClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
