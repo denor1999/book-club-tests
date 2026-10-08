@@ -1,5 +1,6 @@
 package tests;
 
+import models.clubs.delete.DeleteClubWithErrorResponseModel;
 import models.clubs.get.ClubResultsModel;
 import models.clubs.get.ClubsListResponseModel;
 import models.clubs.post.ClubPostRequestModel;
@@ -14,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClubsTests extends TestBase{
+public class ClubsTests extends TestBase {
 
     @Test
     public void successfulGetClubsTest() {
@@ -49,12 +50,6 @@ public class ClubsTests extends TestBase{
             assertThat(club.reviews()).isNotNull();
             assertThat(club.created()).isNotNull();
         }
-    }
-
-    @Test
-    @Disabled
-    public void unauthorizedGetClubsTest() {
-        ClubsListResponseModel response = api.clubs.unauthorizedGetClubs();
     }
 
     @Test
@@ -106,6 +101,46 @@ public class ClubsTests extends TestBase{
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo("Authentication credentials were not provided."));
+    }
+
+    @Test
+    public void successfulDeleteClubTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
+
+        ClubPostRequestModel requestData = new ClubPostRequestModel(testData.bookTitle, testData.bookAuthor,
+                testData.publicationYear, testData.description, testData.telegramChatLink);
+
+        ClubPostResponseModel clubCreateResponse = step("Create new book club and check status (201)", () ->
+                api.clubs.postClub(requestData, loginResponse.access()));
+
+        step("Delete new book club and check status (204)", () ->
+                api.clubs.successfulDeleteClub(clubCreateResponse.id(), loginResponse.access()));
+    }
+
+    @Test
+    public void unauthorizedDeleteClubTest() {
+        DeleteClubWithErrorResponseModel deleteResponse = step("Delete new book club", () ->
+                api.clubs.unauthorizedDeleteClub(testData.randomBookClubId));
+
+        step("Check error message", () ->
+                assertThat(deleteResponse.detail()).isEqualTo("Authentication credentials were not provided."));
+    }
+
+    @Test
+    public void deleteMissingClubTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.username, testData.password);
+
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
+
+        DeleteClubWithErrorResponseModel deleteClubResponse = step("Delete new book club", () ->
+                api.clubs.deleteMissingClub(testData.randomWrongBookClubId, loginResponse.access()));
+
+        step("Check error message", () ->
+                assertThat(deleteClubResponse.detail()).isEqualTo("No Club matches the given query."));
     }
 
     //todo more tests for CRUD

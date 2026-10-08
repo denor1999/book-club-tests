@@ -30,4 +30,7 @@ public class TestData {
     public final String description = faker.name().nameWithMiddle();
     public final String telegramChatLink = "https://book-club.qa.guru";
     public final String wrongTelegramChatLink = "some uri";
+
+    public final Integer randomWrongBookClubId = faker.number().numberBetween(10000, 20000);
+    public final Integer randomBookClubId = faker.number().numberBetween(1, 1000);
 }

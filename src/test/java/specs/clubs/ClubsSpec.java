@@ -23,11 +23,6 @@ public class ClubsSpec {
             .expectBody("results", notNullValue())
             .build();
 
-    public static ResponseSpecification unauthorizedClubsGetResponseSpec = new ResponseSpecBuilder()
-            .log(ALL)
-            .expectStatusCode(401)
-            .build();
-
     public static ResponseSpecification successfulPostClubsPostSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(201)
@@ -44,5 +39,22 @@ public class ClubsSpec {
             .log(ALL)
             .expectStatusCode(401)
             .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/unathorized_post_club_response_json_schema.json"))
+            .build();
+
+    public static ResponseSpecification successfulDeleteClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(204)
+            .build();
+
+    public static ResponseSpecification unauthorizedDeleteClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(401)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/delete_club_with_error_response_schema.json"))
+            .build();
+
+    public static ResponseSpecification deleteMissingClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(404)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/delete_club_with_error_response_schema.json"))
             .build();
 }
