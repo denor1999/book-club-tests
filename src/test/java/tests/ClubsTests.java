@@ -15,7 +15,7 @@ public class ClubsTests extends TestBase {
 
     @Test
     public void successfulGetClubsTest() {
-        ClubsListResponseModel getClubsResponse = api.clubs.successfulGetClubs();
+        ClubsListResponseModel getClubsResponse = api.clubs.getClubs();
 
         assertThat(getClubsResponse).isNotNull();
         assertThat(getClubsResponse.count()).isGreaterThanOrEqualTo(0);
@@ -24,14 +24,14 @@ public class ClubsTests extends TestBase {
 
     @Test
     public void getClubsCountMatchesResultsSizeTest() {
-        ClubsListResponseModel getClubsResponse = api.clubs.successfulGetClubs();
+        ClubsListResponseModel getClubsResponse = api.clubs.getClubs();
 
         assertThat(getClubsResponse.results()).hasSize(getClubsResponse.count());
     }
 
     @Test
     public void getClubsEachClubHasRequiredFields() {
-        ClubsListResponseModel response = api.clubs.successfulGetClubs();
+        ClubsListResponseModel response = api.clubs.getClubs();
 
         for (ClubResultsModel club : response.results()) {
             assertThat(club.id()).isNotNull().isPositive();

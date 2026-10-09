@@ -12,25 +12,25 @@ import static io.restassured.RestAssured.given;
 import static specs.clubs.ClubsSpec.*;
 
 public class ClubsApiClient {
-    public ClubsListResponseModel successfulGetClubs() {
+    public ClubsListResponseModel getClubs() {
         int page = 1;
         int page_size = 1000;
 
-        ClubsListResponseModel response = successfulGetClubs(page, page_size);
+        ClubsListResponseModel response = getClubs(page, page_size);
         int count = response.count();
 
         List<ClubResultsModel> allClubs = new ArrayList<>(response.results());
 
         while(response.next() != null) {
             page++;
-            response = successfulGetClubs(page, page_size);
+            response = getClubs(page, page_size);
             allClubs.addAll(response.results());
         }
 
         return new ClubsListResponseModel(count, null, null, allClubs);
     }
 
-    public ClubsListResponseModel successfulGetClubs(int page, int page_size) {
+    public ClubsListResponseModel getClubs(int page, int page_size) {
         String pathFormatted =  String.format("/clubs/?page=%d&page_size=%d", page, page_size);
 
         return given()
