@@ -1,12 +1,9 @@
 package api;
 
+import models.clubs.*;
 import models.clubs.delete.DeleteClubWithErrorResponseModel;
 import models.clubs.get.ClubResultsModel;
-import models.clubs.ClubUpsertRequestModel;
 import models.clubs.get.ClubsListResponseModel;
-import models.clubs.ClubUpsertResponseModel;
-import models.clubs.post.UnauthorizedPostClubResponseModel;
-import models.clubs.post.WrongTelegramChatLinkResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,16 +69,16 @@ public class ClubsApiClient {
                 .as(WrongTelegramChatLinkResponseModel.class);
     }
 
-    public UnauthorizedPostClubResponseModel unauthorizedPostClub(ClubUpsertRequestModel postBody) {
+    public UnauthorizedClubResponseModel unauthorizedPostClub(ClubUpsertRequestModel postBody) {
         return given()
                 .spec(clubsRequestSpec)
                 .body(postBody)
                 .when()
                 .post("/clubs/")
                 .then()
-                .spec(unauthorizedPostClubsPostSpec)
+                .spec(unauthorizedClubsSpec)
                 .extract()
-                .as(UnauthorizedPostClubResponseModel.class);
+                .as(UnauthorizedClubResponseModel.class);
     }
 
     public void successfulDeleteClub(Integer id, String accessToken) {
@@ -126,8 +123,73 @@ public class ClubsApiClient {
                 .when()
                 .put("/clubs/" + id + "/")
                 .then()
-                .spec(putClubSpec)
+                .spec(successfulPutClubSpec)
                 .extract()
                 .as(ClubUpsertResponseModel.class);
     }
+
+    public WrongTelegramChatLinkResponseModel wrongTelegramChatLinkPutClub(ClubUpsertRequestModel postBody, Integer id, String accessToken) {
+        return given()
+                .spec(clubsRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(postBody)
+                .when()
+                .put("/clubs/" + id + "/")
+                .then()
+                .spec(wrongTelegramChatLinkPostClubsPostSpec)
+                .extract()
+                .as(WrongTelegramChatLinkResponseModel.class);
+    }
+
+    public UnauthorizedClubResponseModel unauthorizedPutClub(ClubUpsertRequestModel putBody, Integer id) {
+        return given()
+                .spec(clubsRequestSpec)
+                .body(putBody)
+                .when()
+                .put("/clubs/" + id + "/")
+                .then()
+                .spec(unauthorizedClubsSpec)
+                .extract()
+                .as(UnauthorizedClubResponseModel.class);
+    }
+
+    public EmptyBookTitleResponseModel emptyBookTitlePutClub(EmptyBookTitleRequestModel putBody, Integer id, String accessToken) {
+        return given()
+                .spec(clubsRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(putBody)
+                .when()
+                .put("/clubs/" + id + "/")
+                .then()
+                .spec(emptyBookTitlePutClubSpec)
+                .extract()
+                .as(EmptyBookTitleResponseModel.class);
+    }
+
+    public EmptyBookAuthorResponseModel emptyBookAuthorPutClub(EmptyBookAuthorRequestModel putBody, Integer id, String accessToken) {
+        return given()
+                .spec(clubsRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(putBody)
+                .when()
+                .put("/clubs/" + id + "/")
+                .then()
+                .spec(emptyBookAuthorPutClubSpec)
+                .extract()
+                .as(EmptyBookAuthorResponseModel.class);
+    }
+
+    public WrongPublicationYearResponseModel wrongPublicationYearPutClub(WrongPublicationYearRequestModel putBody, Integer id, String accessToken) {
+        return given()
+                .spec(clubsRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(putBody)
+                .when()
+                .put("/clubs/" + id + "/")
+                .then()
+                .spec(wrongPublicationYearPutClubSpec)
+                .extract()
+                .as(WrongPublicationYearResponseModel.class);
+    }
+
 }

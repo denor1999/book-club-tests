@@ -1,12 +1,9 @@
 package tests;
 
+import models.clubs.*;
 import models.clubs.delete.DeleteClubWithErrorResponseModel;
 import models.clubs.get.ClubResultsModel;
 import models.clubs.get.ClubsListResponseModel;
-import models.clubs.ClubUpsertRequestModel;
-import models.clubs.ClubUpsertResponseModel;
-import models.clubs.post.UnauthorizedPostClubResponseModel;
-import models.clubs.post.WrongTelegramChatLinkResponseModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import org.junit.jupiter.api.Test;
@@ -94,7 +91,7 @@ public class ClubsTests extends TestBase {
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
-        UnauthorizedPostClubResponseModel response = step("Create new book club", () ->
+        UnauthorizedClubResponseModel response = step("Create new book club", () ->
                 api.clubs.unauthorizedPostClub(requestData));
 
         step("Check error message", () ->
@@ -152,7 +149,7 @@ public class ClubsTests extends TestBase {
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
         ClubUpsertResponseModel response = step("Send put request and check status (200)", () ->
-                api.clubs.successfulPutClub(requestData, 4908, loginResponse.access()));
+                api.clubs.successfulPutClub(requestData, testData.clubId, loginResponse.access()));
 
         step("Check content of the fields", () -> {
             assertThat(response.bookTitle()).isEqualTo(testData.bookTitle);
@@ -161,5 +158,85 @@ public class ClubsTests extends TestBase {
             assertThat(response.description()).isEqualTo(testData.description);
             assertThat(response.telegramChatLink()).isEqualTo(testData.telegramChatLink);
         });
+    }
+
+    @Test
+    public void emptyBookTitlePutClubTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
+
+        EmptyBookTitleRequestModel requestData = new EmptyBookTitleRequestModel(testData.bookAuthor,
+                testData.publicationYear, testData.description, testData.telegramChatLink);
+
+        EmptyBookTitleResponseModel response = step("Send put request and check status (400)", () ->
+                api.clubs.emptyBookTitlePutClub(requestData, testData.clubId, loginResponse.access()));
+
+        step("Check content of the fields", () ->
+            assertThat(response.bookTitle().getFirst()).isEqualTo("This field is required."));
+    }
+
+    @Test
+    public void emptyBookAuthorPutClubTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
+
+        EmptyBookAuthorRequestModel requestData = new EmptyBookAuthorRequestModel(testData.bookTitle,
+                testData.publicationYear, testData.description, testData.telegramChatLink);
+
+        EmptyBookAuthorResponseModel response = step("Send put request and check status (400)", () ->
+                api.clubs.emptyBookAuthorPutClub(requestData, testData.clubId, loginResponse.access()));
+
+        step("Check content of the fields", () ->
+            assertThat(response.bookAuthors().getFirst()).isEqualTo("This field is required."));
+    }
+
+    @Test
+    public void wrongPublicationYearPutClubTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
+
+        WrongPublicationYearRequestModel requestData = new WrongPublicationYearRequestModel(testData.bookTitle,
+                testData.bookAuthor, testData.bookAuthor, testData.description, testData.telegramChatLink);
+
+        WrongPublicationYearResponseModel response = step("Send put request and check status (400)", () ->
+                api.clubs.wrongPublicationYearPutClub(requestData, testData.clubId, loginResponse.access()));
+
+        step("Check error message", () ->
+                assertThat(response.publicationYear().getFirst()).isEqualTo("A valid integer is required."));
+    }
+
+    @Test
+    public void wrongTelegramChatLinkPutGlubsTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
+
+        ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
+                testData.publicationYear, testData.description, testData.wrongTelegramChatLink);
+
+        WrongTelegramChatLinkResponseModel response = step("Create new book club and check status code (400)", () ->
+                api.clubs.wrongTelegramChatLinkPutClub(requestData, testData.clubId, loginResponse.access()));
+
+        step("Check error message", () ->
+                assertThat(response.telegramChatLink().getFirst()).isEqualTo("Enter a valid URL."));
+    }
+
+    @Test
+    public void unauthorizedPutClubTest() {
+        ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
+                testData.publicationYear, testData.description, testData.telegramChatLink);
+
+        UnauthorizedClubResponseModel unauthorizedPutResponse = step("Send put request and check status (401)", () ->
+                api.clubs.unauthorizedPutClub(requestData, testData.clubId));
+
+        step("Check error message", () ->
+                assertThat(unauthorizedPutResponse.detail()).isEqualTo("Authentication credentials were not provided."));
     }
 }

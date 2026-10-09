@@ -2,12 +2,15 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "detail": {
-      "type": "string"
+    "bookAuthors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "additionalProperties": false,
   "required": [
-    "detail"
+    "bookAuthors"
   ]
 }

@@ -35,10 +35,10 @@ public class ClubsSpec {
             .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/wrong_telegram_chat_link_post_club_schema.json"))
             .build();
 
-    public static ResponseSpecification unauthorizedPostClubsPostSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification unauthorizedClubsSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(401)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/unathorized_post_club_response_json_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/request_club_with_error_response_schema.json"))
             .build();
 
     public static ResponseSpecification successfulDeleteClubSpec = new ResponseSpecBuilder()
@@ -49,18 +49,36 @@ public class ClubsSpec {
     public static ResponseSpecification unauthorizedDeleteClubSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(401)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/delete_club_with_error_response_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/request_club_with_error_response_schema.json"))
             .build();
 
     public static ResponseSpecification deleteMissingClubSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(404)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/delete_club_with_error_response_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/request_club_with_error_response_schema.json"))
             .build();
 
-    public static ResponseSpecification putClubSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification successfulPutClubSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(200)
             .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/put_club_response_json_schema.json"))
+            .build();
+
+    public static ResponseSpecification emptyBookTitlePutClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/empty_book_title_response_json_schema.json"))
+            .build();
+
+    public static ResponseSpecification emptyBookAuthorPutClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/empty_book_author_response_json_schema.json"))
+            .build();
+
+    public static ResponseSpecification wrongPublicationYearPutClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/wrong_publication_year_response_json_schema.json"))
             .build();
 }

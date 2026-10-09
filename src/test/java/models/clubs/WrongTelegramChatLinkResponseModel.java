@@ -1,4 +1,4 @@
-package models.clubs.post;
+package models.clubs;
 
 import java.util.List;
 
