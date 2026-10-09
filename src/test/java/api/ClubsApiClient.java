@@ -1,29 +1,52 @@
 package api;
 
 import models.clubs.delete.DeleteClubWithErrorResponseModel;
-import models.clubs.post.ClubPostRequestModel;
+import models.clubs.get.ClubResultsModel;
+import models.clubs.ClubUpsertRequestModel;
 import models.clubs.get.ClubsListResponseModel;
-import models.clubs.post.ClubPostResponseModel;
+import models.clubs.ClubUpsertResponseModel;
 import models.clubs.post.UnauthorizedPostClubResponseModel;
 import models.clubs.post.WrongTelegramChatLinkResponseModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static specs.clubs.ClubsSpec.*;
 
 public class ClubsApiClient {
+    public ClubsListResponseModel successfulGetClubs() {
+        int page = 1;
+        int page_size = 1000;
 
-    public ClubsListResponseModel getClubs() {
+        ClubsListResponseModel response = successfulGetClubs(page, page_size);
+        int count = response.count();
+
+        List<ClubResultsModel> allClubs = new ArrayList<>(response.results());
+
+        while(response.next() != null) {
+            page++;
+            response = successfulGetClubs(page, page_size);
+            allClubs.addAll(response.results());
+        }
+
+        return new ClubsListResponseModel(count, null, null, allClubs);
+    }
+
+    public ClubsListResponseModel successfulGetClubs(int page, int page_size) {
+        String pathFormatted =  String.format("/clubs/?page=%d&page_size=%d", page, page_size);
+
         return given()
                 .spec(clubsRequestSpec)
                 .when()
-                .get("/clubs/")
+                .get(pathFormatted)
                 .then()
                 .spec(successfulClubsGetResponseSpec)
                 .extract()
                 .as(ClubsListResponseModel.class);
     }
 
-    public ClubPostResponseModel postClub(ClubPostRequestModel postBody, String accessToken) {
+    public ClubUpsertResponseModel successfulPostClub(ClubUpsertRequestModel postBody, String accessToken) {
         return given()
                 .spec(clubsRequestSpec)
                 .header("Authorization", "Bearer " + accessToken)
@@ -33,10 +56,10 @@ public class ClubsApiClient {
                 .then()
                 .spec(successfulPostClubsPostSpec)
                 .extract()
-                .as(ClubPostResponseModel.class);
+                .as(ClubUpsertResponseModel.class);
     }
 
-    public WrongTelegramChatLinkResponseModel wrongTelegramChatLinkPostClub(ClubPostRequestModel postBody, String accessToken) {
+    public WrongTelegramChatLinkResponseModel wrongTelegramChatLinkPostClub(ClubUpsertRequestModel postBody, String accessToken) {
         return given()
                 .spec(clubsRequestSpec)
                 .header("Authorization", "Bearer " + accessToken)
@@ -49,7 +72,7 @@ public class ClubsApiClient {
                 .as(WrongTelegramChatLinkResponseModel.class);
     }
 
-    public UnauthorizedPostClubResponseModel unauthorizedPostClub(ClubPostRequestModel postBody) {
+    public UnauthorizedPostClubResponseModel unauthorizedPostClub(ClubUpsertRequestModel postBody) {
         return given()
                 .spec(clubsRequestSpec)
                 .body(postBody)
@@ -93,5 +116,18 @@ public class ClubsApiClient {
                 .spec(deleteMissingClubSpec)
                 .extract()
                 .as(DeleteClubWithErrorResponseModel.class);
+    }
+
+    public ClubUpsertResponseModel successfulPutClub(ClubUpsertRequestModel putBody, Integer id, String accessToken) {
+        return given()
+                .spec(clubsRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(putBody)
+                .when()
+                .put("/clubs/" + id + "/")
+                .then()
+                .spec(putClubSpec)
+                .extract()
+                .as(ClubUpsertResponseModel.class);
     }
 }

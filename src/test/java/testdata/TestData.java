@@ -33,4 +33,8 @@ public class TestData {
 
     public final Integer randomWrongBookClubId = faker.number().numberBetween(10000, 20000);
     public final Integer randomBookClubId = faker.number().numberBetween(1, 1000);
+
+    public final Integer clubId = 4908;
+
+    //todo hide test data in properties
 }

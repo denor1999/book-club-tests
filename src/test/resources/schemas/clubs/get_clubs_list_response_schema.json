@@ -6,10 +6,16 @@
       "type": "integer"
     },
     "next": {
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "previous": {
-      "type": "null"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "results": {
       "type": "array",
@@ -83,7 +89,10 @@
                   "type": "string"
                 },
                 "modified": {
-                  "type": "null"
+                  "type":[
+                    "null",
+                    "string"
+                  ]
                 }
               },
               "additionalProperties": false,

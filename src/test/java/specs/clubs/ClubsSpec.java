@@ -57,4 +57,10 @@ public class ClubsSpec {
             .expectStatusCode(404)
             .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/delete_club_with_error_response_schema.json"))
             .build();
+
+    public static ResponseSpecification putClubSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(200)
+            .expectBody(matchesJsonSchemaInClasspath("schemas/clubs/put_club_response_json_schema.json"))
+            .build();
 }
