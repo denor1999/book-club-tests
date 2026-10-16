@@ -9,6 +9,7 @@ repositories {
 }
 
 def restAssuredVersion = "6.0.1",
+    selenideVersion = "7.13.0",
     allureVersion = "2.19.0",
     junitVersion = "6.0.0",
     slf4jVersion = "2.0.18"
@@ -32,6 +33,8 @@ dependencies {
     testImplementation "net.datafaker:datafaker:2.5.4"
     testImplementation "org.assertj:assertj-core:3.27.7"
     testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation "com.codeborne:selenide:$selenideVersion"
+    testImplementation "io.qameta.allure:allure-selenide:$allureVersion"
     testImplementation "tools.jackson.core:jackson-databind:3.1.0"
     testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
     testImplementation "io.qameta.allure:allure-rest-assured:2.35.5"

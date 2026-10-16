@@ -28,7 +28,7 @@ public class TestData {
     public final String bookAuthor = faker.name().fullName();
     public final int publicationYear = faker.number().numberBetween(1900, 2023);
     public final String description = faker.name().nameWithMiddle();
-    public final String telegramChatLink = "https://book-club.qa.guru";
+    public final String telegramChatLink = "https://t.me/" + faker.name().firstName();
     public final String wrongTelegramChatLink = "some uri";
 
     public final Integer randomWrongBookClubId = faker.number().numberBetween(10000, 20000);
