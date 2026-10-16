@@ -27,6 +27,7 @@ public class AuthApiClient {
                 .as(SuccessfulLoginResponseModel.class);
     }
 
+    @Step("Send login request and chack status (401)")
     public WrongCredentialsLoginResponseModel loginWithWrongCredentials(LoginBodyModel loginBody) {
         return given()
                 .spec(loginRequestSpec)
@@ -39,6 +40,7 @@ public class AuthApiClient {
                 .as(WrongCredentialsLoginResponseModel.class);
     }
 
+    @Step("Send login request and check status (400)")
     public EmptyCredentialsLoginResponseModel emptyUsernameLogin(LoginBodyModel loginBody) {
         return given()
                 .spec(loginRequestSpec)
@@ -50,6 +52,7 @@ public class AuthApiClient {
                 .as(EmptyCredentialsLoginResponseModel.class);
     }
 
+    @Step("Send login request and check status (400)")
     public EmptyCredentialsLoginResponseModel emptyPasswordLogin(LoginBodyModel loginBody) {
         return given()
                 .spec(loginRequestSpec)
@@ -62,6 +65,7 @@ public class AuthApiClient {
                 .as(EmptyCredentialsLoginResponseModel.class);
     }
 
+    @Step("Send login request and check status (400)")
     public EmptyCredentialsLoginResponseModel emptyCredentialsLogin(LoginBodyModel loginBody) {
         return given()
                 .spec(loginRequestSpec)
@@ -74,6 +78,7 @@ public class AuthApiClient {
                 .as(EmptyCredentialsLoginResponseModel.class);
     }
 
+    @Step("Send login request and get refresh token and check status (200)")
     public String loginAndGetRefreshToken(LoginBodyModel loginBody) {
         return given()
                 .spec(loginRequestSpec)
@@ -85,6 +90,7 @@ public class AuthApiClient {
                 .extract().path("refresh");
     }
 
+    @Step("Send logout request and check status (200)")
     public String logout(LogoutBodyModel logoutBody) {
         return given()
                 .spec(logoutRequestSpec)
@@ -96,6 +102,7 @@ public class AuthApiClient {
                 .extract().asString();
     }
 
+    @Step("Send logout request and check status (401)")
     public WrongRefreshTokenLogoutResponseModel logoutWithoutAuthorization(LogoutBodyModel logoutBody) {
         return given()
                 .spec(logoutRequestSpec)
