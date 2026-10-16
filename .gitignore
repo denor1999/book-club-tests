@@ -7,3 +7,5 @@ settings.gradle
 .idea
 out/
 allure-results/
+
+test-data.properties
