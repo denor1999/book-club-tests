@@ -5,6 +5,7 @@ import com.codeborne.selenide.Configuration;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import pages.RegistrationPage;
 import testdata.TestData;
 
 import static com.codeborne.selenide.Selenide.webdriver;
@@ -13,6 +14,7 @@ public class TestBase {
 
     protected final TestData testData = new TestData();
     protected final ApiClient api = new ApiClient();
+    protected final RegistrationPage registrationPage = new RegistrationPage();
 
     @BeforeAll
     public static void setup() {

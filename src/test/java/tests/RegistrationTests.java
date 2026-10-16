@@ -12,7 +12,7 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check successful registration response status")
+    @DisplayName("[API] Check successful registration response status")
     public void successfulRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
@@ -28,10 +28,22 @@ public class RegistrationTests extends TestBase{
         });
     }
 
+    @Test
+    @Owner("denor1999")
+    @DisplayName("[UI] Check successful registration response status")
+    public void successfulFillingRegistrationFormTest() {
+        registrationPage.openPage()
+                .setUsername(testData.randomRegistrationUsername)
+                .setPassword(testData.randomRegistrationPassword)
+                .confirmPassword(testData.randomRegistrationPassword)
+                .submitForm();
+
+        registrationPage.checkProfileLink();
+    }
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check registration attempt when user exists")
+    @DisplayName("[API] Check registration attempt when user exists")
     public void existingUserRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
@@ -52,7 +64,20 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check registration attempt with wrong username")
+    @DisplayName("[UI] Check registration attempt when user exists")
+    public void existingUserFillingRegistrationFormTest() {
+        registrationPage.openPage()
+                .setUsername(testData.loginUsername)
+                .setPassword(testData.loginPassword)
+                .confirmPassword(testData.loginPassword)
+                .submitForm();
+
+        registrationPage.checkErrorMessage();
+    }
+
+    @Test
+    @Owner("denor1999")
+    @DisplayName("[API] Check registration attempt with wrong username")
     public void wrongUsernameRegistrationTest() {
         RegistrationBodyModel wrongUsernameRegistrationData = new RegistrationBodyModel(
                 testData.wrongRegistrationUsername, testData.randomRegistrationPassword);
@@ -68,7 +93,20 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check registration attempt with empty username")
+    @DisplayName("[UI] Check registration attempt with wrong username")
+    public void wrongUsernameFillingRegistrationFormTest() {
+        registrationPage.openPage()
+                .setUsername(testData.wrongRegistrationUsername)
+                .setPassword(testData.randomRegistrationPassword)
+                .confirmPassword(testData.randomRegistrationPassword)
+                .submitForm();
+
+        registrationPage.checkErrorMessage();
+    }
+
+    @Test
+    @Owner("denor1999")
+    @DisplayName("[API] Check registration attempt with empty username")
     public void emptyUsernameRegistrationTest() {
         RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
 
@@ -83,7 +121,19 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check registration attempt with empty password")
+    @DisplayName("[UI] Check registration attempt with empty username")
+    public void emptyUsernameFillingRegistrationFormTest() {
+        registrationPage.openPage()
+                .setPassword(testData.randomRegistrationPassword)
+                .confirmPassword(testData.randomRegistrationPassword)
+                .submitForm();
+
+        registrationPage.checkErrorForEmptyUsername();
+    }
+
+    @Test
+    @Owner("denor1999")
+    @DisplayName("[API] Check registration attempt with empty password")
     public void emptyPasswordRegistrationTest() {
         RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
 
@@ -98,7 +148,18 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check registration attempt with empty username and password")
+    @DisplayName("[UI] Check registration attempt with empty password")
+    public void emptyPasswordFillingRegistrationFormTest() {
+        registrationPage.openPage()
+                .setUsername(testData.randomRegistrationUsername)
+                .submitForm();
+
+        registrationPage.checkErrorForEmptyPassword();
+    }
+
+    @Test
+    @Owner("denor1999")
+    @DisplayName("[API] Check registration attempt with empty username and password")
     public void emptyCredentialsRegistrationTest() {
         RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(testData.emptyUsername, testData.emptyPassword);
 
@@ -112,4 +173,13 @@ public class RegistrationTests extends TestBase{
         });
     }
 
+    @Test
+    @Owner("denor1999")
+    @DisplayName("[UI] Check registration attempt with empty username and password")
+    public void emptyCredentialsFillingRegistrationTest() {
+        registrationPage.openPage()
+                .submitForm();
+
+        registrationPage.checkErrorForEmptyUsername();
+    }
 }
