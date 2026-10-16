@@ -1,11 +1,13 @@
 package tests;
 
+import io.qameta.allure.Owner;
 import models.clubs.*;
 import models.clubs.delete.DeleteClubWithErrorResponseModel;
 import models.clubs.get.ClubResultsModel;
 import models.clubs.get.ClubsListResponseModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
@@ -14,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ClubsTests extends TestBase {
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check successful get clubs response")
     public void successfulGetClubsTest() {
         ClubsListResponseModel getClubsResponse = api.clubs.getClubs();
 
@@ -23,6 +27,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check clubs count matches results size")
     public void getClubsCountMatchesResultsSizeTest() {
         ClubsListResponseModel getClubsResponse = api.clubs.getClubs();
 
@@ -30,6 +36,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check each club has required fields")
     public void getClubsEachClubHasRequiredFields() {
         ClubsListResponseModel response = api.clubs.getClubs();
 
@@ -48,6 +56,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check successful post club response")
     public void successfulPostGlubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -70,6 +80,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check post club attempt with invalid telegram chat link")
     public void wrongTelegramChatLinkPostGlubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -87,6 +99,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check post club attempt when user unauthorized")
     public void unauthorizedPostGlubsTest() {
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
                 testData.publicationYear, testData.description, testData.telegramChatLink);
@@ -99,6 +113,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check successful delete club response")
     public void successfulDeleteClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -116,6 +132,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check delete club attempt when user unauthorized")
     public void unauthorizedDeleteClubTest() {
         DeleteClubWithErrorResponseModel deleteResponse = step("Delete new book club", () ->
                 api.clubs.unauthorizedDeleteClub(testData.randomBookClubId));
@@ -125,6 +143,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check delete attempt for missing club")
     public void deleteMissingClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -139,6 +159,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check successful put club request status")
     public void successfulPutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -161,6 +183,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check put club attempt with empty book title")
     public void emptyBookTitlePutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -178,6 +202,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check put club attempt with empty book author")
     public void emptyBookAuthorPutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -195,6 +221,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check put club attempt with wrong publication year")
     public void wrongPublicationYearPutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -212,6 +240,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check put club attempt with invalid telegram chat link")
     public void wrongTelegramChatLinkPutGlubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -229,6 +259,8 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check put club attempt when user unauthorized")
     public void unauthorizedPutClubTest() {
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
                 testData.publicationYear, testData.description, testData.telegramChatLink);

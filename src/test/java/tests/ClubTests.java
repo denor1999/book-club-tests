@@ -1,9 +1,11 @@
 package tests;
 
+import io.qameta.allure.Owner;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.RegistrationResponseSuccessfulModel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -13,6 +15,8 @@ import static com.codeborne.selenide.Selenide.*;
 public class ClubTests extends TestBase{
 
     @Test
+    @Owner("denor1999")
+    @DisplayName("Check that club owner cannot leave the club")
     public void cantLeaveClubAsOwnerTest_with_login_by_api() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername,
                 testData.randomRegistrationPassword);
