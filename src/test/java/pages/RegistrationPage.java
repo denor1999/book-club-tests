@@ -20,21 +20,21 @@ public class RegistrationPage {
     private final ElementsCollection errorMessageEmptyPassword = $("[data-testid=password-input]")
             .$("..").$$("*");
 
-    @Step("Open registration page")
+    @Step("Open https://book-club.qa.guru/signup")
     public RegistrationPage openPage() {
         open("/signup");
 
         return this;
     }
 
-    @Step("Set random username")
+    @Step("Set username {username}")
     public RegistrationPage setUsername(String username) {
         usernameInput.setValue(username);
 
         return this;
     }
 
-    @Step("Set random password")
+    @Step("Set password {password}")
     public RegistrationPage setPassword(String password) {
         passwordInput.setValue(password);
 

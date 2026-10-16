@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import pages.RegistrationPage;
 import testdata.TestData;
 
-import static com.codeborne.selenide.Selenide.webdriver;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class TestBase {
 
@@ -27,6 +27,6 @@ public class TestBase {
 
     @AfterEach
     void tearsDown() {
-        webdriver().driver().close();
+        closeWebDriver();
     }
 }

@@ -1,14 +1,15 @@
-package tests;
+package tests.api;
 
 import io.qameta.allure.Owner;
 import models.registration.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tests.TestBase;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class RegistrationTests extends TestBase{
+public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
@@ -16,7 +17,7 @@ public class RegistrationTests extends TestBase{
     public void successfulRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
-        RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (200)", () ->
+        RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (201)", () ->
                 api.users.register(registrationData));
 
         step("Check response body fields", () -> {
@@ -30,24 +31,11 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("[UI] Check successful registration response status")
-    public void successfulFillingRegistrationFormTest() {
-        registrationPage.openPage()
-                .setUsername(testData.randomRegistrationUsername)
-                .setPassword(testData.randomRegistrationPassword)
-                .confirmPassword(testData.randomRegistrationPassword)
-                .submitForm();
-
-        registrationPage.checkProfileLink();
-    }
-
-    @Test
-    @Owner("denor1999")
     @DisplayName("[API] Check registration attempt when user exists")
     public void existingUserRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
-        RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (200)", () ->
+        RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (201)", () ->
                 api.users.register(registrationData));
 
         step("Check username in response body", () ->
@@ -60,19 +48,6 @@ public class RegistrationTests extends TestBase{
             String actualError = reRegistrationResponse.username().getFirst();
             assertThat(actualError).isEqualTo(testData.expectedExistingUserError);
         });
-    }
-
-    @Test
-    @Owner("denor1999")
-    @DisplayName("[UI] Check registration attempt when user exists")
-    public void existingUserFillingRegistrationFormTest() {
-        registrationPage.openPage()
-                .setUsername(testData.loginUsername)
-                .setPassword(testData.loginPassword)
-                .confirmPassword(testData.loginPassword)
-                .submitForm();
-
-        registrationPage.checkErrorMessage();
     }
 
     @Test
@@ -93,19 +68,6 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("[UI] Check registration attempt with wrong username")
-    public void wrongUsernameFillingRegistrationFormTest() {
-        registrationPage.openPage()
-                .setUsername(testData.wrongRegistrationUsername)
-                .setPassword(testData.randomRegistrationPassword)
-                .confirmPassword(testData.randomRegistrationPassword)
-                .submitForm();
-
-        registrationPage.checkErrorMessage();
-    }
-
-    @Test
-    @Owner("denor1999")
     @DisplayName("[API] Check registration attempt with empty username")
     public void emptyUsernameRegistrationTest() {
         RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
@@ -117,18 +79,6 @@ public class RegistrationTests extends TestBase{
             String expectedError = "This field may not be blank.";
             assertThat(registrationResponse.username().getFirst()).isEqualTo(expectedError);
         });
-    }
-
-    @Test
-    @Owner("denor1999")
-    @DisplayName("[UI] Check registration attempt with empty username")
-    public void emptyUsernameFillingRegistrationFormTest() {
-        registrationPage.openPage()
-                .setPassword(testData.randomRegistrationPassword)
-                .confirmPassword(testData.randomRegistrationPassword)
-                .submitForm();
-
-        registrationPage.checkErrorForEmptyUsername();
     }
 
     @Test
@@ -148,17 +98,6 @@ public class RegistrationTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("[UI] Check registration attempt with empty password")
-    public void emptyPasswordFillingRegistrationFormTest() {
-        registrationPage.openPage()
-                .setUsername(testData.randomRegistrationUsername)
-                .submitForm();
-
-        registrationPage.checkErrorForEmptyPassword();
-    }
-
-    @Test
-    @Owner("denor1999")
     @DisplayName("[API] Check registration attempt with empty username and password")
     public void emptyCredentialsRegistrationTest() {
         RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(testData.emptyUsername, testData.emptyPassword);
@@ -171,15 +110,5 @@ public class RegistrationTests extends TestBase{
             assertThat(registrationResponse.username().getFirst()).isEqualTo(expectedError);
             assertThat(registrationResponse.password().getFirst()).isEqualTo(expectedError);
         });
-    }
-
-    @Test
-    @Owner("denor1999")
-    @DisplayName("[UI] Check registration attempt with empty username and password")
-    public void emptyCredentialsFillingRegistrationTest() {
-        registrationPage.openPage()
-                .submitForm();
-
-        registrationPage.checkErrorForEmptyUsername();
     }
 }
