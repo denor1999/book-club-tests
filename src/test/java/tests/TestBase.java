@@ -22,6 +22,7 @@ public class TestBase {
         Configuration.browserSize = "1920x1080";
         Configuration.pageLoadStrategy = "eager";
         Configuration.baseUrl = "https://book-club.qa.guru";
+        Configuration.remote = System.getProperty("remote_url");
         RestAssured.baseURI = "https://book-club.qa.guru";
     }
 
