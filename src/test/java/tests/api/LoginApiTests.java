@@ -1,4 +1,4 @@
-package tests;
+package tests.api;
 
 import io.qameta.allure.Owner;
 import models.login.EmptyCredentialsLoginResponseModel;
@@ -7,15 +7,16 @@ import models.login.SuccessfulLoginResponseModel;
 import models.login.WrongCredentialsLoginResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tests.TestBase;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class LoginTests extends TestBase{
+public class LoginApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check successful login response")
+    @DisplayName("[API] Check successful login response")
     public void successfulLoginTests() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -34,7 +35,7 @@ public class LoginTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check authorization attempt with wrong password")
+    @DisplayName("[API] Check authorization attempt with wrong password")
     public void wrongCredentialsLoginTests() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.wrongLoginPassword);
 
@@ -49,7 +50,7 @@ public class LoginTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check authorization attempt with empty username")
+    @DisplayName("[API] Check authorization attempt with empty username")
     public void emptyUsernameLoginTest () {
         LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
 
@@ -64,7 +65,7 @@ public class LoginTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check authorization attempt with empty password")
+    @DisplayName("[API] Check authorization attempt with empty password")
     public void emptyPasswordLoginTest () {
         LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
 
@@ -79,7 +80,7 @@ public class LoginTests extends TestBase{
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check authorization attempt with empty username and password")
+    @DisplayName("[API] Check authorization attempt with empty username and password")
     public void emptyCredentialsLoginTest () {
         LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.emptyPassword);
 
