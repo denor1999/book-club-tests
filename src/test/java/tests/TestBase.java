@@ -2,6 +2,9 @@ package tests;
 
 import api.ApiClient;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import helpers.Attach;
+import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,6 +28,8 @@ public class TestBase {
 
     @BeforeAll
     public static void setup() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+
         Configuration.browser = System.getProperty("browser", "chrome");
         Configuration.browserVersion = System.getProperty("browser_version");
         Configuration.browserSize = System.getProperty("browser_size", "1920x1080");
