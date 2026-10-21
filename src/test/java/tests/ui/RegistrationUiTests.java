@@ -1,27 +1,21 @@
 package tests.ui;
 
-import com.codeborne.selenide.logevents.SelenideLogger;
 import helpers.Attach;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
 import static io.qameta.allure.Allure.step;
 
+@Feature("Registration form UI tests")
 public class RegistrationUiTests extends TestBase {
-
-    @BeforeEach
-    void addListener() {
-        SelenideLogger.addListener("allure", new AllureSelenide());
-    }
 
     @Test
     @Owner("denor1999")
-    @DisplayName("[UI] Check successful registration response status")
+    @DisplayName("[UI] Check successful registration attempt")
     public void successfulFillingRegistrationFormTest() {
         step("Open registration page", () ->
                 registrationPage.openPage());
@@ -37,7 +31,6 @@ public class RegistrationUiTests extends TestBase {
         step("Check successful registration", () ->
                 registrationPage.checkProfileLink());
     }
-
     @Test
     @Owner("denor1999")
     @DisplayName("[UI] Check registration attempt when user exists")

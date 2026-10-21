@@ -20,7 +20,7 @@ public class RegistrationPage {
     private final ElementsCollection errorMessageEmptyPassword = $("[data-testid=password-input]")
             .$("..").$$("*");
 
-    @Step("Open https://book-club.qa.guru/signup")
+    @Step("Open page https://book-club.qa.guru/signup")
     public RegistrationPage openPage() {
         open("/signup");
 

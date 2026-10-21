@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import models.registration.*;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Feature("Registration form API tests")
 public class RegistrationApiTests extends TestBase {
 
     @Test
