@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import models.login.EmptyCredentialsLoginResponseModel;
 import models.login.LoginBodyModel;
@@ -12,6 +13,7 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Feature("Login API tests")
 public class LoginApiTests extends TestBase {
 
     @Test
