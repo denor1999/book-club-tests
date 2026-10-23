@@ -23,6 +23,7 @@ public class TestData {
     public final String emptyUsername = get("credentials.empty");
     public final String emptyPassword = get("credentials.empty");
     public final String wrongRefreshToken = get("login.wrongRefreshToken");
+    public final String wrongAccessToken = get("login.wrongAccessToken");
 
     public final String updateUsername = get("update.username");
     public final String updateFirstName = get("update.firstName");
@@ -49,6 +50,10 @@ public class TestData {
     );
 
     public final Integer clubId = getInt("club.id");
+
+    public final Integer randomAssessment = faker.number().numberBetween(1, 5);
+    public final Integer wrongRandomAssessment = faker.number().numberBetween(6, 60);
+    public final Integer readPages = faker.number().numberBetween(0, 100000);
 
     private static Properties loadProperties() {
         Properties properties = new Properties();

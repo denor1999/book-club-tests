@@ -1,0 +1,11 @@
+{
+  "detail": "Given token not valid for any token type",
+  "code": "token_not_valid",
+  "messages": [
+    {
+      "tokenClass": "AccessToken",
+      "tokenType": "access",
+      "message": "Token is invalid"
+    }
+  ]
+}
