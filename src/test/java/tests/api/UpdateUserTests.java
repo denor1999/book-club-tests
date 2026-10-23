@@ -1,4 +1,4 @@
-package tests;
+package tests.api;
 
 import io.qameta.allure.Owner;
 import models.login.LoginBodyModel;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import tests.TestBase;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -21,7 +22,7 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UpdateUserTests extends TestBase{
+public class UpdateUserTests extends TestBase {
 
     @Test
     @Owner("denor1999")

@@ -1,4 +1,4 @@
-package tests;
+package tests.api;
 
 import io.qameta.allure.Owner;
 import models.login.LoginBodyModel;
@@ -7,12 +7,13 @@ import models.registration.RegistrationBodyModel;
 import models.registration.RegistrationResponseSuccessfulModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tests.TestBase;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class ClubTests extends TestBase{
+public class ClubTests extends TestBase {
 
     @Test
     @Owner("denor1999")
