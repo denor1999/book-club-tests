@@ -36,10 +36,10 @@ public class ReviewSpec {
             .expectBody(matchesJsonSchemaInClasspath("schemas/reviews/wrong_access_token_post_review_json_schema.json"))
             .build();
 
-    public static ResponseSpecification successfulPutReviewSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification successfulEditReviewSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(200)
-            .expectBody(matchesJsonSchemaInClasspath("schemas/reviews/successful_put_review_json_schema.json"))
+            .expectBody(matchesJsonSchemaInClasspath("schemas/reviews/successful_edit_review_json_schema.json"))
             .build();
 
     public static ResponseSpecification wrongAssessmentValueReviewSpec = new ResponseSpecBuilder()

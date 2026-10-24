@@ -68,6 +68,21 @@ public class ReviewsTests extends TestBase {
     }
 
     @Test
+    public void successfulPatchReviewTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
+
+        ReviewRequestModel requestData = new ReviewRequestModel(1,
+                testData.description, testData.randomAssessment, testData.readPages);
+
+        ReviewResponseModel response = api.review.successfulPatchReview(requestData,
+                loginResponse.access(), 1883);
+
+        assertThat(response.modified()).isNotNull();
+    }
+
+    @Test
     public void wrongAssessmentValuePutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -83,11 +98,36 @@ public class ReviewsTests extends TestBase {
     }
 
     @Test
+    public void wrongAssessmentValuePatchReviewTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
+
+        ReviewRequestModel requestData = new ReviewRequestModel(1,
+                testData.description, testData.wrongRandomAssessment, testData.readPages);
+
+        WrongAssessmentReviewResponseModel response = api.review.wrongAssessmentPatchReview(requestData,
+                loginResponse.access(), 1883);
+
+        assertThat(response.assessment().getFirst()).isEqualTo("Ensure this value is less than or equal to 5.");
+    }
+
+    @Test
     public void unauthorizedPutReviewTest() {
         ReviewRequestModel requestData = new ReviewRequestModel(1,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         UnauthorizedReviewModel response = api.review.unauthorizedPutReview(requestData, 1883);
+
+        assertThat(response.detail()).isEqualTo("Authentication credentials were not provided.");
+    }
+
+    @Test
+    public void unauthorizedPatchReviewTest() {
+        ReviewRequestModel requestData = new ReviewRequestModel(1,
+                testData.description, testData.randomAssessment, testData.readPages);
+
+        UnauthorizedReviewModel response = api.review.unauthorizedPatchReview(requestData, 1883);
 
         assertThat(response.detail()).isEqualTo("Authentication credentials were not provided.");
     }
@@ -106,4 +146,21 @@ public class ReviewsTests extends TestBase {
 
         assertThat(response.detail()).isEqualTo("You do not have permission to perform this action.");
     }
+
+    @Test
+    public void someoneElsePatchReviewTest() {
+        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
+
+        ReviewRequestModel requestData = new ReviewRequestModel(1,
+                testData.description, testData.wrongRandomAssessment, testData.readPages);
+
+        SomeoneElsePutReviewResponseModel response = api.review.forbiddenPatchReview(requestData,
+                loginResponse.access(), 1391);
+
+        assertThat(response.detail()).isEqualTo("You do not have permission to perform this action.");
+    }
+
+
 }

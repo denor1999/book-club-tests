@@ -66,7 +66,22 @@ public class ReviewsApiClient {
                 .when()
                 .put(pathFormatted)
                 .then()
-                .spec(successfulPutReviewSpec)
+                .spec(successfulEditReviewSpec)
+                .extract()
+                .as(ReviewResponseModel.class);
+    }
+
+    public ReviewResponseModel successfulPatchReview(ReviewRequestModel postBody, String accessToken, Integer id) {
+        String pathFormatted =  String.format("clubs/reviews/%d/", id);
+
+        return given()
+                .spec(reviewRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(postBody)
+                .when()
+                .patch(pathFormatted)
+                .then()
+                .spec(successfulEditReviewSpec)
                 .extract()
                 .as(ReviewResponseModel.class);
     }
@@ -80,6 +95,21 @@ public class ReviewsApiClient {
                 .body(postBody)
                 .when()
                 .put(pathFormatted)
+                .then()
+                .spec(wrongAssessmentValueReviewSpec)
+                .extract()
+                .as(WrongAssessmentReviewResponseModel.class);
+    }
+
+    public WrongAssessmentReviewResponseModel wrongAssessmentPatchReview(ReviewRequestModel postBody, String accessToken, Integer id) {
+        String pathFormatted =  String.format("clubs/reviews/%d/", id);
+
+        return given()
+                .spec(reviewRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(postBody)
+                .when()
+                .patch(pathFormatted)
                 .then()
                 .spec(wrongAssessmentValueReviewSpec)
                 .extract()
@@ -100,6 +130,20 @@ public class ReviewsApiClient {
                 .as(UnauthorizedReviewModel.class);
     }
 
+    public UnauthorizedReviewModel unauthorizedPatchReview(ReviewRequestModel postBody, Integer id) {
+        String pathFormatted =  String.format("clubs/reviews/%d/", id);
+
+        return given()
+                .spec(reviewRequestSpec)
+                .body(postBody)
+                .when()
+                .patch(pathFormatted)
+                .then()
+                .spec(unauthorizedReviewsSpec)
+                .extract()
+                .as(UnauthorizedReviewModel.class);
+    }
+
     public SomeoneElsePutReviewResponseModel forbiddenPutReview(ReviewRequestModel postBody, String accessToken, Integer id) {
         String pathFormatted =  String.format("clubs/reviews/%d/", id);
 
@@ -109,6 +153,21 @@ public class ReviewsApiClient {
                 .body(postBody)
                 .when()
                 .put(pathFormatted)
+                .then()
+                .spec(forbiddenReviewSpec)
+                .extract()
+                .as(SomeoneElsePutReviewResponseModel.class);
+    }
+
+    public SomeoneElsePutReviewResponseModel forbiddenPatchReview(ReviewRequestModel postBody, String accessToken, Integer id) {
+        String pathFormatted =  String.format("clubs/reviews/%d/", id);
+
+        return given()
+                .spec(reviewRequestSpec)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(postBody)
+                .when()
+                .patch(pathFormatted)
                 .then()
                 .spec(forbiddenReviewSpec)
                 .extract()
