@@ -20,40 +20,48 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @DisplayName("Check successful get clubs response")
     public void successfulGetClubsTest() {
-        ClubsListResponseModel getClubsResponse = api.clubs.getClubs();
+        ClubsListResponseModel getClubsResponse = step("Send get clubs request and check status (200)", () ->
+                api.clubs.getClubs());
 
-        assertThat(getClubsResponse).isNotNull();
-        assertThat(getClubsResponse.count()).isGreaterThanOrEqualTo(0);
-        assertThat(getClubsResponse.results()).isNotNull();
+        step("Check clubs response fields", () -> {
+            assertThat(getClubsResponse).isNotNull();
+            assertThat(getClubsResponse.count()).isGreaterThanOrEqualTo(0);
+            assertThat(getClubsResponse.results()).isNotNull();
+        });
     }
 
     @Test
     @Owner("denor1999")
     @DisplayName("Check clubs count matches results size")
     public void getClubsCountMatchesResultsSizeTest() {
-        ClubsListResponseModel getClubsResponse = api.clubs.getClubs();
+        ClubsListResponseModel getClubsResponse = step("Send get clubs request and check status (200)", () ->
+                api.clubs.getClubs());
 
-        assertThat(getClubsResponse.results()).hasSize(getClubsResponse.count());
+        step("Check clubs count matches results size", () ->
+                assertThat(getClubsResponse.results()).hasSize(getClubsResponse.count()));
     }
 
     @Test
     @Owner("denor1999")
     @DisplayName("Check each club has required fields")
     public void getClubsEachClubHasRequiredFields() {
-        ClubsListResponseModel response = api.clubs.getClubs();
+        ClubsListResponseModel response = step("Send get clubs request and check status (200)", () ->
+                api.clubs.getClubs());
 
-        for (ClubResultsModel club : response.results()) {
-            assertThat(club.id()).isNotNull().isPositive();
-            assertThat(club.bookTitle()).isNotNull();
-            assertThat(club.bookAuthors()).isNotNull();
-            assertThat(club.publicationYear()).isNotNull();
-            assertThat(club.description()).isNotNull();
-            assertThat(club.telegramChatLink()).isNotNull();
-            assertThat(club.owner()).isNotNull().isPositive();
-            assertThat(club.members()).isNotNull();
-            assertThat(club.reviews()).isNotNull();
-            assertThat(club.created()).isNotNull();
-        }
+        step("Check each club has required fields", () -> {
+            for (ClubResultsModel club : response.results()) {
+                assertThat(club.id()).isNotNull().isPositive();
+                assertThat(club.bookTitle()).isNotNull();
+                assertThat(club.bookAuthors()).isNotNull();
+                assertThat(club.publicationYear()).isNotNull();
+                assertThat(club.description()).isNotNull();
+                assertThat(club.telegramChatLink()).isNotNull();
+                assertThat(club.owner()).isNotNull().isPositive();
+                assertThat(club.members()).isNotNull();
+                assertThat(club.reviews()).isNotNull();
+                assertThat(club.created()).isNotNull();
+            }
+        });
     }
 
     @Test

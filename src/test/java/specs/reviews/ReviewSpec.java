@@ -53,4 +53,24 @@ public class ReviewSpec {
             .expectStatusCode(403)
             .expectBody(matchesJsonSchemaInClasspath("schemas/reviews/forbidden_review_json_schema.json"))
             .build();
+
+    public static ResponseSpecification successfulDeleteReviewSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(204)
+            .build();
+
+    public static ResponseSpecification unauthorizedDeleteReviewSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(401)
+            .build();
+
+    public static ResponseSpecification notFoundDeleteReviewSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(404)
+            .build();
+
+    public static ResponseSpecification forbiddenDeleteReviewSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(403)
+            .build();
 }

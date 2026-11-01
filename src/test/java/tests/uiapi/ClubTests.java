@@ -1,4 +1,4 @@
-package tests.api;
+package tests.uiapi;
 
 import io.qameta.allure.Owner;
 import models.login.LoginBodyModel;
@@ -12,20 +12,23 @@ import tests.TestBase;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static io.qameta.allure.Allure.step;
 
 public class ClubTests extends TestBase {
 
     @Test
     @Owner("denor1999")
-    @DisplayName("Check that club owner cannot leave the club")
+    @DisplayName("[API + UI] Check that club owner cannot leave the club")
     public void cantLeaveClubAsOwnerTest_with_login_by_api() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername,
                 testData.randomRegistrationPassword);
-        RegistrationResponseSuccessfulModel registerResponse = api.users.register(registrationData);
+        RegistrationResponseSuccessfulModel registerResponse = step("Send registration request and check status (201)", () ->
+                api.users.register(registrationData));
 
         LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername,
                 testData.randomRegistrationPassword);
-        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
+        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
+                api.auth.login(loginData));
 
         String accessToken = loginResponse.access();
         String refreshToken = loginResponse.refresh();
@@ -55,24 +58,31 @@ public class ClubTests extends TestBase {
                 refreshToken
         );
 
-        open("/favicon.ico");
-        localStorage().setItem("book_club_auth", localStorageAuthBody);
-        open("/");
+        step("Authorize in UI via local storage", () -> {
+            open("/favicon.ico");
+            localStorage().setItem("book_club_auth", localStorageAuthBody);
+            open("/");
+        });
 
-        open("/clubs/create");
-        $("#bookTitle").setValue(testData.bookTitle);
-        $("#bookAuthors").setValue(testData.bookAuthor);
-        $("#publicationYear").setValue(String.valueOf(testData.publicationYear));
-        $("#description").setValue(testData.description);
-        $("#telegramChatLink").setValue(testData.telegramChatLink);
-        $(".submit-btn").scrollTo().click();
+        step("Create new book club", () -> {
+            open("/clubs/create");
+            $("#bookTitle").setValue(testData.bookTitle);
+            $("#bookAuthors").setValue(testData.bookAuthor);
+            $("#publicationYear").setValue(String.valueOf(testData.publicationYear));
+            $("#description").setValue(testData.description);
+            $("#telegramChatLink").setValue(testData.telegramChatLink);
+            $(".submit-btn").scrollTo().click();
+        });
 
-        $("[data-testid=clubs-link]").click();
-        $(".search-input").setValue(testData.bookTitle).pressEnter();
-        $(".clubs-list").$(byText(testData.bookTitle))
-                .parent().parent().$(".open-btn").click();
-        $(".leave-btn").click();
+        step("Open created club and try to leave", () -> {
+            $("[data-testid=clubs-link]").click();
+            $(".search-input").setValue(testData.bookTitle).pressEnter();
+            $(".clubs-list").$(byText(testData.bookTitle))
+                    .parent().parent().$(".open-btn").click();
+            $(".leave-btn").click();
+        });
 
-        $(".error").shouldBe(visible);
+        step("Check owner cannot leave the club", () ->
+                $(".error").shouldBe(visible));
     }
 }
