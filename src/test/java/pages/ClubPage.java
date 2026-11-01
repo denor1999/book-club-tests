@@ -3,6 +3,7 @@ package pages;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class ClubPage {
@@ -12,6 +13,8 @@ public class ClubPage {
     private final SelenideElement assessment = $("#assessment");
     private final SelenideElement readPages = $("#readPages");
     private final SelenideElement review = $("#review");
+    private final SelenideElement leaveButton = $(".leave-btn");
+    private final SelenideElement error = $(".error");
 
     @Step("Click add review button")
     public ClubPage addReview() {
@@ -44,5 +47,15 @@ public class ClubPage {
     @Step("Click save review button")
     public void sendReview() {
         saveButton.click();
+    }
+
+    @Step("Click leave club button")
+    public void leaveClub() {
+        leaveButton.click();
+    }
+
+    @Step("Check leave club error is visible")
+    public void checkLeaveError() {
+        error.shouldBe(visible);
     }
 }

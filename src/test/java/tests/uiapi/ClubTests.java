@@ -9,9 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.localStorage;
+import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
 public class ClubTests extends TestBase {
@@ -64,25 +63,32 @@ public class ClubTests extends TestBase {
             open("/");
         });
 
-        step("Create new book club", () -> {
-            open("/clubs/create");
-            $("#bookTitle").setValue(testData.bookTitle);
-            $("#bookAuthors").setValue(testData.bookAuthor);
-            $("#publicationYear").setValue(String.valueOf(testData.publicationYear));
-            $("#description").setValue(testData.description);
-            $("#telegramChatLink").setValue(testData.telegramChatLink);
-            $(".submit-btn").scrollTo().click();
-        });
+        step("Open create club page", () ->
+                createClubPage.openPage());
 
-        step("Open created club and try to leave", () -> {
-            $("[data-testid=clubs-link]").click();
-            $(".search-input").setValue(testData.bookTitle).pressEnter();
-            $(".clubs-list").$(byText(testData.bookTitle))
-                    .parent().parent().$(".open-btn").click();
-            $(".leave-btn").click();
-        });
+        step("Fill club form", () ->
+                createClubPage.setBookTitle(testData.bookTitle)
+                        .setBookAuthors(testData.bookAuthor)
+                        .setPublicationYear(testData.publicationYear)
+                        .setDescription(testData.description)
+                        .setTelegramChatLink(testData.telegramChatLink));
+
+        step("Submit club form", () ->
+                createClubPage.submitForm());
+
+        step("Open clubs list", () ->
+                homePage.openClubsList());
+
+        step("Search created club", () ->
+                homePage.searchClub(testData.bookTitle));
+
+        step("Open club from list", () ->
+                homePage.openClubFromList(testData.bookTitle));
+
+        step("Try to leave the club", () ->
+                clubPage.leaveClub());
 
         step("Check owner cannot leave the club", () ->
-                $(".error").shouldBe(visible));
+                clubPage.checkLeaveError());
     }
 }
