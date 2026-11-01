@@ -3,6 +3,8 @@ package tests.ui;
 import helpers.Attach;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,10 @@ import static io.qameta.allure.Allure.step;
 
 @Feature("Login form UI tests")
 public class LoginUiTests extends TestBase {
+
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[UI] Check successful authorization attempt")
     public void successfulLoginTests() {
         step("Open login page", () ->
@@ -33,6 +37,7 @@ public class LoginUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[UI] Check successful authorization attempt after registration")
     public void successfulLoginAfterRegistrationTests() {
         step("Open registration page", () ->
@@ -63,6 +68,7 @@ public class LoginUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with wrong password")
     public void wrongCredentialsLoginTests() {
         step("Open login page", () ->
@@ -82,6 +88,7 @@ public class LoginUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with empty username")
     public void emptyUsernameLoginTest () {
         step("Open login page", () ->
@@ -100,6 +107,7 @@ public class LoginUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with empty password")
     public void emptyPasswordLoginTest () {
         step("Open login page", () ->
@@ -118,6 +126,7 @@ public class LoginUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with empty username and password")
     public void emptyCredentialsLoginTest () {
         step("Open login page", () ->

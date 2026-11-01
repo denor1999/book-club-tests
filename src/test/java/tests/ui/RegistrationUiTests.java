@@ -3,6 +3,8 @@ package tests.ui;
 import helpers.Attach;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ public class RegistrationUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[UI] Check successful registration attempt")
     public void successfulFillingRegistrationFormTest() {
         step("Open registration page", () ->
@@ -33,6 +36,7 @@ public class RegistrationUiTests extends TestBase {
     }
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[UI] Check registration attempt when user exists")
     public void existingUserFillingRegistrationFormTest() {
         step("Open registration page", () ->
@@ -52,6 +56,7 @@ public class RegistrationUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check registration attempt with wrong username")
     public void wrongUsernameFillingRegistrationFormTest() {
         step("Open registration page", () ->
@@ -71,6 +76,7 @@ public class RegistrationUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check registration attempt with empty username")
     public void emptyUsernameFillingRegistrationFormTest() {
         step("Open registration page", () ->
@@ -90,6 +96,7 @@ public class RegistrationUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check registration attempt with empty password")
     public void emptyPasswordFillingRegistrationFormTest() {
         step("Open registration page", () ->
@@ -109,6 +116,7 @@ public class RegistrationUiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check registration attempt with empty username and password")
     public void emptyCredentialsFillingRegistrationTest() {
         step("Open registration page", () ->

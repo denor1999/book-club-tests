@@ -2,6 +2,8 @@ package tests.api;
 
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.reviews.*;
@@ -12,11 +14,12 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Feature("Reviews")
+@Feature("Reviews API tests")
 public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] get club reviews")
     public void getReviewsTest() {
         ReviewsGetResponseModel response = step("Send get reviews request and check status (200)", () ->
@@ -28,6 +31,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Successful send review")
     public void successfulPostReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -47,6 +51,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Unauthorized user attempt for send review")
     public void unauthorizedPostReviewTest() {
         ReviewRequestModel requestData = new ReviewRequestModel(testData.randomBookClubId,
@@ -61,6 +66,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Attempt for send review with wrong access token")
     public void wrongTokenPostReviewTest() {
         ReviewRequestModel requestData = new ReviewRequestModel(testData.randomBookClubId,
@@ -77,6 +83,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Successful edit club review with PUT")
     public void successfulPutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -96,6 +103,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Successful edit club review with PATCH")
     public void successfulPatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -115,6 +123,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Attempt for edit club review with wrong assessment with PUT")
     public void wrongAssessmentValuePutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -134,6 +143,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Attempt for edit club review with wrong assessment with PATCH")
     public void wrongAssessmentValuePatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -153,6 +163,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Unauthorized user attempt for edit club review with PUT")
     public void unauthorizedPutReviewTest() {
         ReviewRequestModel requestData = new ReviewRequestModel(1,
@@ -167,6 +178,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Unauthorized user attempt for edit club review with PATCH")
     public void unauthorizedPatchReviewTest() {
         ReviewRequestModel requestData = new ReviewRequestModel(1,
@@ -181,6 +193,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Attempt for change other club reviews with PUT")
     public void someoneElsePutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -200,6 +213,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Attempt for change other club reviews with PATCH")
     public void someoneElsePatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -219,6 +233,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Successful delete club review")
     public void successfulDeleteReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -232,6 +247,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Unauthorized user attempt for delete club review")
     public void unauthorizedDeleteReviewTest() {
         step("Delete review without authorization and check status (401)", () ->
@@ -240,6 +256,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Not found club review for delete")
     public void notFoundDeleteReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -253,6 +270,7 @@ public class ReviewsApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Attempt for delete other club reviews")
     public void forbiddenDeleteReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);

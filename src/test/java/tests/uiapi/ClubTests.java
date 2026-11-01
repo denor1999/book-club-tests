@@ -1,6 +1,9 @@
 package tests.uiapi;
 
+import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.registration.RegistrationBodyModel;
@@ -13,10 +16,12 @@ import static com.codeborne.selenide.Selenide.localStorage;
 import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
+@Feature("Interaction with clubs API + UI tests")
 public class ClubTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API + UI] Check that club owner cannot leave the club")
     public void cantLeaveClubAsOwnerTest_with_login_by_api() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername,

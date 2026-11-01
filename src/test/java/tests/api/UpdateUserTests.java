@@ -1,6 +1,9 @@
 package tests.api;
 
+import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.update_user.UnauthorizedUserUpdateWithPutResponseModel;
@@ -22,10 +25,12 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Feature("Update user data API tests")
 public class UpdateUserTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check successful put request status")
     public void successfulUpdateWithPutFields() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -48,6 +53,7 @@ public class UpdateUserTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check put request attempt when user unauthorized")
     public void unauthorizedUpdateFields() {
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
@@ -63,6 +69,7 @@ public class UpdateUserTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("Send PUT request with URI without '/' ")
     public void redirectUpdateFields() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -80,6 +87,7 @@ public class UpdateUserTests extends TestBase {
     @ParameterizedTest(name = "PATCH {0}")
     @MethodSource("patchCases")
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check successful patch request status")
     void successfulUpdateFieldWithPatch(
             String caseName,

@@ -1,6 +1,9 @@
 package tests.api;
 
+import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.login.LoginBodyModel;
 import models.login.WrongRefreshTokenLoginBodyModel;
 import models.logout.LogoutBodyModel;
@@ -12,10 +15,12 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@Feature("Logout API tests")
 public class LogoutTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Check successful logout response")
     public void successfulLogoutTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -34,6 +39,7 @@ public class LogoutTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("Check attempt logout without authorization")
     public void unauthorizedLogoutTest() {
         WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(testData.wrongRefreshToken);
