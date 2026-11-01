@@ -2,6 +2,8 @@ package tests.api;
 
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.registration.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Check successful registration response status")
     public void successfulRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
@@ -33,6 +36,7 @@ public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Check registration attempt when user exists")
     public void existingUserRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
@@ -54,6 +58,7 @@ public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with wrong username")
     public void wrongUsernameRegistrationTest() {
         RegistrationBodyModel wrongUsernameRegistrationData = new RegistrationBodyModel(
@@ -70,6 +75,7 @@ public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with empty username")
     public void emptyUsernameRegistrationTest() {
         RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
@@ -85,6 +91,7 @@ public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with empty password")
     public void emptyPasswordRegistrationTest() {
         RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
@@ -100,6 +107,7 @@ public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with empty username and password")
     public void emptyCredentialsRegistrationTest() {
         RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(testData.emptyUsername, testData.emptyPassword);

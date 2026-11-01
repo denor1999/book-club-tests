@@ -2,6 +2,8 @@ package tests.api;
 
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.login.EmptyCredentialsLoginResponseModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
@@ -18,6 +20,7 @@ public class LoginApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Check successful login response")
     public void successfulLoginTests() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
@@ -37,6 +40,7 @@ public class LoginApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Check authorization attempt with wrong password")
     public void wrongCredentialsLoginTests() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.wrongLoginPassword);
@@ -52,6 +56,7 @@ public class LoginApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check authorization attempt with empty username")
     public void emptyUsernameLoginTest () {
         LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
@@ -67,6 +72,7 @@ public class LoginApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check authorization attempt with empty password")
     public void emptyPasswordLoginTest () {
         LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
@@ -82,6 +88,7 @@ public class LoginApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
+    @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check authorization attempt with empty username and password")
     public void emptyCredentialsLoginTest () {
         LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.emptyPassword);
