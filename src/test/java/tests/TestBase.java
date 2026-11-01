@@ -11,6 +11,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import pages.ClubPage;
+import pages.HomePage;
+import pages.LoginPage;
 import pages.RegistrationPage;
 import testdata.TestData;
 
@@ -24,6 +27,9 @@ public class TestBase {
     protected final TestData testData = new TestData();
     protected final ApiClient api = new ApiClient();
     protected final RegistrationPage registrationPage = new RegistrationPage();
+    protected final LoginPage loginPage = new LoginPage();
+    protected final ClubPage clubPage = new ClubPage();
+    protected final HomePage homePage = new HomePage();
 
     @BeforeAll
     public static void setup() {

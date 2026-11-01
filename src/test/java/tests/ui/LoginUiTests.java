@@ -6,15 +6,12 @@ import io.qameta.allure.Owner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.LoginPage;
 import tests.TestBase;
 
 import static io.qameta.allure.Allure.step;
 
 @Feature("Login form UI tests")
 public class LoginUiTests extends TestBase {
-    LoginPage loginPage = new LoginPage();
-
     @Test
     @Owner("denor1999")
     @DisplayName("[UI] Check successful authorization attempt")

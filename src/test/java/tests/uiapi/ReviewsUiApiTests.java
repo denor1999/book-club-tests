@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
@@ -34,8 +33,8 @@ public class ReviewsUiApiTests extends TestBase {
                   "isAuthenticated": true
                 }
                 """.formatted(
-                        loginResponse.access(),
-                        loginResponse.refresh()
+                loginResponse.access(),
+                loginResponse.refresh()
         );
 
         step("Authorize in UI via local storage", () -> {
@@ -44,16 +43,22 @@ public class ReviewsUiApiTests extends TestBase {
             open("/");
         });
 
-        step("Open club and fill review form", () -> {
-            $$(".filter-option").findBy(text("Мои клубы")).click();
-            $$(".club-card").findBy(text("Chief Metrics Coordinator"))
-                    .$(".open-btn").click();
-            $(".add-review-btn").click();
-            $("#assessment").setValue("5");
-            $("#readPages").setValue("25");
-            $("#review").setValue("A very nice book!");
-            $(".save-btn").click();
-        });
+        step("Select 'Мои клубы' filter", () ->
+                homePage.selectOption("Мои клубы"));
+
+        step("Open club page", () ->
+                homePage.openClubPage("Chief Metrics Coordinator"));
+
+        step("Open add review form", () ->
+                clubPage.addReview());
+
+        step("Fill review form", () ->
+                clubPage.setAssessment("5")
+                        .setReadPages("25")
+                        .addReviewText("A very nice club!"));
+
+        step("Send review", () ->
+                clubPage.sendReview());
 
         step("Check created review is displayed", () ->
                 $$(".review-content").shouldHave(texts("A very nice book!")));
