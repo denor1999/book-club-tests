@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -11,6 +12,8 @@ import models.update_user.UpdateUserPatchBodyModel;
 import models.update_user.UpdateUserResponseModel;
 import models.update_user.UpdateUserWithPutBodyModel;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,14 +27,16 @@ import java.util.stream.Stream;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Feature("Update user data API tests")
+@Tags({@Tag("api"), @Tag("user")})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UpdateUserTests extends TestBase {
 
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check successful put request status")
+    @Description("An authorized PUT updates username, firstName, lastName, and email. The response values match the submitted ones.")
     public void successfulUpdateWithPutFields() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -55,6 +60,7 @@ public class UpdateUserTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check put request attempt when user unauthorized")
+    @Description("Without authorization the server returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedUpdateFields() {
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
 
@@ -71,6 +77,7 @@ public class UpdateUserTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("Send PUT request with URI without '/' ")
+    @Description("A PUT to a URI without a trailing slash succeeds for an authorized user.")
     public void redirectUpdateFields() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -89,6 +96,7 @@ public class UpdateUserTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check successful patch request status")
+    @Description("An authorized PATCH updates one field (username, firstName, lastName, or email). The response value of that field matches the submitted one.")
     void successfulUpdateFieldWithPatch(
             String caseName,
             UpdateUserPatchBodyModel body,

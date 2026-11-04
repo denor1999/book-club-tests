@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -9,6 +10,8 @@ import models.login.WrongRefreshTokenLoginBodyModel;
 import models.logout.LogoutBodyModel;
 import models.logout.WrongRefreshTokenLogoutResponseModel;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
@@ -16,12 +19,14 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @Feature("Logout API tests")
+@Tags({@Tag("api"), @Tag("logout")})
 public class LogoutTests extends TestBase {
 
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Check successful logout response")
+    @Description("The server returns 200 and an empty response body {}.")
     public void successfulLogoutTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -41,6 +46,7 @@ public class LogoutTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("Check attempt logout without authorization")
+    @Description("The server rejects the request: detail is \"Token is invalid\" and code is \"token_not_valid\".")
     public void unauthorizedLogoutTest() {
         WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(testData.wrongRefreshToken);
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshTokenData.refresh());

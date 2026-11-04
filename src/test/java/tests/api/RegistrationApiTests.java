@@ -1,11 +1,14 @@
 package tests.api;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import models.registration.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
@@ -13,12 +16,14 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Feature("Registration form API tests")
+@Tags({@Tag("api"), @Tag("registration")})
 public class RegistrationApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Check successful registration response status")
+    @Description("The server returns 201. Username matches the submitted value, id is present, and firstName, lastName, and email are blank.")
     public void successfulRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
@@ -38,6 +43,7 @@ public class RegistrationApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Check registration attempt when user exists")
+    @Description("Re-registration returns 400, and the username field contains the existing-user error.")
     public void existingUserRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
@@ -60,6 +66,7 @@ public class RegistrationApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with wrong username")
+    @Description("The server returns 400 and a message that username may contain only letters, numbers, and @/./+/-/_ characters.")
     public void wrongUsernameRegistrationTest() {
         RegistrationBodyModel wrongUsernameRegistrationData = new RegistrationBodyModel(
                 testData.wrongRegistrationUsername, testData.randomRegistrationPassword);
@@ -77,6 +84,7 @@ public class RegistrationApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with empty username")
+    @Description("The server returns 400, and the username field contains \"This field may not be blank.\"")
     public void emptyUsernameRegistrationTest() {
         RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
 
@@ -93,6 +101,7 @@ public class RegistrationApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with empty password")
+    @Description("The server returns 400, and the password field contains \"This field may not be blank.\"")
     public void emptyPasswordRegistrationTest() {
         RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
 
@@ -109,6 +118,7 @@ public class RegistrationApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[API] Check registration attempt with empty username and password")
+    @Description("The server returns 400, and both username and password contain \"This field may not be blank.\"")
     public void emptyCredentialsRegistrationTest() {
         RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(testData.emptyUsername, testData.emptyPassword);
 

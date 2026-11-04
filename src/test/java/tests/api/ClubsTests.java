@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -11,6 +12,8 @@ import models.clubs.get.ClubsListResponseModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
@@ -18,12 +21,14 @@ import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Feature("Interaction with clubs API tests")
+@Tags({@Tag("api"), @Tag("clubs")})
 public class ClubsTests extends TestBase {
 
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check successful get clubs response")
+    @Description("The server returns 200. The body is not null, count is greater than or equal to 0, and results is present.")
     public void successfulGetClubsTest() {
         ClubsListResponseModel getClubsResponse = step("Send get clubs request and check status (200)", () ->
                 api.clubs.getClubs());
@@ -39,6 +44,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check clubs count matches results size")
+    @Description("The server returns 200. The size of results matches count.")
     public void getClubsCountMatchesResultsSizeTest() {
         ClubsListResponseModel getClubsResponse = step("Send get clubs request and check status (200)", () ->
                 api.clubs.getClubs());
@@ -51,6 +57,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check each club has required fields")
+    @Description("Each club has id, title, authors, year, description, Telegram link, owner, members, reviews, and created date. id and owner are positive.")
     public void getClubsEachClubHasRequiredFields() {
         ClubsListResponseModel response = step("Send get clubs request and check status (200)", () ->
                 api.clubs.getClubs());
@@ -75,6 +82,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Check successful post club response")
+    @Description("An authorized club creation returns book title, authors, publication year, description, and Telegram link matching the submitted values.")
     public void successfulPostGlubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -100,6 +108,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check post club attempt with invalid telegram chat link")
+    @Description("Creating a club with an invalid Telegram link returns \"Enter a valid URL.\"")
     public void wrongTelegramChatLinkPostGlubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -120,6 +129,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check post club attempt when user unauthorized")
+    @Description("Creating a club without authorization returns \"Authentication credentials were not provided.\"")
     public void unauthorizedPostGlubsTest() {
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
                 testData.publicationYear, testData.description, testData.telegramChatLink);
@@ -135,6 +145,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Check successful delete club response")
+    @Description("After a club is created, an authorized delete returns 204.")
     public void successfulDeleteClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -155,6 +166,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check delete club attempt when user unauthorized")
+    @Description("Deleting a club without authorization returns \"Authentication credentials were not provided.\"")
     public void unauthorizedDeleteClubTest() {
         DeleteClubWithErrorResponseModel deleteResponse = step("Delete new book club", () ->
                 api.clubs.unauthorizedDeleteClub(testData.randomBookClubId));
@@ -167,6 +179,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("Check delete attempt for missing club")
+    @Description("Deleting a missing club returns \"No Club matches the given query.\"")
     public void deleteMissingClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -184,6 +197,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Check successful put club request status")
+    @Description("An authorized PUT returns 200. Title, authors, year, description, and Telegram link match the submitted values.")
     public void successfulPutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -209,6 +223,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("Check put club attempt with empty book title")
+    @Description("A PUT without a book title returns 400 and \"This field is required.\" for bookTitle.")
     public void emptyBookTitlePutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -229,6 +244,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("Check put club attempt with empty book author")
+    @Description("A PUT without an author returns 400 and \"This field is required.\" for bookAuthors.")
     public void emptyBookAuthorPutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -249,6 +265,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check put club attempt with wrong publication year")
+    @Description("A PUT with a non-numeric publication year returns 400 and \"A valid integer is required.\"")
     public void wrongPublicationYearPutClubTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -269,6 +286,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check put club attempt with invalid telegram chat link")
+    @Description("A PUT with an invalid Telegram link returns 400 and \"Enter a valid URL.\"")
     public void wrongTelegramChatLinkPutGlubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -289,6 +307,7 @@ public class ClubsTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("Check put club attempt when user unauthorized")
+    @Description("A PUT without authorization returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPutClubTest() {
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
                 testData.publicationYear, testData.description, testData.telegramChatLink);

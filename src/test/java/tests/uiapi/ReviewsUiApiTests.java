@@ -1,9 +1,16 @@
 package tests.uiapi;
 
-import io.qameta.allure.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
@@ -12,12 +19,14 @@ import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
 @Feature("Reviews API tests")
+@Tags({@Tag("ui"), @Tag("api"), @Tag("reviews")})
 public class ReviewsUiApiTests extends TestBase {
 
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[API + UI] Successful send review for club")
+    @Description("After submitting a review, it is displayed on the club page with the text \"A very nice book!\".")
     @Flaky
     public void successfulSendReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
