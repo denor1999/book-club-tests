@@ -28,7 +28,7 @@ public class ReviewsApiTests extends TestBase {
     @Description("The server returns 200. The size of results matches count.")
     public void getReviewsTest() {
         ReviewsGetResponseModel response = step("Send get reviews request and check status (200)", () ->
-                api.review.getReviews());
+                api.review.getReviews(testData.reviewClubId));
 
         step("Check reviews count matches results size", () ->
                 assertThat(response.results()).hasSize(response.count()));
@@ -73,7 +73,7 @@ public class ReviewsApiTests extends TestBase {
                 api.review.unauthorizedPostReview(requestData));
 
         step("Check error message", () ->
-                assertThat(response.detail()).isEqualTo("Authentication credentials were not provided."));
+                assertThat(response.detail()).isEqualTo(testData.unauthorizedDetail));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class ReviewsApiTests extends TestBase {
                 api.review.wrongAccessTokenPostReview(requestData, testData.wrongAccessToken));
 
         step("Check error message and code", () -> {
-            assertThat(response.detail()).isEqualTo("Given token not valid for any token type");
-            assertThat(response.code()).isEqualTo("token_not_valid");
+            assertThat(response.detail()).isEqualTo(testData.wrongTokenDetail);
+            assertThat(response.code()).isEqualTo(testData.wrongTokenCode);
         });
     }
 
@@ -105,11 +105,11 @@ public class ReviewsApiTests extends TestBase {
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         ReviewResponseModel response = step("Edit review with PUT and check status (200)", () ->
-                api.review.successfulPutReview(requestData, loginResponse.access(), 1883));
+                api.review.successfulPutReview(requestData, loginResponse.access(), testData.ownReviewId));
 
         step("Check updated review fields", () -> {
             assertThat(response.review()).isEqualTo(testData.description);
@@ -130,11 +130,11 @@ public class ReviewsApiTests extends TestBase {
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         ReviewResponseModel response = step("Edit review with PATCH and check status (200)", () ->
-                api.review.successfulPatchReview(requestData, loginResponse.access(), 1883));
+                api.review.successfulPatchReview(requestData, loginResponse.access(), testData.ownReviewId));
 
         step("Check updated review fields", () -> {
             assertThat(response.review()).isEqualTo(testData.description);
@@ -155,14 +155,14 @@ public class ReviewsApiTests extends TestBase {
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.wrongRandomAssessment, testData.readPages);
 
         WrongAssessmentReviewResponseModel response = step("Edit review with PUT and wrong assessment and check status (400)", () ->
-                api.review.wrongAssessmentPutReview(requestData, loginResponse.access(), 1883));
+                api.review.wrongAssessmentPutReview(requestData, loginResponse.access(), testData.ownReviewId));
 
         step("Check error message", () ->
-                assertThat(response.assessment().getFirst()).isEqualTo("Ensure this value is less than or equal to 5."));
+                assertThat(response.assessment().getFirst()).isEqualTo(testData.wrongAssessmentError));
     }
 
     @Test
@@ -176,14 +176,14 @@ public class ReviewsApiTests extends TestBase {
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.wrongRandomAssessment, testData.readPages);
 
         WrongAssessmentReviewResponseModel response = step("Edit review with PATCH and wrong assessment and check status (400)", () ->
-                api.review.wrongAssessmentPatchReview(requestData, loginResponse.access(), 1883));
+                api.review.wrongAssessmentPatchReview(requestData, loginResponse.access(), testData.ownReviewId));
 
         step("Check error message", () ->
-                assertThat(response.assessment().getFirst()).isEqualTo("Ensure this value is less than or equal to 5."));
+                assertThat(response.assessment().getFirst()).isEqualTo(testData.wrongAssessmentError));
     }
 
     @Test
@@ -192,14 +192,14 @@ public class ReviewsApiTests extends TestBase {
     @DisplayName("[API] Unauthorized user attempt for edit club review with PUT")
     @Description("A PUT without authorization returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPutReviewTest() {
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         UnauthorizedReviewModel response = step("Edit review with PUT without authorization and check status (401)", () ->
                 api.review.unauthorizedPutReview(requestData, testData.missingReviewId));
 
         step("Check error message", () ->
-                assertThat(response.detail()).isEqualTo("Authentication credentials were not provided."));
+                assertThat(response.detail()).isEqualTo(testData.unauthorizedDetail));
     }
 
     @Test
@@ -208,14 +208,14 @@ public class ReviewsApiTests extends TestBase {
     @DisplayName("[API] Unauthorized user attempt for edit club review with PATCH")
     @Description("A PATCH without authorization returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPatchReviewTest() {
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         UnauthorizedReviewModel response = step("Edit review with PATCH without authorization and check status (401)", () ->
                 api.review.unauthorizedPatchReview(requestData, testData.missingReviewId));
 
         step("Check error message", () ->
-                assertThat(response.detail()).isEqualTo("Authentication credentials were not provided."));
+                assertThat(response.detail()).isEqualTo(testData.unauthorizedDetail));
     }
 
     @Test
@@ -229,14 +229,14 @@ public class ReviewsApiTests extends TestBase {
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         SomeoneElsePutReviewResponseModel response = step("Edit someone else's review with PUT and check status (403)", () ->
-                api.review.forbiddenPutReview(requestData, loginResponse.access(), 1391));
+                api.review.forbiddenPutReview(requestData, loginResponse.access(), testData.foreignReviewId));
 
         step("Check error message", () ->
-                assertThat(response.detail()).isEqualTo("You do not have permission to perform this action."));
+                assertThat(response.detail()).isEqualTo(testData.forbiddenDetail));
     }
 
     @Test
@@ -250,14 +250,14 @@ public class ReviewsApiTests extends TestBase {
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(1,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.reviewClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         SomeoneElsePutReviewResponseModel response = step("Edit someone else's review with PATCH and check status (403)", () ->
-                api.review.forbiddenPatchReview(requestData, loginResponse.access(), 1391));
+                api.review.forbiddenPatchReview(requestData, loginResponse.access(), testData.foreignReviewId));
 
         step("Check error message", () ->
-                assertThat(response.detail()).isEqualTo("You do not have permission to perform this action."));
+                assertThat(response.detail()).isEqualTo(testData.forbiddenDetail));
     }
 
     @Test
@@ -272,7 +272,7 @@ public class ReviewsApiTests extends TestBase {
                 api.auth.login(loginData));
 
         step("Delete review and check status (204)", () ->
-                api.review.successfulDeleteReview(1982, loginResponse.access()));
+                api.review.successfulDeleteReview(testData.ownReviewDeleteId, loginResponse.access()));
     }
 
     @Test
@@ -312,6 +312,6 @@ public class ReviewsApiTests extends TestBase {
                 api.auth.login(loginData));
 
         step("Delete someone else's review and check status (403)", () ->
-                api.review.forbiddenDeleteReview(1888, loginResponse.access()));
+                api.review.forbiddenDeleteReview(testData.foreignReviewDeleteId, loginResponse.access()));
     }
 }
