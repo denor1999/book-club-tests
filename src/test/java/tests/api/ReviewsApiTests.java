@@ -38,21 +38,26 @@ public class ReviewsApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("[API] Successful send review")
-    @Description("An authorized user creates a review, the server returns 201, and the review id is present.")
+    @Description("An authorized user creates a review for an existing club. The server returns 201, and id, club, text, assessment, and read pages match the submitted values.")
     public void successfulPostReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(testData.randomBookClubId,
+        ReviewRequestModel requestData = new ReviewRequestModel(testData.clubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
         ReviewResponseModel response = step("Send review and check status (201)", () ->
                 api.review.successfulPostReview(requestData, loginResponse.access()));
 
-        step("Check review id is present", () ->
-                assertThat(response.id()).isNotNull());
+        step("Check created review fields", () -> {
+            assertThat(response.id()).isNotNull();
+            assertThat(response.club()).isEqualTo(testData.clubId);
+            assertThat(response.review()).isEqualTo(testData.description);
+            assertThat(response.assessment()).isEqualTo(testData.randomAssessment);
+            assertThat(response.readPages()).isEqualTo(testData.readPages);
+        });
     }
 
     @Test
@@ -93,7 +98,7 @@ public class ReviewsApiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Successful edit club review with PUT")
-    @Description("An authorized PUT returns 200, and the modified field is present.")
+    @Description("An authorized PUT returns 200. Review text, assessment, and read pages match the submitted values, and modified is present.")
     public void successfulPutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -106,15 +111,19 @@ public class ReviewsApiTests extends TestBase {
         ReviewResponseModel response = step("Edit review with PUT and check status (200)", () ->
                 api.review.successfulPutReview(requestData, loginResponse.access(), 1883));
 
-        step("Check modified field is present", () ->
-                assertThat(response.modified()).isNotNull());
+        step("Check updated review fields", () -> {
+            assertThat(response.review()).isEqualTo(testData.description);
+            assertThat(response.assessment()).isEqualTo(testData.randomAssessment);
+            assertThat(response.readPages()).isEqualTo(testData.readPages);
+            assertThat(response.modified()).isNotNull();
+        });
     }
 
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("[API] Successful edit club review with PATCH")
-    @Description("An authorized PATCH returns 200, and the modified field is present.")
+    @Description("An authorized PATCH returns 200. Review text, assessment, and read pages match the submitted values, and modified is present.")
     public void successfulPatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
@@ -127,8 +136,12 @@ public class ReviewsApiTests extends TestBase {
         ReviewResponseModel response = step("Edit review with PATCH and check status (200)", () ->
                 api.review.successfulPatchReview(requestData, loginResponse.access(), 1883));
 
-        step("Check modified field is present", () ->
-                assertThat(response.modified()).isNotNull());
+        step("Check updated review fields", () -> {
+            assertThat(response.review()).isEqualTo(testData.description);
+            assertThat(response.assessment()).isEqualTo(testData.randomAssessment);
+            assertThat(response.readPages()).isEqualTo(testData.readPages);
+            assertThat(response.modified()).isNotNull();
+        });
     }
 
     @Test
@@ -183,7 +196,7 @@ public class ReviewsApiTests extends TestBase {
                 testData.description, testData.randomAssessment, testData.readPages);
 
         UnauthorizedReviewModel response = step("Edit review with PUT without authorization and check status (401)", () ->
-                api.review.unauthorizedPutReview(requestData, 1883));
+                api.review.unauthorizedPutReview(requestData, testData.missingReviewId));
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo("Authentication credentials were not provided."));
@@ -199,7 +212,7 @@ public class ReviewsApiTests extends TestBase {
                 testData.description, testData.randomAssessment, testData.readPages);
 
         UnauthorizedReviewModel response = step("Edit review with PATCH without authorization and check status (401)", () ->
-                api.review.unauthorizedPatchReview(requestData, 1883));
+                api.review.unauthorizedPatchReview(requestData, testData.missingReviewId));
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo("Authentication credentials were not provided."));
@@ -217,7 +230,7 @@ public class ReviewsApiTests extends TestBase {
                 api.auth.login(loginData));
 
         ReviewRequestModel requestData = new ReviewRequestModel(1,
-                testData.description, testData.wrongRandomAssessment, testData.readPages);
+                testData.description, testData.randomAssessment, testData.readPages);
 
         SomeoneElsePutReviewResponseModel response = step("Edit someone else's review with PUT and check status (403)", () ->
                 api.review.forbiddenPutReview(requestData, loginResponse.access(), 1391));
@@ -238,7 +251,7 @@ public class ReviewsApiTests extends TestBase {
                 api.auth.login(loginData));
 
         ReviewRequestModel requestData = new ReviewRequestModel(1,
-                testData.description, testData.wrongRandomAssessment, testData.readPages);
+                testData.description, testData.randomAssessment, testData.readPages);
 
         SomeoneElsePutReviewResponseModel response = step("Edit someone else's review with PATCH and check status (403)", () ->
                 api.review.forbiddenPatchReview(requestData, loginResponse.access(), 1391));
@@ -269,7 +282,7 @@ public class ReviewsApiTests extends TestBase {
     @Description("Deleting a review without authorization returns 401.")
     public void unauthorizedDeleteReviewTest() {
         step("Delete review without authorization and check status (401)", () ->
-                api.review.unauthorizedDeleteReview(testData.randomBookClubId));
+                api.review.unauthorizedDeleteReview(testData.missingReviewId));
     }
 
     @Test
@@ -284,7 +297,7 @@ public class ReviewsApiTests extends TestBase {
                 api.auth.login(loginData));
 
         step("Delete missing review and check status (404)", () ->
-                api.review.notFoundDeleteReview(1982, loginResponse.access()));
+                api.review.notFoundDeleteReview(testData.missingReviewId, loginResponse.access()));
     }
 
     @Test

@@ -49,10 +49,10 @@ public class UpdateUserTests extends TestBase {
                 api.users.updateUserDataWithPut(updateData, loginResponse.access()));
 
         step("Check values of the fields", () -> {
-            assertThat(testData.updateUsername).isEqualTo(putResponse.username());
-            assertThat(testData.updateFirstName).isEqualTo(putResponse.firstName());
-            assertThat(testData.updateLastName).isEqualTo(putResponse.lastName());
-            assertThat(testData.updateEmail).isEqualTo(putResponse.email());
+            assertThat(putResponse.username()).isEqualTo(testData.updateUsername);
+            assertThat(putResponse.firstName()).isEqualTo(testData.updateFirstName);
+            assertThat(putResponse.lastName()).isEqualTo(testData.updateLastName);
+            assertThat(putResponse.email()).isEqualTo(testData.updateEmail);
         });
     }
 
@@ -97,7 +97,7 @@ public class UpdateUserTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check successful patch request status")
     @Description("An authorized PATCH updates one field (username, firstName, lastName, or email). The response value of that field matches the submitted one.")
-    void successfulUpdateFieldWithPatch(
+    void successfulUpdateFieldWithPatchTest(
             String caseName,
             UpdateUserPatchBodyModel body,
             Function<UpdateUserResponseModel, Object> extractor,

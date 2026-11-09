@@ -45,13 +45,13 @@ public class LogoutTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
-    @DisplayName("Check attempt logout without authorization")
-    @Description("The server rejects the request: detail is \"Token is invalid\" and code is \"token_not_valid\".")
-    public void unauthorizedLogoutTest() {
+    @DisplayName("Check logout attempt with invalid refresh token")
+    @Description("An invalid refresh token is rejected: detail is \"Token is invalid\" and code is \"token_not_valid\".")
+    public void invalidRefreshTokenLogoutTest() {
         WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(testData.wrongRefreshToken);
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshTokenData.refresh());
 
-        WrongRefreshTokenLogoutResponseModel logoutResponse = step("Trying to get response without authorization", () ->
+        WrongRefreshTokenLogoutResponseModel logoutResponse = step("Send logout request with invalid refresh token", () ->
             api.auth.logoutWithoutAuthorization(logoutData));
 
         step("Check error messages", () -> {

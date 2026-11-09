@@ -92,8 +92,7 @@ public class RegistrationUiTests extends TestBase {
 
         step("Fill registration form", () ->
                 registrationPage.setPassword(testData.randomRegistrationPassword)
-                        .confirmPassword(testData.randomRegistrationPassword)
-                        .submitForm());
+                        .confirmPassword(testData.randomRegistrationPassword));
 
         step("Send filled registration form", () ->
                 registrationPage.submitForm());
@@ -112,8 +111,7 @@ public class RegistrationUiTests extends TestBase {
                 registrationPage.openPage());
 
         step("Fill registration form", () ->
-                registrationPage.setUsername(testData.randomRegistrationUsername)
-                        .submitForm());
+                registrationPage.setUsername(testData.randomRegistrationUsername));
 
         step("Send filled registration form", () ->
                 registrationPage.submitForm());
@@ -127,7 +125,7 @@ public class RegistrationUiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check registration attempt with empty username and password")
-    @Description("Empty username and password show a validation error for the username field.")
+    @Description("Empty username and password show a validation error for both fields.")
     public void emptyCredentialsFillingRegistrationTest() {
         step("Open registration page", () ->
                 registrationPage.openPage());
@@ -135,8 +133,9 @@ public class RegistrationUiTests extends TestBase {
         step("Click submit button", () ->
                 registrationPage.submitForm());
 
-        step("Check error message", () ->
-                registrationPage.checkErrorForEmptyUsername());
+        step("Check error messages", () -> {
+            registrationPage.checkErrorForEmptyUsername();
+        });
     }
 
     @AfterEach

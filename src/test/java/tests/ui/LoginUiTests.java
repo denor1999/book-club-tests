@@ -36,7 +36,7 @@ public class LoginUiTests extends TestBase {
         step("Click submit button", () ->
                 loginPage.submitForm());
 
-        step("Check successful registration", () ->
+        step("Check profile link in header", () ->
                 loginPage.checkProfileLink());
     }
 
@@ -68,7 +68,7 @@ public class LoginUiTests extends TestBase {
         step("Click submit button", () ->
                 loginPage.submitForm());
 
-        step("Check successful registration", () ->
+        step("Check profile link in header", () ->
                 loginPage.checkProfileLink());
     }
 
@@ -82,7 +82,7 @@ public class LoginUiTests extends TestBase {
                 loginPage.openPage());
 
         step("Enter username and password", () -> {
-            loginPage.setUsername(testData.randomRegistrationUsername)
+            loginPage.setUsername(testData.loginUsername)
                     .setPassword(testData.wrongLoginPassword);
         });
 
@@ -98,7 +98,7 @@ public class LoginUiTests extends TestBase {
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with empty username")
     @Description("An empty username shows a validation error for the username field.")
-    public void emptyUsernameLoginTest () {
+    public void emptyUsernameLoginTest() {
         step("Open login page", () ->
                 loginPage.openPage());
 
@@ -118,7 +118,7 @@ public class LoginUiTests extends TestBase {
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with empty password")
     @Description("An empty password shows a validation error for the password field.")
-    public void emptyPasswordLoginTest () {
+    public void emptyPasswordLoginTest() {
         step("Open login page", () ->
                 loginPage.openPage());
 
@@ -137,8 +137,8 @@ public class LoginUiTests extends TestBase {
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
     @DisplayName("[UI] Check authorization attempt with empty username and password")
-    @Description("Empty username and password show a validation error for the username field.")
-    public void emptyCredentialsLoginTest () {
+    @Description("Empty username and password show a validation error for both fields.")
+    public void emptyCredentialsLoginTest() {
         step("Open login page", () ->
                 loginPage.openPage());
 

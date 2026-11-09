@@ -31,7 +31,7 @@ public class RegistrationApiTests extends TestBase {
                 api.users.register(registrationData));
 
         step("Check response body fields", () -> {
-            assertThat(testData.randomRegistrationUsername).isEqualTo(registrationResponse.username());
+            assertThat(registrationResponse.username()).isEqualTo(testData.randomRegistrationUsername);
             assertThat(registrationResponse.id()).isNotNull();
             assertThat(registrationResponse.firstName()).isBlank();
             assertThat(registrationResponse.lastName()).isBlank();
@@ -51,7 +51,7 @@ public class RegistrationApiTests extends TestBase {
                 api.users.register(registrationData));
 
         step("Check username in response body", () ->
-                assertThat(testData.randomRegistrationUsername).isEqualTo(registrationResponse.username()));
+                assertThat(registrationResponse.username()).isEqualTo(testData.randomRegistrationUsername));
 
         ExistingUserResponseModel reRegistrationResponse = step("Send re-registration response and check status (400)", () ->
                 api.users.existingUserRegister(registrationData));

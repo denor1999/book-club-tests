@@ -83,7 +83,7 @@ public class ClubsTests extends TestBase {
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Check successful post club response")
     @Description("An authorized club creation returns book title, authors, publication year, description, and Telegram link matching the submitted values.")
-    public void successfulPostGlubsTest() {
+    public void successfulPostClubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
@@ -109,7 +109,7 @@ public class ClubsTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check post club attempt with invalid telegram chat link")
     @Description("Creating a club with an invalid Telegram link returns \"Enter a valid URL.\"")
-    public void wrongTelegramChatLinkPostGlubsTest() {
+    public void wrongTelegramChatLinkPostClubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
@@ -130,7 +130,7 @@ public class ClubsTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check post club attempt when user unauthorized")
     @Description("Creating a club without authorization returns \"Authentication credentials were not provided.\"")
-    public void unauthorizedPostGlubsTest() {
+    public void unauthorizedPostClubsTest() {
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
@@ -273,7 +273,7 @@ public class ClubsTests extends TestBase {
                 api.auth.login(loginData));
 
         WrongPublicationYearRequestModel requestData = new WrongPublicationYearRequestModel(testData.bookTitle,
-                testData.bookAuthor, testData.bookAuthor, testData.description, testData.telegramChatLink);
+                testData.bookAuthor, testData.wrongPublicationYear, testData.description, testData.telegramChatLink);
 
         WrongPublicationYearResponseModel response = step("Send put request and check status (400)", () ->
                 api.clubs.wrongPublicationYearPutClub(requestData, testData.clubId, loginResponse.access()));
@@ -287,7 +287,7 @@ public class ClubsTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Check put club attempt with invalid telegram chat link")
     @Description("A PUT with an invalid Telegram link returns 400 and \"Enter a valid URL.\"")
-    public void wrongTelegramChatLinkPutGlubsTest() {
+    public void wrongTelegramChatLinkPutClubsTest() {
         LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->

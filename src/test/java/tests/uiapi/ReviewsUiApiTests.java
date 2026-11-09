@@ -18,7 +18,7 @@ import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-@Feature("Reviews API tests")
+@Feature("Reviews UI and API tests")
 @Tags({@Tag("ui"), @Tag("api"), @Tag("reviews")})
 public class ReviewsUiApiTests extends TestBase {
 
@@ -63,12 +63,12 @@ public class ReviewsUiApiTests extends TestBase {
         step("Fill review form", () ->
                 clubPage.setAssessment("5")
                         .setReadPages("25")
-                        .addReviewText("A very nice club!"));
+                        .addReviewText(testData.reviewText));
 
         step("Send review", () ->
                 clubPage.sendReview());
 
         step("Check created review is displayed", () ->
-                $$(".review-content").shouldHave(texts("A very nice book!")));
+                $$(".review-content").shouldHave(texts(testData.reviewText)));
     }
 }

@@ -35,8 +35,8 @@ public class LoginPage {
     }
 
     @Step("Set password {password}")
-    public LoginPage setPassword(String username) {
-        passwordInput.setValue(username);
+    public LoginPage setPassword(String password) {
+        passwordInput.setValue(password);
 
         return this;
     }
