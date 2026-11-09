@@ -34,6 +34,7 @@ dependencies {
     testImplementation "org.assertj:assertj-core:3.27.7"
     testImplementation "org.junit.jupiter:junit-jupiter"
     testImplementation "com.codeborne:selenide:$selenideVersion"
+    testImplementation "org.aeonbits.owner:owner:1.0.12"
     testImplementation "io.qameta.allure:allure-selenide:$allureVersion"
     testImplementation "tools.jackson.core:jackson-databind:3.1.0"
     testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
