@@ -1,85 +1,84 @@
 package testdata;
 
+import config.ClubConfig;
+import config.ReviewConfig;
+import config.UpdateUserConfig;
+import config.UserConfig;
 import net.datafaker.Faker;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import org.aeonbits.owner.ConfigFactory;
 
 public class TestData {
 
-    private static final Properties PROPERTIES = loadProperties();
+    private static final UserConfig userConfig;
+    private static final UpdateUserConfig updateUserConfig;
+    private static final ClubConfig clubConfig;
+    private static final ReviewConfig reviewConfig;
     private final Faker faker = new Faker();
 
-    public final String loginUsername = get("login.username");
-    public final String loginPassword = get("login.password");
-    public final String wrongLoginPassword = get("login.wrongPassword");
-    public final String expectedTokenPath = get("login.expectedTokenPath");
-    public final String expectedDetailError = get("login.expectedDetailError");
-    public final String expectedExistingUserError = get("registration.expectedExistingUserError");
+    static {
+        if (System.getProperty("env") == null) {
+            System.setProperty("env", "local");
+        }
+        userConfig = ConfigFactory.create(UserConfig.class);
+        updateUserConfig = ConfigFactory.create(UpdateUserConfig.class);
+        clubConfig = ConfigFactory.create(ClubConfig.class);
+        reviewConfig = ConfigFactory.create(ReviewConfig.class);
+    }
+
+    public final String loginUsername = userConfig.username();
+    public final String loginPassword = userConfig.password();
+    public final String wrongLoginPassword = userConfig.wrongPassword();
+    public final String expectedTokenPath = userConfig.expectedTokenPath();
+    public final String expectedDetailError = userConfig.expectedDetailError();
+    public final String expectedExistingUserError = userConfig.expectedExistingUserError();
     public final String randomRegistrationUsername = faker.name().firstName() + "_" + System.currentTimeMillis();
     public final String randomRegistrationPassword = faker.name().lastName();
     public final String wrongRegistrationUsername = faker.name().firstName() + "[]";
-    public final String emptyUsername = get("credentials.empty");
-    public final String emptyPassword = get("credentials.empty");
-    public final String wrongRefreshToken = get("login.wrongRefreshToken");
-    public final String wrongAccessToken = get("login.wrongAccessToken");
+    public final String emptyUsername = userConfig.emptyCredentials();
+    public final String emptyPassword = userConfig.emptyCredentials();
+    public final String wrongRefreshToken = userConfig.wrongRefreshToken();
+    public final String wrongAccessToken = userConfig.wrongAccessToken();
 
-    public final String updateUsername = get("update.username");
-    public final String updateFirstName = get("update.firstName");
-    public final String updateLastName = get("update.lastName");
-    public final String updateEmail = get("update.email");
+    public final String updateUsername = updateUserConfig.username();
+    public final String updateFirstName = updateUserConfig.firstName();
+    public final String updateLastName = updateUserConfig.lastName();
+    public final String updateEmail = updateUserConfig.email();
 
     public final String bookTitle = faker.name().title();
     public final String bookAuthor = faker.name().fullName();
     public final int publicationYear = faker.number().numberBetween(
-            getInt("book.publicationYear.min"),
-            getInt("book.publicationYear.max")
+            clubConfig.publicationYearMin(),
+            clubConfig.publicationYearMax()
     );
-    public final String wrongPublicationYear = get("book.publicationYear.wrong");
+    public final String wrongPublicationYear = clubConfig.wrongPublicationYear();
     public final String description = faker.name().nameWithMiddle();
-    public final String telegramChatLink = get("telegram.chatLink.prefix") + faker.name().firstName();
-    public final String wrongTelegramChatLink = get("telegram.chatLink.wrong");
+    public final String telegramChatLink = clubConfig.telegramChatLinkPrefix() + faker.name().firstName();
+    public final String wrongTelegramChatLink = clubConfig.wrongTelegramChatLink();
 
     public final Integer randomWrongBookClubId = faker.number().numberBetween(
-            getInt("club.randomWrongId.min"),
-            getInt("club.randomWrongId.max")
+            clubConfig.randomWrongIdMin(),
+            clubConfig.randomWrongIdMax()
     );
     public final Integer randomBookClubId = faker.number().numberBetween(
-            getInt("club.randomId.min"),
-            getInt("club.randomId.max")
+            clubConfig.randomIdMin(),
+            clubConfig.randomIdMax()
     );
 
-    public final Integer clubId = getInt("club.id");
-    public final Integer missingReviewId = getInt("review.missingId");
-    public final String reviewText = get("review.text");
+    public final Integer clubId = clubConfig.clubId();
+    public final Integer reviewClubId = reviewConfig.clubId();
+    public final Integer missingReviewId = reviewConfig.missingReviewId();
+    public final Integer ownReviewId = reviewConfig.ownReviewId();
+    public final Integer foreignReviewId = reviewConfig.foreignReviewId();
+    public final Integer ownReviewDeleteId = reviewConfig.ownReviewDeleteId();
+    public final Integer foreignReviewDeleteId = reviewConfig.foreignReviewDeleteId();
+    public final String reviewText = reviewConfig.reviewText();
+    public final String unauthorizedDetail = reviewConfig.unauthorizedDetail();
+    public final String wrongTokenDetail = reviewConfig.wrongTokenDetail();
+    public final String wrongTokenCode = reviewConfig.wrongTokenCode();
+    public final String wrongAssessmentError = reviewConfig.wrongAssessmentError();
+    public final String forbiddenDetail = reviewConfig.forbiddenDetail();
 
     public final Integer randomAssessment = faker.number().numberBetween(1, 5);
     public final Integer wrongRandomAssessment = faker.number().numberBetween(6, 60);
     public final Integer readPages = faker.number().numberBetween(0, 100000);
-
-    private static Properties loadProperties() {
-        Properties properties = new Properties();
-        try (InputStream input = TestData.class.getClassLoader().getResourceAsStream("test-data.properties")) {
-            if (input == null) {
-                throw new IllegalStateException("test-data.properties not found on classpath");
-            }
-            properties.load(input);
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to load test-data.properties", e);
-        }
-        return properties;
-    }
-
-    private static String get(String key) {
-        String value = PROPERTIES.getProperty(key);
-        if (value == null) {
-            throw new IllegalStateException("Missing property: " + key);
-        }
-        return value;
-    }
-
-    private static int getInt(String key) {
-        return Integer.parseInt(get(key));
-    }
 }
