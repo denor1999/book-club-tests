@@ -36,6 +36,7 @@ public class TestData {
             getInt("book.publicationYear.min"),
             getInt("book.publicationYear.max")
     );
+    public final String wrongPublicationYear = get("book.publicationYear.wrong");
     public final String description = faker.name().nameWithMiddle();
     public final String telegramChatLink = get("telegram.chatLink.prefix") + faker.name().firstName();
     public final String wrongTelegramChatLink = get("telegram.chatLink.wrong");
@@ -50,6 +51,8 @@ public class TestData {
     );
 
     public final Integer clubId = getInt("club.id");
+    public final Integer missingReviewId = getInt("review.missingId");
+    public final String reviewText = get("review.text");
 
     public final Integer randomAssessment = faker.number().numberBetween(1, 5);
     public final Integer wrongRandomAssessment = faker.number().numberBetween(6, 60);
