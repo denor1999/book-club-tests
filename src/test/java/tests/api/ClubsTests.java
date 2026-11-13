@@ -5,6 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import models.clubs.*;
 import models.clubs.delete.DeleteClubWithErrorResponseModel;
 import models.clubs.get.ClubResultsModel;
@@ -20,7 +21,8 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Feature("Interaction with clubs API tests")
+@Feature("Club tests")
+@Story("API")
 @Tags({@Tag("api"), @Tag("clubs")})
 public class ClubsTests extends TestBase {
 

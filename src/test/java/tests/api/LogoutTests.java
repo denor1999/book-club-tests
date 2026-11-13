@@ -5,6 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import models.login.LoginBodyModel;
 import models.login.WrongRefreshTokenLoginBodyModel;
 import models.logout.LogoutBodyModel;
@@ -18,7 +19,8 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@Feature("Logout API tests")
+@Feature("Logout tests")
+@Story("API")
 @Tags({@Tag("api"), @Tag("logout")})
 public class LogoutTests extends TestBase {
 

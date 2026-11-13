@@ -5,6 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.update_user.UnauthorizedUserUpdateWithPutResponseModel;
@@ -27,7 +28,8 @@ import java.util.stream.Stream;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@Feature("Update user data API tests")
+@Feature("Update user tests")
+@Story("API")
 @Tags({@Tag("api"), @Tag("user")})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UpdateUserTests extends TestBase {

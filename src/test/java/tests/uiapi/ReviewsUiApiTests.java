@@ -7,6 +7,7 @@ import io.qameta.allure.Flaky;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import org.junit.jupiter.api.*;
@@ -16,7 +17,8 @@ import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-@Feature("Reviews UI and API tests")
+@Feature("Review tests")
+@Story("UI and API")
 @Tags({@Tag("ui"), @Tag("api"), @Tag("reviews")})
 public class ReviewsUiApiTests extends TestBase {
 

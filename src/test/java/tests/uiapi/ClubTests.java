@@ -6,6 +6,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.registration.RegistrationBodyModel;
@@ -17,7 +18,8 @@ import static com.codeborne.selenide.Selenide.localStorage;
 import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
-@Feature("Interaction with clubs API + UI tests")
+@Feature("Club tests")
+@Story("UI and API")
 @Tags({@Tag("ui"), @Tag("api"), @Tag("clubs")})
 public class ClubTests extends TestBase {
 

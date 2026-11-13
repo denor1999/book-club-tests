@@ -6,6 +6,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -15,7 +16,8 @@ import tests.TestBase;
 
 import static io.qameta.allure.Allure.step;
 
-@Feature("Registration form UI tests")
+@Feature("Registration tests")
+@Story("UI")
 @Tags({@Tag("ui"), @Tag("registration")})
 public class RegistrationUiTests extends TestBase {
 

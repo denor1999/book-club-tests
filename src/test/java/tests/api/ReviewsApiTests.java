@@ -5,6 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.reviews.*;
@@ -17,7 +18,8 @@ import tests.TestBase;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Feature("Reviews API tests")
+@Feature("Review tests")
+@Story("API")
 @Tags({@Tag("api"), @Tag("reviews")})
 public class ReviewsApiTests extends TestBase {
 
