@@ -49,9 +49,9 @@ public class RegistrationUiTests extends TestBase {
                 registrationPage.openPage());
 
         step("Fill registration form for existing user", () ->
-                registrationPage.setUsername(testData.loginUsername)
-                        .setPassword(testData.loginPassword)
-                        .confirmPassword(testData.loginPassword));
+                registrationPage.setUsername(config.auth.username())
+                        .setPassword(config.auth.password())
+                        .confirmPassword(config.auth.password()));
 
         step("Send filled registration form", () ->
                 registrationPage.submitForm());

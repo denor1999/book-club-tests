@@ -58,7 +58,7 @@ public class RegistrationApiTests extends TestBase {
 
         step("Check error message", () -> {
             String actualError = reRegistrationResponse.username().getFirst();
-            assertThat(actualError).isEqualTo(testData.expectedExistingUserError);
+            assertThat(actualError).isEqualTo(config.auth.expectedExistingUserError());
         });
     }
 
@@ -86,7 +86,7 @@ public class RegistrationApiTests extends TestBase {
     @DisplayName("[API] Check registration attempt with empty username")
     @Description("The server returns 400, and the username field contains \"This field may not be blank.\"")
     public void emptyUsernameRegistrationTest() {
-        RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
+        RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(config.auth.emptyCredentials(), testData.randomRegistrationPassword);
 
         WrongUsernameRegistrationResponseModel registrationResponse = step("Send registration with empty username response and check status (400)", () ->
                 api.users.wrongUsernameRegister(emptyUsernameData));
@@ -103,7 +103,7 @@ public class RegistrationApiTests extends TestBase {
     @DisplayName("[API] Check registration attempt with empty password")
     @Description("The server returns 400, and the password field contains \"This field may not be blank.\"")
     public void emptyPasswordRegistrationTest() {
-        RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
+        RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, config.auth.emptyCredentials());
 
         WrongPasswordRegistrationResponseModel registrationResponse = step("Send registration with empty password response and check status (400)", () ->
                 api.users.wrongPasswordRegister(emptyPasswordData));
@@ -120,7 +120,7 @@ public class RegistrationApiTests extends TestBase {
     @DisplayName("[API] Check registration attempt with empty username and password")
     @Description("The server returns 400, and both username and password contain \"This field may not be blank.\"")
     public void emptyCredentialsRegistrationTest() {
-        RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(testData.emptyUsername, testData.emptyPassword);
+        RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(config.auth.emptyCredentials(), config.auth.emptyCredentials());
 
         WrongCredentialsResponseModel registrationResponse = step("Send registration with empty username and password and check status (400)", () ->
                 api.users.wrongCredentialsRegister(emptyUsernameAndPasswordData));

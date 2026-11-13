@@ -1,5 +1,6 @@
 package tests.uiapi;
 
+import helpers.Attach;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Flaky;
@@ -8,10 +9,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import tests.TestBase;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
@@ -29,7 +27,7 @@ public class ReviewsUiApiTests extends TestBase {
     @Description("After submitting a review, it is displayed on the club page with the text \"A very nice book!\".")
     @Flaky
     public void successfulSendReviewTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -52,23 +50,31 @@ public class ReviewsUiApiTests extends TestBase {
         });
 
         step("Select 'Мои клубы' filter", () ->
-                homePage.selectOption("Мои клубы"));
+                homePage.selectOption(config.review.filter()));
 
         step("Open club page", () ->
-                homePage.openClubPage("Chief Metrics Coordinator"));
+                homePage.openClubPage(config.review.clubName()));
 
         step("Open add review form", () ->
                 clubPage.addReview());
 
         step("Fill review form", () ->
-                clubPage.setAssessment("5")
-                        .setReadPages("25")
-                        .addReviewText(testData.reviewText));
+                clubPage.setAssessment(config.review.assessment())
+                        .setReadPages(config.review.readPages())
+                        .addReviewText(config.review.text()));
 
         step("Send review", () ->
                 clubPage.sendReview());
 
         step("Check created review is displayed", () ->
-                $$(".review-content").shouldHave(texts(testData.reviewText)));
+                $$(".review-content").shouldHave(texts(config.review.text())));
+    }
+
+    @AfterEach
+    void addAttachments() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
     }
 }

@@ -2,6 +2,7 @@ package tests;
 
 import api.ApiClient;
 import com.codeborne.selenide.Configuration;
+import config.ProjectConfig;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
@@ -25,6 +26,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class TestBase {
 
+    protected final ProjectConfig config = new ProjectConfig();
     protected final TestData testData = new TestData();
     protected final ApiClient api = new ApiClient();
     protected final RegistrationPage registrationPage = new RegistrationPage();

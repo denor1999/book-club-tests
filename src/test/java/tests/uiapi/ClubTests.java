@@ -1,5 +1,6 @@
 package tests.uiapi;
 
+import helpers.Attach;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -9,10 +10,7 @@ import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.RegistrationResponseSuccessfulModel;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import tests.TestBase;
 
 import static com.codeborne.selenide.Selenide.localStorage;
@@ -100,5 +98,13 @@ public class ClubTests extends TestBase {
 
         step("Check owner cannot leave the club", () ->
                 clubPage.checkLeaveError());
+    }
+
+    @AfterEach
+    void addAttachments() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
     }
 }

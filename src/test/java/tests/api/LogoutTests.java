@@ -28,7 +28,7 @@ public class LogoutTests extends TestBase {
     @DisplayName("Check successful logout response")
     @Description("The server returns 200 and an empty response body {}.")
     public void successfulLogoutTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         String refreshToken = step("Get refresh token with authorization", () ->
             api.auth.loginAndGetRefreshToken(loginData));
@@ -48,7 +48,7 @@ public class LogoutTests extends TestBase {
     @DisplayName("Check logout attempt with invalid refresh token")
     @Description("An invalid refresh token is rejected: detail is \"Token is invalid\" and code is \"token_not_valid\".")
     public void invalidRefreshTokenLogoutTest() {
-        WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(testData.wrongRefreshToken);
+        WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(config.auth.wrongRefreshToken());
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshTokenData.refresh());
 
         WrongRefreshTokenLogoutResponseModel logoutResponse = step("Send logout request with invalid refresh token", () ->

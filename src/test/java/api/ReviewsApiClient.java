@@ -9,11 +9,11 @@ import static specs.reviews.ReviewSpec.*;
 public class ReviewsApiClient {
 
     @Step("Send get reviews request and check status (200)")
-    public ReviewsGetResponseModel getReviews() {
+    public ReviewsGetResponseModel getReviews(Integer clubId) {
         return given()
                 .spec(reviewRequestSpec)
                 .when()
-                .get("clubs/reviews/?club=1")
+                .get("clubs/reviews/?club=" + clubId)
                 .then()
                 .spec(successfulGetReviewsSpec)
                 .extract()

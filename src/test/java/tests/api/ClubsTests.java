@@ -84,7 +84,7 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check successful post club response")
     @Description("An authorized club creation returns book title, authors, publication year, description, and Telegram link matching the submitted values.")
     public void successfulPostClubsTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -110,13 +110,13 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check post club attempt with invalid telegram chat link")
     @Description("Creating a club with an invalid Telegram link returns \"Enter a valid URL.\"")
     public void wrongTelegramChatLinkPostClubsTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
-                testData.publicationYear, testData.description, testData.wrongTelegramChatLink);
+                testData.publicationYear, testData.description, config.club.wrongTelegramChatLink());
 
         WrongTelegramChatLinkResponseModel response = step("Create new book club and check status code", () ->
                 api.clubs.wrongTelegramChatLinkPostClub(requestData, loginResponse.access()));
@@ -147,7 +147,7 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check successful delete club response")
     @Description("After a club is created, an authorized delete returns 204.")
     public void successfulDeleteClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -181,7 +181,7 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check delete attempt for missing club")
     @Description("Deleting a missing club returns \"No Club matches the given query.\"")
     public void deleteMissingClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -199,7 +199,7 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check successful put club request status")
     @Description("An authorized PUT returns 200. Title, authors, year, description, and Telegram link match the submitted values.")
     public void successfulPutClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -208,7 +208,7 @@ public class ClubsTests extends TestBase {
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
         ClubUpsertResponseModel response = step("Send put request and check status (200)", () ->
-                api.clubs.successfulPutClub(requestData, testData.clubId, loginResponse.access()));
+                api.clubs.successfulPutClub(requestData, config.club.id(), loginResponse.access()));
 
         step("Check content of the fields", () -> {
             assertThat(response.bookTitle()).isEqualTo(testData.bookTitle);
@@ -225,7 +225,7 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check put club attempt with empty book title")
     @Description("A PUT without a book title returns 400 and \"This field is required.\" for bookTitle.")
     public void emptyBookTitlePutClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -234,7 +234,7 @@ public class ClubsTests extends TestBase {
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
         EmptyBookTitleResponseModel response = step("Send put request and check status (400)", () ->
-                api.clubs.emptyBookTitlePutClub(requestData, testData.clubId, loginResponse.access()));
+                api.clubs.emptyBookTitlePutClub(requestData, config.club.id(), loginResponse.access()));
 
         step("Check content of the fields", () ->
             assertThat(response.bookTitle().getFirst()).isEqualTo("This field is required."));
@@ -246,7 +246,7 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check put club attempt with empty book author")
     @Description("A PUT without an author returns 400 and \"This field is required.\" for bookAuthors.")
     public void emptyBookAuthorPutClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
@@ -255,7 +255,7 @@ public class ClubsTests extends TestBase {
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
         EmptyBookAuthorResponseModel response = step("Send put request and check status (400)", () ->
-                api.clubs.emptyBookAuthorPutClub(requestData, testData.clubId, loginResponse.access()));
+                api.clubs.emptyBookAuthorPutClub(requestData, config.club.id(), loginResponse.access()));
 
         step("Check content of the fields", () ->
             assertThat(response.bookAuthors().getFirst()).isEqualTo("This field is required."));
@@ -267,16 +267,16 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check put club attempt with wrong publication year")
     @Description("A PUT with a non-numeric publication year returns 400 and \"A valid integer is required.\"")
     public void wrongPublicationYearPutClubTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
         WrongPublicationYearRequestModel requestData = new WrongPublicationYearRequestModel(testData.bookTitle,
-                testData.bookAuthor, testData.wrongPublicationYear, testData.description, testData.telegramChatLink);
+                testData.bookAuthor, config.club.wrongPublicationYear(), testData.description, testData.telegramChatLink);
 
         WrongPublicationYearResponseModel response = step("Send put request and check status (400)", () ->
-                api.clubs.wrongPublicationYearPutClub(requestData, testData.clubId, loginResponse.access()));
+                api.clubs.wrongPublicationYearPutClub(requestData, config.club.id(), loginResponse.access()));
 
         step("Check error message", () ->
                 assertThat(response.publicationYear().getFirst()).isEqualTo("A valid integer is required."));
@@ -288,16 +288,16 @@ public class ClubsTests extends TestBase {
     @DisplayName("Check put club attempt with invalid telegram chat link")
     @Description("A PUT with an invalid Telegram link returns 400 and \"Enter a valid URL.\"")
     public void wrongTelegramChatLinkPutClubsTest() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
         ClubUpsertRequestModel requestData = new ClubUpsertRequestModel(testData.bookTitle, testData.bookAuthor,
-                testData.publicationYear, testData.description, testData.wrongTelegramChatLink);
+                testData.publicationYear, testData.description, config.club.wrongTelegramChatLink());
 
         WrongTelegramChatLinkResponseModel response = step("Create new book club and check status code (400)", () ->
-                api.clubs.wrongTelegramChatLinkPutClub(requestData, testData.clubId, loginResponse.access()));
+                api.clubs.wrongTelegramChatLinkPutClub(requestData, config.club.id(), loginResponse.access()));
 
         step("Check error message", () ->
                 assertThat(response.telegramChatLink().getFirst()).isEqualTo("Enter a valid URL."));
@@ -313,7 +313,7 @@ public class ClubsTests extends TestBase {
                 testData.publicationYear, testData.description, testData.telegramChatLink);
 
         UnauthorizedClubResponseModel unauthorizedPutResponse = step("Send put request and check status (401)", () ->
-                api.clubs.unauthorizedPutClub(requestData, testData.clubId));
+                api.clubs.unauthorizedPutClub(requestData, config.club.id()));
 
         step("Check error message", () ->
                 assertThat(unauthorizedPutResponse.detail()).isEqualTo("Authentication credentials were not provided."));

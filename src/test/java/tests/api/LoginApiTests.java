@@ -28,7 +28,7 @@ public class LoginApiTests extends TestBase {
     @DisplayName("[API] Check successful login response")
     @Description("The server returns 200. Access and refresh tokens are not blank, start with the expected prefix, and differ from each other.")
     public void successfulLoginTests() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
             api.auth.login(loginData));
@@ -37,8 +37,8 @@ public class LoginApiTests extends TestBase {
         step("Check refresh and access tokens", () -> {
             String actualAccessToken = loginResponse.access();
             String actualRefreshToken = loginResponse.refresh();
-            assertThat(actualAccessToken).startsWith(testData.expectedTokenPath);
-            assertThat(actualRefreshToken).startsWith(testData.expectedTokenPath);
+            assertThat(actualAccessToken).startsWith(config.auth.expectedTokenPath());
+            assertThat(actualRefreshToken).startsWith(config.auth.expectedTokenPath());
             assertThat(actualAccessToken).isNotEqualTo(actualRefreshToken);
         });
     }
@@ -49,14 +49,14 @@ public class LoginApiTests extends TestBase {
     @DisplayName("[API] Check authorization attempt with wrong password")
     @Description("The server returns 401, and the detail field contains the wrong-credentials error.")
     public void wrongCredentialsLoginTests() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.wrongLoginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.wrongPassword());
 
         WrongCredentialsLoginResponseModel loginResponse = step("Send login request with wrong credentials and check status (401)", () ->
                 api.auth.loginWithWrongCredentials(loginData));
 
         step("Check error message", () -> {
             String actualDetailError = loginResponse.detail();
-            assertThat(actualDetailError).isEqualTo(testData.expectedDetailError);
+            assertThat(actualDetailError).isEqualTo(config.auth.expectedDetailError());
         });
     }
 
@@ -66,7 +66,7 @@ public class LoginApiTests extends TestBase {
     @DisplayName("[API] Check authorization attempt with empty username")
     @Description("The server returns 400, and the username field contains \"This field may not be blank.\"")
     public void emptyUsernameLoginTest () {
-        LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.randomRegistrationPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.emptyCredentials(), testData.randomRegistrationPassword);
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty username and check status (400)", () ->
             api.auth.emptyUsernameLogin(loginData));
@@ -83,7 +83,7 @@ public class LoginApiTests extends TestBase {
     @DisplayName("[API] Check authorization attempt with empty password")
     @Description("The server returns 400, and the password field contains \"This field may not be blank.\"")
     public void emptyPasswordLoginTest () {
-        LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername, testData.emptyPassword);
+        LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername, config.auth.emptyCredentials());
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty password and check status (400)", () ->
                 api.auth.emptyPasswordLogin(loginData));
@@ -100,7 +100,7 @@ public class LoginApiTests extends TestBase {
     @DisplayName("[API] Check authorization attempt with empty username and password")
     @Description("The server returns 400, and both username and password contain \"This field may not be blank.\"")
     public void emptyCredentialsLoginTest () {
-        LoginBodyModel loginData = new LoginBodyModel(testData.emptyUsername, testData.emptyPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.emptyCredentials(), config.auth.emptyCredentials());
 
         EmptyCredentialsLoginResponseModel loginResponse = step("Send login request with empty username and password and check status (400)", () ->
                 api.auth.emptyCredentialsLogin(loginData));

@@ -29,8 +29,8 @@ public class LoginUiTests extends TestBase {
                 loginPage.openPage());
 
         step("Enter username and password", () -> {
-            loginPage.setUsername(testData.loginUsername)
-                    .setPassword(testData.loginPassword);
+            loginPage.setUsername(config.auth.username())
+                    .setPassword(config.auth.password());
         });
 
         step("Click submit button", () ->
@@ -82,8 +82,8 @@ public class LoginUiTests extends TestBase {
                 loginPage.openPage());
 
         step("Enter username and password", () -> {
-            loginPage.setUsername(testData.loginUsername)
-                    .setPassword(testData.wrongLoginPassword);
+            loginPage.setUsername(config.auth.username())
+                    .setPassword(config.auth.wrongPassword());
         });
 
         step("Click submit button", () ->
@@ -103,7 +103,7 @@ public class LoginUiTests extends TestBase {
                 loginPage.openPage());
 
         step("Enter username and password", () -> {
-            loginPage.setPassword(testData.loginPassword);
+            loginPage.setPassword(config.auth.password());
         });
 
         step("Click submit button", () ->
@@ -123,7 +123,7 @@ public class LoginUiTests extends TestBase {
                 loginPage.openPage());
 
         step("Enter username and password", () -> {
-            loginPage.setUsername(testData.loginUsername);
+            loginPage.setUsername(config.auth.username());
         });
 
         step("Submit form", () ->

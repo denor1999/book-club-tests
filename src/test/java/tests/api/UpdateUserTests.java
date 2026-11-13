@@ -38,21 +38,21 @@ public class UpdateUserTests extends TestBase {
     @DisplayName("Check successful put request status")
     @Description("An authorized PUT updates username, firstName, lastName, and email. The response values match the submitted ones.")
     public void successfulUpdateWithPutFields() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
                 api.auth.login(loginData));
 
-        UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
+        UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(config.updateUser.username(), config.updateUser.firstName(), config.updateUser.lastName(), config.updateUser.email());
 
         UpdateUserResponseModel putResponse = step("Trying to change value of the fields", () ->
                 api.users.updateUserDataWithPut(updateData, loginResponse.access()));
 
         step("Check values of the fields", () -> {
-            assertThat(putResponse.username()).isEqualTo(testData.updateUsername);
-            assertThat(putResponse.firstName()).isEqualTo(testData.updateFirstName);
-            assertThat(putResponse.lastName()).isEqualTo(testData.updateLastName);
-            assertThat(putResponse.email()).isEqualTo(testData.updateEmail);
+            assertThat(putResponse.username()).isEqualTo(config.updateUser.username());
+            assertThat(putResponse.firstName()).isEqualTo(config.updateUser.firstName());
+            assertThat(putResponse.lastName()).isEqualTo(config.updateUser.lastName());
+            assertThat(putResponse.email()).isEqualTo(config.updateUser.email());
         });
     }
 
@@ -62,7 +62,7 @@ public class UpdateUserTests extends TestBase {
     @DisplayName("Check put request attempt when user unauthorized")
     @Description("Without authorization the server returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedUpdateFields() {
-        UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
+        UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(config.updateUser.username(), config.updateUser.firstName(), config.updateUser.lastName(), config.updateUser.email());
 
         UnauthorizedUserUpdateWithPutResponseModel putResponse = step("Trying to change values of the fields without authorization", () ->
                 api.users.unauthorizedUserUpdate(updateData));
@@ -79,12 +79,12 @@ public class UpdateUserTests extends TestBase {
     @DisplayName("Send PUT request with URI without '/' ")
     @Description("A PUT to a URI without a trailing slash succeeds for an authorized user.")
     public void redirectUpdateFields() {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
                 api.auth.login(loginData));
 
-        UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(testData.updateUsername, testData.updateFirstName, testData.updateLastName, testData.updateEmail);
+        UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(config.updateUser.username(), config.updateUser.firstName(), config.updateUser.lastName(), config.updateUser.email());
 
         step("Trying to change values of the fields using URI without '/' ", () ->
                 api.users.redirectUpdate(updateData, loginResponse.access()));
@@ -103,7 +103,7 @@ public class UpdateUserTests extends TestBase {
             Function<UpdateUserResponseModel, Object> extractor,
             Object expected
     ) {
-        LoginBodyModel loginData = new LoginBodyModel(testData.loginUsername, testData.loginPassword);
+        LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
                 api.auth.login(loginData));
@@ -118,21 +118,21 @@ public class UpdateUserTests extends TestBase {
     Stream<Arguments> patchCases() {
         return Stream.of(
                 Arguments.of("username",
-                        UpdateUserPatchBodyModel.withUsername(testData.updateUsername),
+                        UpdateUserPatchBodyModel.withUsername(config.updateUser.username()),
                         (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::username,
-                        testData.updateUsername),
+                        config.updateUser.username()),
                 Arguments.of("firstName",
-                        UpdateUserPatchBodyModel.withFirstName(testData.updateFirstName),
+                        UpdateUserPatchBodyModel.withFirstName(config.updateUser.firstName()),
                         (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::firstName,
-                        testData.updateFirstName),
+                        config.updateUser.firstName()),
                 Arguments.of("lastName",
-                        UpdateUserPatchBodyModel.withLastName(testData.updateLastName),
+                        UpdateUserPatchBodyModel.withLastName(config.updateUser.lastName()),
                         (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::lastName,
-                        testData.updateLastName),
+                        config.updateUser.lastName()),
                 Arguments.of("email",
-                        UpdateUserPatchBodyModel.withEmail(testData.updateEmail),
+                        UpdateUserPatchBodyModel.withEmail(config.updateUser.email()),
                         (Function<UpdateUserResponseModel, Object>) UpdateUserResponseModel::email,
-                        testData.updateEmail)
+                        config.updateUser.email())
         );
     }
 }
