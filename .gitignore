@@ -8,4 +8,4 @@ settings.gradle
 out/
 allure-results/
 
-test-data.properties
+local.properties
