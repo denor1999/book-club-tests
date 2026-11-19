@@ -34,6 +34,9 @@ public class TestData {
             config.review.assessmentMin(),
             config.review.assessmentMax()
     );
+    public final Integer updatedAssessment = randomAssessment.equals(config.review.assessmentMax() - 1)
+            ? config.review.assessmentMin()
+            : randomAssessment + 1;
     public final Integer wrongRandomAssessment = faker.number().numberBetween(
             config.review.wrongAssessmentMin(),
             config.review.wrongAssessmentMax()
@@ -42,4 +45,6 @@ public class TestData {
             config.review.readPagesMin(),
             config.review.readPagesMax()
     );
+    public final Integer updatedReadPages = readPages + 1;
+    public final String updatedDescription = faker.name().nameWithMiddle() + "_" + System.currentTimeMillis();
 }

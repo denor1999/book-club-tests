@@ -6,6 +6,8 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
+import models.clubs.ClubUpsertRequestModel;
+import models.clubs.ClubUpsertResponseModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.reviews.*;
@@ -43,19 +45,24 @@ public class ReviewsApiTests extends TestBase {
     @Description("An authorized user creates a review for an existing club. The server returns 201, and id, club, text, assessment, and read pages match the submitted values.")
     public void successfulPostReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
+        ClubUpsertRequestModel clubRequest = new ClubUpsertRequestModel(
+                testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
+                testData.description, testData.telegramChatLink);
+        ReviewRequestModel requestData = new ReviewRequestModel(null,
+                testData.description, testData.randomAssessment, testData.readPages);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(config.club.id(),
-                testData.description, testData.randomAssessment, testData.readPages);
+        ClubUpsertResponseModel club = step("Create club", () ->
+                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
 
         ReviewResponseModel response = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(requestData, loginResponse.access()));
+                api.review.successfulPostReview(requestData.withClub(club.id()), loginResponse.access()));
 
         step("Check created review fields", () -> {
             assertThat(response.id()).isNotNull();
-            assertThat(response.club()).isEqualTo(config.club.id());
+            assertThat(response.club()).isEqualTo(club.id());
             assertThat(response.review()).isEqualTo(testData.description);
             assertThat(response.assessment()).isEqualTo(testData.randomAssessment);
             assertThat(response.readPages()).isEqualTo(testData.readPages);
@@ -103,20 +110,34 @@ public class ReviewsApiTests extends TestBase {
     @Description("An authorized PUT returns 200. Review text, assessment, and read pages match the submitted values, and modified is present.")
     public void successfulPutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
+        ClubUpsertRequestModel clubRequest = new ClubUpsertRequestModel(
+                testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
+                testData.description, testData.telegramChatLink);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
+        ClubUpsertResponseModel club = step("Create club", () ->
+                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+
+        ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
+        ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
+                testData.updatedDescription, testData.updatedAssessment, testData.updatedReadPages);
+
+        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
+                api.review.successfulPostReview(createReviewData, loginResponse.access()));
+
         ReviewResponseModel response = step("Edit review with PUT and check status (200)", () ->
-                api.review.successfulPutReview(requestData, loginResponse.access(), config.review.ownId()));
+                api.review.successfulPutReview(updateReviewData, loginResponse.access(), createdReview.id()));
 
         step("Check updated review fields", () -> {
-            assertThat(response.review()).isEqualTo(testData.description);
-            assertThat(response.assessment()).isEqualTo(testData.randomAssessment);
-            assertThat(response.readPages()).isEqualTo(testData.readPages);
+            assertThat(response.id()).isEqualTo(createdReview.id());
+            assertThat(response.club()).isEqualTo(club.id());
+            assertThat(response.review()).isEqualTo(testData.updatedDescription);
+            assertThat(response.assessment()).isEqualTo(testData.updatedAssessment);
+            assertThat(response.readPages()).isEqualTo(testData.updatedReadPages);
             assertThat(response.modified()).isNotNull();
         });
     }
@@ -128,20 +149,34 @@ public class ReviewsApiTests extends TestBase {
     @Description("An authorized PATCH returns 200. Review text, assessment, and read pages match the submitted values, and modified is present.")
     public void successfulPatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
+        ClubUpsertRequestModel clubRequest = new ClubUpsertRequestModel(
+                testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
+                testData.description, testData.telegramChatLink);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
+        ClubUpsertResponseModel club = step("Create club", () ->
+                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+
+        ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
+        ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
+                testData.updatedDescription, testData.updatedAssessment, testData.updatedReadPages);
+
+        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
+                api.review.successfulPostReview(createReviewData, loginResponse.access()));
+
         ReviewResponseModel response = step("Edit review with PATCH and check status (200)", () ->
-                api.review.successfulPatchReview(requestData, loginResponse.access(), config.review.ownId()));
+                api.review.successfulPatchReview(updateReviewData, loginResponse.access(), createdReview.id()));
 
         step("Check updated review fields", () -> {
-            assertThat(response.review()).isEqualTo(testData.description);
-            assertThat(response.assessment()).isEqualTo(testData.randomAssessment);
-            assertThat(response.readPages()).isEqualTo(testData.readPages);
+            assertThat(response.id()).isEqualTo(createdReview.id());
+            assertThat(response.club()).isEqualTo(club.id());
+            assertThat(response.review()).isEqualTo(testData.updatedDescription);
+            assertThat(response.assessment()).isEqualTo(testData.updatedAssessment);
+            assertThat(response.readPages()).isEqualTo(testData.updatedReadPages);
             assertThat(response.modified()).isNotNull();
         });
     }
@@ -153,15 +188,27 @@ public class ReviewsApiTests extends TestBase {
     @Description("A PUT with an assessment greater than 5 returns 400 and \"Ensure this value is less than or equal to 5.\"")
     public void wrongAssessmentValuePutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
+        ClubUpsertRequestModel clubRequest = new ClubUpsertRequestModel(
+                testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
+                testData.description, testData.telegramChatLink);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
-                testData.description, testData.wrongRandomAssessment, testData.readPages);
+        ClubUpsertResponseModel club = step("Create club", () ->
+                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+
+        ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
+                testData.description, testData.randomAssessment, testData.readPages);
+
+        ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
+                testData.updatedDescription, testData.wrongRandomAssessment, testData.updatedReadPages);
+
+        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
+                api.review.successfulPostReview(createReviewData, loginResponse.access()));
 
         WrongAssessmentReviewResponseModel response = step("Edit review with PUT and wrong assessment and check status (400)", () ->
-                api.review.wrongAssessmentPutReview(requestData, loginResponse.access(), config.review.ownId()));
+                api.review.wrongAssessmentPutReview(updateReviewData, loginResponse.access(), createdReview.id()));
 
         step("Check error message", () ->
                 assertThat(response.assessment().getFirst()).isEqualTo(config.review.assessmentMaxError()));
@@ -174,15 +221,27 @@ public class ReviewsApiTests extends TestBase {
     @Description("A PATCH with an assessment greater than 5 returns 400 and \"Ensure this value is less than or equal to 5.\"")
     public void wrongAssessmentValuePatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
+        ClubUpsertRequestModel clubRequest = new ClubUpsertRequestModel(
+                testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
+                testData.description, testData.telegramChatLink);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
-        ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
-                testData.description, testData.wrongRandomAssessment, testData.readPages);
+        ClubUpsertResponseModel club = step("Create club", () ->
+                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+
+        ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
+                testData.description, testData.randomAssessment, testData.readPages);
+
+        ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
+                testData.updatedDescription, testData.wrongRandomAssessment, testData.updatedReadPages);
+
+        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
+                api.review.successfulPostReview(createReviewData, loginResponse.access()));
 
         WrongAssessmentReviewResponseModel response = step("Edit review with PATCH and wrong assessment and check status (400)", () ->
-                api.review.wrongAssessmentPatchReview(requestData, loginResponse.access(), config.review.ownId()));
+                api.review.wrongAssessmentPatchReview(updateReviewData, loginResponse.access(), createdReview.id()));
 
         step("Check error message", () ->
                 assertThat(response.assessment().getFirst()).isEqualTo(config.review.assessmentMaxError()));
@@ -269,12 +328,24 @@ public class ReviewsApiTests extends TestBase {
     @Description("Deleting one's own review while authorized returns 204.")
     public void successfulDeleteReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
+        ClubUpsertRequestModel clubRequest = new ClubUpsertRequestModel(
+                testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
+                testData.description, testData.telegramChatLink);
 
         SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
                 api.auth.login(loginData));
 
+        ClubUpsertResponseModel club = step("Create club", () ->
+                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+
+        ReviewRequestModel requestData = new ReviewRequestModel(club.id(),
+                testData.description, testData.randomAssessment, testData.readPages);
+
+        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
+                api.review.successfulPostReview(requestData, loginResponse.access()));
+
         step("Delete review and check status (204)", () ->
-                api.review.successfulDeleteReview(config.review.ownDeleteId(), loginResponse.access()));
+                api.review.successfulDeleteReview(createdReview.id(), loginResponse.access()));
     }
 
     @Test
