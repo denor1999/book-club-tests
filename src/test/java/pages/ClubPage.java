@@ -18,7 +18,7 @@ public class ClubPage {
 
     @Step("Click add review button")
     public ClubPage addReview() {
-        reviewButton.click();
+        reviewButton.shouldBe(visible).click();
 
         return this;
     }

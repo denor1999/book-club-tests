@@ -38,10 +38,11 @@ public class HomePage {
         return this;
     }
 
-    @Step("Open club page {clubName}")
-    public void openClubPage(String clubName) {
-        clubCard.findBy(text(clubName)).
-                $(".open-btn").click();
+    @Step("Join club {clubName}")
+    public HomePage joinClub(String clubName) {
+        clubCard.findBy(text(clubName)).$(".join-btn").click();
+
+        return this;
     }
 
     @Step("Open club from list {clubName}")
