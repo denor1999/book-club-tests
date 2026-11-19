@@ -71,12 +71,4 @@ public class ReviewsUiApiTests extends TestBase {
         step("Check created review is displayed", () ->
                 $$(".review-content").shouldHave(texts(config.review.text())));
     }
-
-    @AfterEach
-    void addAttachments() {
-        Attach.screenshotAs("Last screenshot");
-        Attach.pageSource();
-        Attach.browserConsoleLogs();
-        Attach.addVideo();
-    }
 }

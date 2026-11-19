@@ -101,12 +101,4 @@ public class ClubTests extends TestBase {
         step("Check owner cannot leave the club", () ->
                 clubPage.checkLeaveError());
     }
-
-    @AfterEach
-    void addAttachments() {
-        Attach.screenshotAs("Last screenshot");
-        Attach.pageSource();
-        Attach.browserConsoleLogs();
-        Attach.addVideo();
-    }
 }

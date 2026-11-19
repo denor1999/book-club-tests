@@ -150,12 +150,4 @@ public class LoginUiTests extends TestBase {
         step("Check error message", () ->
                 loginPage.checkErrorMessageForEmptyCredentials());
     }
-
-    @AfterEach
-    void addAttachments() {
-        Attach.screenshotAs("Last screenshot");
-        Attach.pageSource();
-        Attach.browserConsoleLogs();
-        Attach.addVideo();
-    }
 }
