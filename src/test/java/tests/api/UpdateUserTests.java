@@ -42,13 +42,11 @@ public class UpdateUserTests extends TestBase {
     public void successfulUpdateWithPutFields() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(config.updateUser.username(), config.updateUser.firstName(), config.updateUser.lastName(), config.updateUser.email());
 
-        UpdateUserResponseModel putResponse = step("Trying to change value of the fields", () ->
-                api.users.updateUserDataWithPut(updateData, loginResponse.access()));
+        UpdateUserResponseModel putResponse = api.users.updateUserDataWithPut(updateData, loginResponse.access());
 
         step("Check values of the fields", () -> {
             assertThat(putResponse.username()).isEqualTo(config.updateUser.username());
@@ -66,8 +64,7 @@ public class UpdateUserTests extends TestBase {
     public void unauthorizedUpdateFields() {
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(config.updateUser.username(), config.updateUser.firstName(), config.updateUser.lastName(), config.updateUser.email());
 
-        UnauthorizedUserUpdateWithPutResponseModel putResponse = step("Trying to change values of the fields without authorization", () ->
-                api.users.unauthorizedUserUpdate(updateData));
+        UnauthorizedUserUpdateWithPutResponseModel putResponse = api.users.unauthorizedUserUpdate(updateData);
 
         step("Check error message", () -> {
             String expectedError = "Authentication credentials were not provided.";
@@ -83,13 +80,11 @@ public class UpdateUserTests extends TestBase {
     public void redirectUpdateFields() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         UpdateUserWithPutBodyModel updateData = new UpdateUserWithPutBodyModel(config.updateUser.username(), config.updateUser.firstName(), config.updateUser.lastName(), config.updateUser.email());
 
-        step("Trying to change values of the fields using URI without '/' ", () ->
-                api.users.redirectUpdate(updateData, loginResponse.access()));
+        api.users.redirectUpdate(updateData, loginResponse.access());
 
     }
 
@@ -107,11 +102,9 @@ public class UpdateUserTests extends TestBase {
     ) {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        UpdateUserResponseModel patchResponse = step("Trying to change {0}", () ->
-                api.users.updateUserDataWithPatch(body, loginResponse.access()));
+        UpdateUserResponseModel patchResponse = api.users.updateUserDataWithPatch(body, loginResponse.access());
 
         step("Check {0} value of field", () ->
             assertThat(extractor.apply(patchResponse)).isEqualTo(expected));

@@ -29,8 +29,7 @@ public class RegistrationApiTests extends TestBase {
     public void successfulRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
-        RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (201)", () ->
-                api.users.register(registrationData));
+        RegistrationResponseSuccessfulModel registrationResponse = api.users.register(registrationData);
 
         step("Check response body fields", () -> {
             assertThat(registrationResponse.username()).isEqualTo(testData.randomRegistrationUsername);
@@ -49,14 +48,12 @@ public class RegistrationApiTests extends TestBase {
     public void existingUserRegistrationTests() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(testData.randomRegistrationUsername, testData.randomRegistrationPassword);
 
-        RegistrationResponseSuccessfulModel registrationResponse = step("Send registration response and check status (201)", () ->
-                api.users.register(registrationData));
+        RegistrationResponseSuccessfulModel registrationResponse = api.users.register(registrationData);
 
         step("Check username in response body", () ->
                 assertThat(registrationResponse.username()).isEqualTo(testData.randomRegistrationUsername));
 
-        ExistingUserResponseModel reRegistrationResponse = step("Send re-registration response and check status (400)", () ->
-                api.users.existingUserRegister(registrationData));
+        ExistingUserResponseModel reRegistrationResponse = api.users.existingUserRegister(registrationData);
 
         step("Check error message", () -> {
             String actualError = reRegistrationResponse.username().getFirst();
@@ -73,8 +70,7 @@ public class RegistrationApiTests extends TestBase {
         RegistrationBodyModel wrongUsernameRegistrationData = new RegistrationBodyModel(
                 testData.wrongRegistrationUsername, testData.randomRegistrationPassword);
 
-        WrongUsernameRegistrationResponseModel registrationResponse = step("Send registration with wrong username response and check status (400)", () ->
-                api.users.wrongUsernameRegister(wrongUsernameRegistrationData));
+        WrongUsernameRegistrationResponseModel registrationResponse = api.users.wrongUsernameRegister(wrongUsernameRegistrationData);
 
         step("Check error message", () -> {
             String exceptedError = "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.";
@@ -90,8 +86,7 @@ public class RegistrationApiTests extends TestBase {
     public void emptyUsernameRegistrationTest() {
         RegistrationBodyModel emptyUsernameData = new RegistrationBodyModel(config.auth.emptyCredentials(), testData.randomRegistrationPassword);
 
-        WrongUsernameRegistrationResponseModel registrationResponse = step("Send registration with empty username response and check status (400)", () ->
-                api.users.wrongUsernameRegister(emptyUsernameData));
+        WrongUsernameRegistrationResponseModel registrationResponse = api.users.wrongUsernameRegister(emptyUsernameData);
 
         step("Check error message", () -> {
             String expectedError = "This field may not be blank.";
@@ -107,8 +102,7 @@ public class RegistrationApiTests extends TestBase {
     public void emptyPasswordRegistrationTest() {
         RegistrationBodyModel emptyPasswordData = new RegistrationBodyModel(testData.randomRegistrationUsername, config.auth.emptyCredentials());
 
-        WrongPasswordRegistrationResponseModel registrationResponse = step("Send registration with empty password response and check status (400)", () ->
-                api.users.wrongPasswordRegister(emptyPasswordData));
+        WrongPasswordRegistrationResponseModel registrationResponse = api.users.wrongPasswordRegister(emptyPasswordData);
 
         step("Check error message", () -> {
             String expectedError = "This field may not be blank.";
@@ -124,8 +118,7 @@ public class RegistrationApiTests extends TestBase {
     public void emptyCredentialsRegistrationTest() {
         RegistrationBodyModel emptyUsernameAndPasswordData = new RegistrationBodyModel(config.auth.emptyCredentials(), config.auth.emptyCredentials());
 
-        WrongCredentialsResponseModel registrationResponse = step("Send registration with empty username and password and check status (400)", () ->
-                api.users.wrongCredentialsRegister(emptyUsernameAndPasswordData));
+        WrongCredentialsResponseModel registrationResponse = api.users.wrongCredentialsRegister(emptyUsernameAndPasswordData);
 
         step("Check error messages", () -> {
             String expectedError = "This field may not be blank.";

@@ -88,7 +88,7 @@ public class ClubsApiClient {
                 .as(UnauthorizedClubResponseModel.class);
     }
 
-    @Step("Send delete club request and check status (204)")
+    @Step("Send delete club request")
     public void successfulDeleteClub(Integer id, String accessToken) {
         given()
                 .spec(clubsRequestSpec)

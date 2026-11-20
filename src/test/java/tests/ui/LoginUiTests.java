@@ -1,20 +1,11 @@
 package tests.ui;
 
-import helpers.Attach;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
-import org.junit.jupiter.api.AfterEach;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
-
-import static io.qameta.allure.Allure.step;
 
 @Feature("Login tests")
 @Story("UI")
@@ -27,19 +18,12 @@ public class LoginUiTests extends TestBase {
     @DisplayName("[UI] Check successful authorization attempt")
     @Description("After login with valid credentials, the profile link is visible in the header.")
     public void successfulLoginTests() {
-        step("Open login page", () ->
-                loginPage.openPage());
+        loginPage.openPage()
+                .setUsername(config.auth.username())
+                .setPassword(config.auth.password())
+                .submitForm();
 
-        step("Enter username and password", () -> {
-            loginPage.setUsername(config.auth.username())
-                    .setPassword(config.auth.password());
-        });
-
-        step("Click submit button", () ->
-                loginPage.submitForm());
-
-        step("Check profile link in header", () ->
-                loginPage.checkProfileLink());
+        loginPage.checkProfileLink();
     }
 
     @Test
@@ -48,30 +32,18 @@ public class LoginUiTests extends TestBase {
     @DisplayName("[UI] Check successful authorization attempt after registration")
     @Description("After registration and login with the new credentials, the profile link is visible in the header.")
     public void successfulLoginAfterRegistrationTests() {
-        step("Open registration page", () ->
-                registrationPage.openPage());
+        registrationPage.openPage()
+                .setUsername(testData.randomRegistrationUsername)
+                .setPassword(testData.randomRegistrationPassword)
+                .confirmPassword(testData.randomRegistrationPassword)
+                .submitForm();
 
-        step("Filling registration form", () ->
-                registrationPage.setUsername(testData.randomRegistrationUsername)
-                        .setPassword(testData.randomRegistrationPassword)
-                        .confirmPassword(testData.randomRegistrationPassword));
+        loginPage.openPage()
+                .setUsername(testData.randomRegistrationUsername)
+                .setPassword(testData.randomRegistrationPassword)
+                .submitForm();
 
-        step("Send filled registration form", () ->
-                registrationPage.submitForm());
-
-        step("Open login page", () ->
-                loginPage.openPage());
-
-        step("Enter username and password", () -> {
-            loginPage.setUsername(testData.randomRegistrationUsername)
-                    .setPassword(testData.randomRegistrationPassword);
-        });
-
-        step("Click submit button", () ->
-                loginPage.submitForm());
-
-        step("Check profile link in header", () ->
-                loginPage.checkProfileLink());
+        loginPage.checkProfileLink();
     }
 
     @Test
@@ -80,19 +52,12 @@ public class LoginUiTests extends TestBase {
     @DisplayName("[UI] Check authorization attempt with wrong password")
     @Description("A wrong password shows the message \"Ты не пройдешь!\".")
     public void wrongCredentialsLoginTests() {
-        step("Open login page", () ->
-                loginPage.openPage());
+        loginPage.openPage()
+                .setUsername(config.auth.username())
+                .setPassword(config.auth.wrongPassword())
+                .submitForm();
 
-        step("Enter username and password", () -> {
-            loginPage.setUsername(config.auth.username())
-                    .setPassword(config.auth.wrongPassword());
-        });
-
-        step("Click submit button", () ->
-                loginPage.submitForm());
-
-        step("Check error message", () ->
-                loginPage.checkErrorMessage());
+        loginPage.checkErrorMessage();
     }
 
     @Test
@@ -101,18 +66,11 @@ public class LoginUiTests extends TestBase {
     @DisplayName("[UI] Check authorization attempt with empty username")
     @Description("An empty username shows a validation error for the username field.")
     public void emptyUsernameLoginTest() {
-        step("Open login page", () ->
-                loginPage.openPage());
+        loginPage.openPage()
+                .setPassword(config.auth.password())
+                .submitForm();
 
-        step("Enter username and password", () -> {
-            loginPage.setPassword(config.auth.password());
-        });
-
-        step("Click submit button", () ->
-                loginPage.submitForm());
-
-        step("Check error message", () ->
-                loginPage.checkErrorMessageForEmptyUsername());
+        loginPage.checkErrorMessageForEmptyUsername();
     }
 
     @Test
@@ -121,18 +79,11 @@ public class LoginUiTests extends TestBase {
     @DisplayName("[UI] Check authorization attempt with empty password")
     @Description("An empty password shows a validation error for the password field.")
     public void emptyPasswordLoginTest() {
-        step("Open login page", () ->
-                loginPage.openPage());
+        loginPage.openPage()
+                .setUsername(config.auth.username())
+                .submitForm();
 
-        step("Enter username and password", () -> {
-            loginPage.setUsername(config.auth.username());
-        });
-
-        step("Submit form", () ->
-                loginPage.submitForm());
-
-        step("Check error message", () ->
-                loginPage.checkErrorMessageForEmptyPassword());
+        loginPage.checkErrorMessageForEmptyPassword();
     }
 
     @Test
@@ -141,13 +92,9 @@ public class LoginUiTests extends TestBase {
     @DisplayName("[UI] Check authorization attempt with empty username and password")
     @Description("Empty username and password show a validation error for both fields.")
     public void emptyCredentialsLoginTest() {
-        step("Open login page", () ->
-                loginPage.openPage());
+        loginPage.openPage()
+                .submitForm();
 
-        step("Click submit button", () ->
-                loginPage.submitForm());
-
-        step("Check error message", () ->
-                loginPage.checkErrorMessageForEmptyCredentials());
+        loginPage.checkErrorMessageForEmptyCredentials();
     }
 }

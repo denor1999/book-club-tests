@@ -32,13 +32,11 @@ public class LogoutTests extends TestBase {
     public void successfulLogoutTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        String refreshToken = step("Get refresh token with authorization", () ->
-            api.auth.loginAndGetRefreshToken(loginData));
+        String refreshToken = api.auth.loginAndGetRefreshToken(loginData);
 
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshToken);
 
-        String logoutResponse = step("Send logout request with refresh token and check response status(200)", () ->
-            api.auth.logout(logoutData));
+        String logoutResponse = api.auth.logout(logoutData);
 
         step("Check logout response", () ->
             assertThat(logoutResponse).isEqualTo("{}"));
@@ -53,8 +51,7 @@ public class LogoutTests extends TestBase {
         WrongRefreshTokenLoginBodyModel refreshTokenData = new WrongRefreshTokenLoginBodyModel(config.auth.wrongRefreshToken());
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshTokenData.refresh());
 
-        WrongRefreshTokenLogoutResponseModel logoutResponse = step("Send logout request with invalid refresh token", () ->
-            api.auth.logoutWithoutAuthorization(logoutData));
+        WrongRefreshTokenLogoutResponseModel logoutResponse = api.auth.logoutWithoutAuthorization(logoutData);
 
         step("Check error messages", () -> {
             String expectedDetail = "Token is invalid";

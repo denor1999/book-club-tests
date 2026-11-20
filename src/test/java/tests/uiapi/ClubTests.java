@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
-import static io.qameta.allure.Allure.step;
-
 @Feature("Club tests")
 @Story("UI and API")
 @Tags({@Tag("ui"), @Tag("api"), @Tag("clubs")})
@@ -27,35 +25,22 @@ public class ClubTests extends TestBase {
         LoginBodyModel loginData = new LoginBodyModel(testData.randomRegistrationUsername,
                 testData.randomRegistrationPassword);
 
-        step("Send login request and check status (200)", () ->
-                api.auth.loginByApi(api.users.register(registrationData), api.auth.login(loginData)));
+        api.auth.loginByApi(api.users.register(registrationData), api.auth.login(loginData));
 
-        step("Open create club page", () ->
-                createClubPage.openPage());
+        createClubPage.openPage()
+                .setBookTitle(testData.bookTitle)
+                .setBookAuthors(testData.bookAuthor)
+                .setPublicationYear(testData.publicationYear)
+                .setDescription(testData.description)
+                .setTelegramChatLink(testData.telegramChatLink)
+                .submitForm();
 
-        step("Fill club form", () ->
-                createClubPage.setBookTitle(testData.bookTitle)
-                        .setBookAuthors(testData.bookAuthor)
-                        .setPublicationYear(testData.publicationYear)
-                        .setDescription(testData.description)
-                        .setTelegramChatLink(testData.telegramChatLink));
+        homePage.openClubsList()
+                .searchClub(testData.bookTitle)
+                .openClubFromList(testData.bookTitle);
 
-        step("Submit club form", () ->
-                createClubPage.submitForm());
+        clubPage.leaveClub();
 
-        step("Open clubs list", () ->
-                homePage.openClubsList());
-
-        step("Search created club", () ->
-                homePage.searchClub(testData.bookTitle));
-
-        step("Open club from list", () ->
-                homePage.openClubFromList(testData.bookTitle));
-
-        step("Try to leave the club", () ->
-                clubPage.leaveClub());
-
-        step("Check owner cannot leave the club", () ->
-                clubPage.checkLeaveError());
+        clubPage.checkLeaveError();
     }
 }

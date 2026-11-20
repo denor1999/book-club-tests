@@ -1,10 +1,13 @@
 package pages;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.CollectionCondition.itemWithText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class ClubPage {
 
@@ -13,6 +16,7 @@ public class ClubPage {
     private final SelenideElement assessment = $("#assessment");
     private final SelenideElement readPages = $("#readPages");
     private final SelenideElement review = $("#review");
+    private final ElementsCollection reviewContent = $$(".review-content");
     private final SelenideElement leaveButton = $(".leave-btn");
     private final SelenideElement error = $(".error");
 
@@ -57,5 +61,9 @@ public class ClubPage {
     @Step("Check leave club error is visible")
     public void checkLeaveError() {
         error.shouldBe(visible);
+    }
+
+    public void checkReviewContent(String reviewText) {
+        reviewContent.shouldHave(itemWithText(reviewText));
     }
 }

@@ -31,8 +31,7 @@ public class ReviewsApiTests extends TestBase {
     @DisplayName("[API] get club reviews")
     @Description("The server returns 200. The size of results matches count.")
     public void getReviewsTest() {
-        ReviewsGetResponseModel response = step("Send get reviews request and check status (200)", () ->
-                api.review.getReviews(config.review.clubId()));
+        ReviewsGetResponseModel response = api.review.getReviews(config.review.clubId());
 
         step("Check reviews count matches results size", () ->
                 assertThat(response.results()).hasSize(response.count()));
@@ -51,14 +50,11 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel requestData = new ReviewRequestModel(null,
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        ClubUpsertResponseModel club = step("Create club", () ->
-                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+        ClubUpsertResponseModel club = api.clubs.successfulPostClub(clubRequest, loginResponse.access());
 
-        ReviewResponseModel response = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(requestData.withClub(club.id()), loginResponse.access()));
+        ReviewResponseModel response = api.review.successfulPostReview(requestData.withClub(club.id()), loginResponse.access());
 
         step("Check created review fields", () -> {
             assertThat(response.id()).isNotNull();
@@ -78,8 +74,7 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel requestData = new ReviewRequestModel(testData.randomBookClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        UnauthorizedReviewModel response = step("Send review without authorization and check status (401)", () ->
-                api.review.unauthorizedPostReview(requestData));
+        UnauthorizedReviewModel response = api.review.unauthorizedPostReview(requestData);
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo(config.review.unauthorizedError()));
@@ -94,8 +89,7 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel requestData = new ReviewRequestModel(testData.randomBookClubId,
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        WrongTokenPostReviewModel response = step("Send review with wrong access token and check status (401)", () ->
-                api.review.wrongAccessTokenPostReview(requestData, config.auth.wrongAccessToken()));
+        WrongTokenPostReviewModel response = api.review.wrongAccessTokenPostReview(requestData, config.auth.wrongAccessToken());
 
         step("Check error message and code", () -> {
             assertThat(response.detail()).isEqualTo(config.review.invalidTokenError());
@@ -114,11 +108,9 @@ public class ReviewsApiTests extends TestBase {
                 testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
                 testData.description, testData.telegramChatLink);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        ClubUpsertResponseModel club = step("Create club", () ->
-                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+        ClubUpsertResponseModel club = api.clubs.successfulPostClub(clubRequest, loginResponse.access());
 
         ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
@@ -126,11 +118,9 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
                 testData.updatedDescription, testData.updatedAssessment, testData.updatedReadPages);
 
-        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(createReviewData, loginResponse.access()));
+        ReviewResponseModel createdReview = api.review.successfulPostReview(createReviewData, loginResponse.access());
 
-        ReviewResponseModel response = step("Edit review with PUT and check status (200)", () ->
-                api.review.successfulPutReview(updateReviewData, loginResponse.access(), createdReview.id()));
+        ReviewResponseModel response = api.review.successfulPutReview(updateReviewData, loginResponse.access(), createdReview.id());
 
         step("Check updated review fields", () -> {
             assertThat(response.id()).isEqualTo(createdReview.id());
@@ -153,11 +143,9 @@ public class ReviewsApiTests extends TestBase {
                 testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
                 testData.description, testData.telegramChatLink);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        ClubUpsertResponseModel club = step("Create club", () ->
-                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+        ClubUpsertResponseModel club = api.clubs.successfulPostClub(clubRequest, loginResponse.access());
 
         ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
@@ -165,11 +153,9 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
                 testData.updatedDescription, testData.updatedAssessment, testData.updatedReadPages);
 
-        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(createReviewData, loginResponse.access()));
+        ReviewResponseModel createdReview = api.review.successfulPostReview(createReviewData, loginResponse.access());
 
-        ReviewResponseModel response = step("Edit review with PATCH and check status (200)", () ->
-                api.review.successfulPatchReview(updateReviewData, loginResponse.access(), createdReview.id()));
+        ReviewResponseModel response = api.review.successfulPatchReview(updateReviewData, loginResponse.access(), createdReview.id());
 
         step("Check updated review fields", () -> {
             assertThat(response.id()).isEqualTo(createdReview.id());
@@ -192,11 +178,9 @@ public class ReviewsApiTests extends TestBase {
                 testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
                 testData.description, testData.telegramChatLink);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        ClubUpsertResponseModel club = step("Create club", () ->
-                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+        ClubUpsertResponseModel club = api.clubs.successfulPostClub(clubRequest, loginResponse.access());
 
         ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
@@ -204,11 +188,9 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
                 testData.updatedDescription, testData.wrongRandomAssessment, testData.updatedReadPages);
 
-        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(createReviewData, loginResponse.access()));
+        ReviewResponseModel createdReview = api.review.successfulPostReview(createReviewData, loginResponse.access());
 
-        WrongAssessmentReviewResponseModel response = step("Edit review with PUT and wrong assessment and check status (400)", () ->
-                api.review.wrongAssessmentPutReview(updateReviewData, loginResponse.access(), createdReview.id()));
+        WrongAssessmentReviewResponseModel response = api.review.wrongAssessmentPutReview(updateReviewData, loginResponse.access(), createdReview.id());
 
         step("Check error message", () ->
                 assertThat(response.assessment().getFirst()).isEqualTo(config.review.assessmentMaxError()));
@@ -225,11 +207,9 @@ public class ReviewsApiTests extends TestBase {
                 testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
                 testData.description, testData.telegramChatLink);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        ClubUpsertResponseModel club = step("Create club", () ->
-                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+        ClubUpsertResponseModel club = api.clubs.successfulPostClub(clubRequest, loginResponse.access());
 
         ReviewRequestModel createReviewData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
@@ -237,11 +217,9 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel updateReviewData = new ReviewRequestModel(club.id(),
                 testData.updatedDescription, testData.wrongRandomAssessment, testData.updatedReadPages);
 
-        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(createReviewData, loginResponse.access()));
+        ReviewResponseModel createdReview = api.review.successfulPostReview(createReviewData, loginResponse.access());
 
-        WrongAssessmentReviewResponseModel response = step("Edit review with PATCH and wrong assessment and check status (400)", () ->
-                api.review.wrongAssessmentPatchReview(updateReviewData, loginResponse.access(), createdReview.id()));
+        WrongAssessmentReviewResponseModel response = api.review.wrongAssessmentPatchReview(updateReviewData, loginResponse.access(), createdReview.id());
 
         step("Check error message", () ->
                 assertThat(response.assessment().getFirst()).isEqualTo(config.review.assessmentMaxError()));
@@ -256,8 +234,7 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        UnauthorizedReviewModel response = step("Edit review with PUT without authorization and check status (401)", () ->
-                api.review.unauthorizedPutReview(requestData, config.review.missingId()));
+        UnauthorizedReviewModel response = api.review.unauthorizedPutReview(requestData, config.review.missingId());
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo(config.review.unauthorizedError()));
@@ -272,8 +249,7 @@ public class ReviewsApiTests extends TestBase {
         ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        UnauthorizedReviewModel response = step("Edit review with PATCH without authorization and check status (401)", () ->
-                api.review.unauthorizedPatchReview(requestData, config.review.missingId()));
+        UnauthorizedReviewModel response = api.review.unauthorizedPatchReview(requestData, config.review.missingId());
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo(config.review.unauthorizedError()));
@@ -287,14 +263,12 @@ public class ReviewsApiTests extends TestBase {
     public void someoneElsePutReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        SomeoneElsePutReviewResponseModel response = step("Edit someone else's review with PUT and check status (403)", () ->
-                api.review.forbiddenPutReview(requestData, loginResponse.access(), config.review.foreignId()));
+        SomeoneElsePutReviewResponseModel response = api.review.forbiddenPutReview(requestData, loginResponse.access(), config.review.foreignId());
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo(config.review.forbiddenError()));
@@ -308,14 +282,12 @@ public class ReviewsApiTests extends TestBase {
     public void someoneElsePatchReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         ReviewRequestModel requestData = new ReviewRequestModel(config.review.clubId(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        SomeoneElsePutReviewResponseModel response = step("Edit someone else's review with PATCH and check status (403)", () ->
-                api.review.forbiddenPatchReview(requestData, loginResponse.access(), config.review.foreignId()));
+        SomeoneElsePutReviewResponseModel response = api.review.forbiddenPatchReview(requestData, loginResponse.access(), config.review.foreignId());
 
         step("Check error message", () ->
                 assertThat(response.detail()).isEqualTo(config.review.forbiddenError()));
@@ -332,20 +304,16 @@ public class ReviewsApiTests extends TestBase {
                 testData.bookTitle + "_" + System.currentTimeMillis(), testData.bookAuthor, testData.publicationYear,
                 testData.description, testData.telegramChatLink);
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        ClubUpsertResponseModel club = step("Create club", () ->
-                api.clubs.successfulPostClub(clubRequest, loginResponse.access()));
+        ClubUpsertResponseModel club = api.clubs.successfulPostClub(clubRequest, loginResponse.access());
 
         ReviewRequestModel requestData = new ReviewRequestModel(club.id(),
                 testData.description, testData.randomAssessment, testData.readPages);
 
-        ReviewResponseModel createdReview = step("Send review and check status (201)", () ->
-                api.review.successfulPostReview(requestData, loginResponse.access()));
+        ReviewResponseModel createdReview = api.review.successfulPostReview(requestData, loginResponse.access());
 
-        step("Delete review and check status (204)", () ->
-                api.review.successfulDeleteReview(createdReview.id(), loginResponse.access()));
+        api.review.successfulDeleteReview(createdReview.id(), loginResponse.access());
     }
 
     @Test
@@ -354,8 +322,7 @@ public class ReviewsApiTests extends TestBase {
     @DisplayName("[API] Unauthorized user attempt for delete club review")
     @Description("Deleting a review without authorization returns 401.")
     public void unauthorizedDeleteReviewTest() {
-        step("Delete review without authorization and check status (401)", () ->
-                api.review.unauthorizedDeleteReview(config.review.missingId()));
+        api.review.unauthorizedDeleteReview(config.review.missingId());
     }
 
     @Test
@@ -366,11 +333,9 @@ public class ReviewsApiTests extends TestBase {
     public void notFoundDeleteReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        step("Delete missing review and check status (404)", () ->
-                api.review.notFoundDeleteReview(config.review.missingId(), loginResponse.access()));
+        api.review.notFoundDeleteReview(config.review.missingId(), loginResponse.access());
     }
 
     @Test
@@ -381,10 +346,8 @@ public class ReviewsApiTests extends TestBase {
     public void forbiddenDeleteReviewTest() {
         LoginBodyModel loginData = new LoginBodyModel(config.auth.username(), config.auth.password());
 
-        SuccessfulLoginResponseModel loginResponse = step("Send login request and check status (200)", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
-        step("Delete someone else's review and check status (403)", () ->
-                api.review.forbiddenDeleteReview(config.review.foreignDeleteId(), loginResponse.access()));
+        api.review.forbiddenDeleteReview(config.review.foreignDeleteId(), loginResponse.access());
     }
 }
