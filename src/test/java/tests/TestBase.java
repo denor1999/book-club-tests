@@ -49,6 +49,10 @@ public class TestBase {
         Configuration.baseUrl = "https://book-club.qa.guru";
         RestAssured.baseURI = "https://book-club.qa.guru";
 
+        String selenoidLogin = System.getProperty("selenoidLogin");
+        String selenoidPassword = System.getProperty("selenoidPassword");
+        String selenoidUrl = System.getProperty("selenoidUrl");
+
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
         if (Configuration.browser.equals("chrome")) {
@@ -70,7 +74,7 @@ public class TestBase {
                 "enableVideo", true
         ));
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = System.getProperty("remote_url");
+        Configuration.remote = String.format("https://%s:%S@%S", selenoidLogin, selenoidPassword, selenoidUrl);
     }
 
     @AfterEach
