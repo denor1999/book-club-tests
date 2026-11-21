@@ -74,7 +74,7 @@ public class TestBase {
                 "enableVideo", true
         ));
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = String.format("https://%s:%S@%S", selenoidLogin, selenoidPassword, selenoidUrl);
+        Configuration.remote = String.format("https://%s:%s@%s", selenoidLogin, selenoidPassword, selenoidUrl);
     }
 
     @AfterEach
