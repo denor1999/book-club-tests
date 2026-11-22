@@ -9,9 +9,6 @@ import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
 
-import static com.codeborne.selenide.CollectionCondition.itemWithText;
-import static com.codeborne.selenide.Selenide.$$;
-
 @Feature("Review tests")
 @Story("UI and API")
 @Tags({@Tag("ui"), @Tag("api"), @Tag("reviews")})
