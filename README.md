@@ -11,6 +11,7 @@
 - <a href="#-Запуск-из-терминала">Запуск из терминала</a>
 - <a href="#-Allure-отчёт">Allure отчёт</a>
 - <a href="#-Интеграция-с-Allure-TestOps">Интеграция с TestOps</a>
+- <a href="-Интеграция-с-Jira">Интеграция с Jira</a>
 - <a href="#-Видео-примеры-прохождения-UI-тестов">Видео примеры прохождения UI тестов</a>
 
 ---
@@ -26,6 +27,8 @@
 <img src="images/icons/Gradle.png" width="50" />
 <img src="images/icons/Jenkins.png" width="50" />
 <img src="images/icons/Allure_Report.png" width="50" />
+<img src="images/icons/Allure_TestOps.png" width="50" />
+<img src="images/icons/Jira.png" width="50" />
 <img src="images/icons/rest-assured.png" width="50" />
 </p>
 
@@ -146,6 +149,17 @@ remote_url=$Remote_URL
 <img title="TestOps Dashboard" src="images/screenshots/testops-cases.png">
 </p>
 
+---
+
+## 📑 Интеграция с Jira
+- Страница с задачей (описание, тест-кейсы, результаты запуска)
+<p>
+<img title="Jira task" src="images/screenshots/jira-task.png">
+</p>
+
+<p>
+<img title="Jira test suites" src="images/screenshots/jira-test-suites.png">
+</p>
 ---
 
 ## 🎦 Видео примеры прохождения UI тестов
