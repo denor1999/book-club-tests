@@ -15,6 +15,7 @@ public class RegistrationUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54154")
     @DisplayName("[UI] Check successful registration attempt")
     @Description("After successful registration with valid data, the profile link is visible in the header.")
     public void successfulFillingRegistrationFormTest() {
@@ -30,6 +31,7 @@ public class RegistrationUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54155")
     @DisplayName("[UI] Check registration attempt when user exists")
     @Description("Registering an existing user shows an error message.")
     public void existingUserFillingRegistrationFormTest() {
@@ -45,6 +47,7 @@ public class RegistrationUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54153")
     @DisplayName("[UI] Check registration attempt with wrong username")
     @Description("Registering with an invalid username shows an error message.")
     public void wrongUsernameFillingRegistrationFormTest() {
@@ -60,6 +63,7 @@ public class RegistrationUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54152")
     @DisplayName("[UI] Check registration attempt with empty username")
     @Description("An empty username shows a validation error for the username field.")
     public void emptyUsernameFillingRegistrationFormTest() {
@@ -74,6 +78,7 @@ public class RegistrationUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54151")
     @DisplayName("[UI] Check registration attempt with empty password")
     @Description("An empty password shows a validation error for the password field.")
     public void emptyPasswordFillingRegistrationFormTest() {
@@ -87,6 +92,7 @@ public class RegistrationUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54156")
     @DisplayName("[UI] Check registration attempt with empty username and password")
     @Description("Empty username and password show a validation error for both fields.")
     public void emptyCredentialsFillingRegistrationTest() {

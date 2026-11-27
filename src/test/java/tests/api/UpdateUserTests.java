@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -37,6 +38,7 @@ public class UpdateUserTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54330")
     @DisplayName("Check successful put request status")
     @Description("An authorized PUT updates username, firstName, lastName, and email. The response values match the submitted ones.")
     public void successfulUpdateWithPutFields() {
@@ -59,6 +61,7 @@ public class UpdateUserTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54332")
     @DisplayName("Check put request attempt when user unauthorized")
     @Description("Without authorization the server returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedUpdateFields() {
@@ -75,6 +78,7 @@ public class UpdateUserTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54333")
     @DisplayName("Send PUT request with URI without '/' ")
     @Description("A PUT to a URI without a trailing slash succeeds for an authorized user.")
     public void redirectUpdateFields() {
@@ -92,6 +96,7 @@ public class UpdateUserTests extends TestBase {
     @MethodSource("patchCases")
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55483")
     @DisplayName("Check successful patch request status")
     @Description("An authorized PATCH updates one field (username, firstName, lastName, or email). The response value of that field matches the submitted one.")
     void successfulUpdateFieldWithPatchTest(

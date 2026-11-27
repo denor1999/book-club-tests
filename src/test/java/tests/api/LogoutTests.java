@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -27,6 +28,7 @@ public class LogoutTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54328")
     @DisplayName("Check successful logout response")
     @Description("The server returns 200 and an empty response body {}.")
     public void successfulLogoutTest() {
@@ -45,6 +47,7 @@ public class LogoutTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("55469")
     @DisplayName("Check logout attempt with invalid refresh token")
     @Description("An invalid refresh token is rejected: detail is \"Token is invalid\" and code is \"token_not_valid\".")
     public void invalidRefreshTokenLogoutTest() {

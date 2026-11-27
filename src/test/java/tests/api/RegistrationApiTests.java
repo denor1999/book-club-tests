@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -24,6 +25,7 @@ public class RegistrationApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54142")
     @DisplayName("[API] Check successful registration response status")
     @Description("The server returns 201. Username matches the submitted value, id is present, and firstName, lastName, and email are blank.")
     public void successfulRegistrationTests() {
@@ -43,6 +45,7 @@ public class RegistrationApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54143")
     @DisplayName("[API] Check registration attempt when user exists")
     @Description("Re-registration returns 400, and the username field contains the existing-user error.")
     public void existingUserRegistrationTests() {
@@ -64,6 +67,7 @@ public class RegistrationApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54135")
     @DisplayName("[API] Check registration attempt with wrong username")
     @Description("The server returns 400 and a message that username may contain only letters, numbers, and @/./+/-/_ characters.")
     public void wrongUsernameRegistrationTest() {
@@ -81,6 +85,7 @@ public class RegistrationApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54138")
     @DisplayName("[API] Check registration attempt with empty username")
     @Description("The server returns 400, and the username field contains \"This field may not be blank.\"")
     public void emptyUsernameRegistrationTest() {
@@ -97,6 +102,7 @@ public class RegistrationApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54141")
     @DisplayName("[API] Check registration attempt with empty password")
     @Description("The server returns 400, and the password field contains \"This field may not be blank.\"")
     public void emptyPasswordRegistrationTest() {
@@ -113,6 +119,7 @@ public class RegistrationApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54140")
     @DisplayName("[API] Check registration attempt with empty username and password")
     @Description("The server returns 400, and both username and password contain \"This field may not be blank.\"")
     public void emptyCredentialsRegistrationTest() {

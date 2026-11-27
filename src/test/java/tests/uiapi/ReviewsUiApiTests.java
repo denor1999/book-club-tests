@@ -17,6 +17,7 @@ public class ReviewsUiApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("55482")
     @DisplayName("[API + UI] Successful send review for club")
     @Description("After submitting a review, it is displayed on the club page.")
     public void successfulSendReviewTest() {

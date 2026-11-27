@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -27,6 +28,7 @@ public class LoginApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54133")
     @DisplayName("[API] Check successful login response")
     @Description("The server returns 200. Access and refresh tokens are not blank, start with the expected prefix, and differ from each other.")
     public void successfulLoginTests() {
@@ -46,6 +48,7 @@ public class LoginApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54137")
     @DisplayName("[API] Check authorization attempt with wrong password")
     @Description("The server returns 401, and the detail field contains the wrong-credentials error.")
     public void wrongCredentialsLoginTests() {
@@ -62,6 +65,7 @@ public class LoginApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54144")
     @DisplayName("[API] Check authorization attempt with empty username")
     @Description("The server returns 400, and the username field contains \"This field may not be blank.\"")
     public void emptyUsernameLoginTest() {
@@ -78,6 +82,7 @@ public class LoginApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54136")
     @DisplayName("[API] Check authorization attempt with empty password")
     @Description("The server returns 400, and the password field contains \"This field may not be blank.\"")
     public void emptyPasswordLoginTest() {
@@ -94,6 +99,7 @@ public class LoginApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54139")
     @DisplayName("[API] Check authorization attempt with empty username and password")
     @Description("The server returns 400, and both username and password contain \"This field may not be blank.\"")
     public void emptyCredentialsLoginTest() {

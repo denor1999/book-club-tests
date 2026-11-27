@@ -1,5 +1,6 @@
 package tests.api;
 
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -28,6 +29,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55480")
     @DisplayName("[API] get club reviews")
     @Description("The server returns 200. The size of results matches count.")
     public void getReviewsTest() {
@@ -40,6 +42,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("55470")
     @DisplayName("[API] Successful send review")
     @Description("An authorized user creates a review for an existing club. The server returns 201, and id, club, text, assessment, and read pages match the submitted values.")
     public void successfulPostReviewTest() {
@@ -68,6 +71,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55473")
     @DisplayName("[API] Unauthorized user attempt for send review")
     @Description("Without authorization the server returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPostReviewTest() {
@@ -83,6 +87,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("55466")
     @DisplayName("[API] Attempt for send review with wrong access token")
     @Description("With an invalid token the server returns 401: detail is \"Given token not valid for any token type\" and code is \"token_not_valid\".")
     public void wrongTokenPostReviewTest() {
@@ -100,6 +105,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55475")
     @DisplayName("[API] Successful edit club review with PUT")
     @Description("An authorized PUT returns 200. Review text, assessment, and read pages match the submitted values, and modified is present.")
     public void successfulPutReviewTest() {
@@ -135,6 +141,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55474")
     @DisplayName("[API] Successful edit club review with PATCH")
     @Description("An authorized PATCH returns 200. Review text, assessment, and read pages match the submitted values, and modified is present.")
     public void successfulPatchReviewTest() {
@@ -170,6 +177,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55478")
     @DisplayName("[API] Attempt for edit club review with wrong assessment with PUT")
     @Description("A PUT with an assessment greater than 5 returns 400 and \"Ensure this value is less than or equal to 5.\"")
     public void wrongAssessmentValuePutReviewTest() {
@@ -199,6 +207,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("55476")
     @DisplayName("[API] Attempt for edit club review with wrong assessment with PATCH")
     @Description("A PATCH with an assessment greater than 5 returns 400 and \"Ensure this value is less than or equal to 5.\"")
     public void wrongAssessmentValuePatchReviewTest() {
@@ -228,6 +237,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55464")
     @DisplayName("[API] Unauthorized user attempt for edit club review with PUT")
     @Description("A PUT without authorization returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPutReviewTest() {
@@ -243,6 +253,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55477")
     @DisplayName("[API] Unauthorized user attempt for edit club review with PATCH")
     @Description("A PATCH without authorization returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPatchReviewTest() {
@@ -258,6 +269,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55472")
     @DisplayName("[API] Attempt for change other club reviews with PUT")
     @Description("A PUT of someone else's review returns 403 and \"You do not have permission to perform this action.\"")
     public void someoneElsePutReviewTest() {
@@ -277,6 +289,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55465")
     @DisplayName("[API] Attempt for change other club reviews with PATCH")
     @Description("A PATCH of someone else's review returns 403 and \"You do not have permission to perform this action.\"")
     public void someoneElsePatchReviewTest() {
@@ -296,6 +309,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("55481")
     @DisplayName("[API] Successful delete club review")
     @Description("Deleting one's own review while authorized returns 204.")
     public void successfulDeleteReviewTest() {
@@ -319,6 +333,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55467")
     @DisplayName("[API] Unauthorized user attempt for delete club review")
     @Description("Deleting a review without authorization returns 401.")
     public void unauthorizedDeleteReviewTest() {
@@ -328,6 +343,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("55471")
     @DisplayName("[API] Not found club review for delete")
     @Description("Deleting a missing review while authorized returns 404.")
     public void notFoundDeleteReviewTest() {
@@ -341,6 +357,7 @@ public class ReviewsApiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("55468")
     @DisplayName("[API] Attempt for delete other club reviews")
     @Description("Deleting someone else's review returns 403.")
     public void forbiddenDeleteReviewTest() {

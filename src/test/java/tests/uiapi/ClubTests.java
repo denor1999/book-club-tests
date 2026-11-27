@@ -17,6 +17,7 @@ public class ClubTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("55479")
     @DisplayName("[API + UI] Check that club owner cannot leave the club")
     @Description("The owner of a created club cannot leave it: an error is shown after clicking leave.")
     public void cantLeaveClubAsOwnerTest_with_login_by_api() {

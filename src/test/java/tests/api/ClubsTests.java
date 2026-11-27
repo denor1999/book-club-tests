@@ -1,11 +1,6 @@
 package tests.api;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import models.clubs.*;
 import models.clubs.delete.DeleteClubWithErrorResponseModel;
 import models.clubs.get.ClubResultsModel;
@@ -29,6 +24,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54321")
     @DisplayName("Check successful get clubs response")
     @Description("The server returns 200. The body is not null, count is greater than or equal to 0, and results is present.")
     public void successfulGetClubsTest() {
@@ -44,6 +40,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54319")
     @DisplayName("Check clubs count matches results size")
     @Description("The server returns 200. The size of results matches count.")
     public void getClubsCountMatchesResultsSizeTest() {
@@ -56,6 +53,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55461")
     @DisplayName("Check each club has required fields")
     @Description("Each club has id, title, authors, year, description, Telegram link, owner, members, reviews, and created date. id and owner are positive.")
     public void getClubsEachClubHasRequiredFields() {
@@ -80,6 +78,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("55460")
     @DisplayName("Check successful post club response")
     @Description("An authorized club creation returns book title, authors, publication year, description, and Telegram link matching the submitted values.")
     public void successfulPostClubsTest() {
@@ -104,6 +103,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55462")
     @DisplayName("Check post club attempt with invalid telegram chat link")
     @Description("Creating a club with an invalid Telegram link returns \"Enter a valid URL.\"")
     public void wrongTelegramChatLinkPostClubsTest() {
@@ -123,6 +123,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55463")
     @DisplayName("Check post club attempt when user unauthorized")
     @Description("Creating a club without authorization returns \"Authentication credentials were not provided.\"")
     public void unauthorizedPostClubsTest() {
@@ -138,6 +139,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54317")
     @DisplayName("Check successful delete club response")
     @Description("After a club is created, an authorized delete returns 204.")
     public void successfulDeleteClubTest() {
@@ -156,6 +158,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54316")
     @DisplayName("Check delete club attempt when user unauthorized")
     @Description("Deleting a club without authorization returns \"Authentication credentials were not provided.\"")
     public void unauthorizedDeleteClubTest() {
@@ -168,6 +171,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54326")
     @DisplayName("Check delete attempt for missing club")
     @Description("Deleting a missing club returns \"No Club matches the given query.\"")
     public void deleteMissingClubTest() {
@@ -184,6 +188,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54314")
     @DisplayName("Check successful put club request status")
     @Description("An authorized PUT returns 200. Title, authors, year, description, and Telegram link match the submitted values.")
     public void successfulPutClubTest() {
@@ -208,6 +213,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54327")
     @DisplayName("Check put club attempt with empty book title")
     @Description("A PUT without a book title returns 400 and \"This field is required.\" for bookTitle.")
     public void emptyBookTitlePutClubTest() {
@@ -227,6 +233,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54318")
     @DisplayName("Check put club attempt with empty book author")
     @Description("A PUT without an author returns 400 and \"This field is required.\" for bookAuthors.")
     public void emptyBookAuthorPutClubTest() {
@@ -246,6 +253,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54315")
     @DisplayName("Check put club attempt with wrong publication year")
     @Description("A PUT with a non-numeric publication year returns 400 and \"A valid integer is required.\"")
     public void wrongPublicationYearPutClubTest() {
@@ -265,6 +273,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("55459")
     @DisplayName("Check put club attempt with invalid telegram chat link")
     @Description("A PUT with an invalid Telegram link returns 400 and \"Enter a valid URL.\"")
     public void wrongTelegramChatLinkPutClubsTest() {
@@ -284,6 +293,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54320")
     @DisplayName("Check put club attempt when user unauthorized")
     @Description("A PUT without authorization returns 401 and \"Authentication credentials were not provided.\"")
     public void unauthorizedPutClubTest() {

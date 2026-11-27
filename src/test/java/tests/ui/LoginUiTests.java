@@ -15,6 +15,7 @@ public class LoginUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.CRITICAL)
+    @AllureId("54145")
     @DisplayName("[UI] Check successful authorization attempt")
     @Description("After login with valid credentials, the profile link is visible in the header.")
     public void successfulLoginTests() {
@@ -29,6 +30,7 @@ public class LoginUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
+    @AllureId("54146")
     @DisplayName("[UI] Check successful authorization attempt after registration")
     @Description("After registration and login with the new credentials, the profile link is visible in the header.")
     public void successfulLoginAfterRegistrationTests() {
@@ -49,6 +51,7 @@ public class LoginUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54147")
     @DisplayName("[UI] Check authorization attempt with wrong password")
     @Description("A wrong password shows the message \"Ты не пройдешь!\".")
     public void wrongCredentialsLoginTests() {
@@ -63,6 +66,7 @@ public class LoginUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54148")
     @DisplayName("[UI] Check authorization attempt with empty username")
     @Description("An empty username shows a validation error for the username field.")
     public void emptyUsernameLoginTest() {
@@ -76,6 +80,7 @@ public class LoginUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54149")
     @DisplayName("[UI] Check authorization attempt with empty password")
     @Description("An empty password shows a validation error for the password field.")
     public void emptyPasswordLoginTest() {
@@ -89,6 +94,7 @@ public class LoginUiTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.MINOR)
+    @AllureId("54150")
     @DisplayName("[UI] Check authorization attempt with empty username and password")
     @Description("Empty username and password show a validation error for both fields.")
     public void emptyCredentialsLoginTest() {
