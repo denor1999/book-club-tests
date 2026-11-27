@@ -53,7 +53,7 @@ public class ClubsTests extends TestBase {
     @Test
     @Owner("denor1999")
     @Severity(SeverityLevel.NORMAL)
-    @AllureId("55461")
+    @AllureId("5550")
     @DisplayName("Check each club has required fields")
     @Description("Each club has id, title, authors, year, description, Telegram link, owner, members, reviews, and created date. id and owner are positive.")
     public void getClubsEachClubHasRequiredFields() {
